@@ -3,17 +3,21 @@ import { Form, Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 
-const AuthModal = () => {
+const SignupModal = () => {
     const dispatch = useDispatch();
 
     const [formValues, setFormValues] = useState({
+        name: '',
         email: '',
         password: '',
+        confirmPassword: '',
     });
 
     const [errors, setErrors] = useState({
+        name: '',
         email: '',
-        password: ''
+        password: '',
+        confirmPassword: '',
     });
 
     const [submitted, setSubmitted] = useState(false);
@@ -33,8 +37,15 @@ const AuthModal = () => {
 
     const validate = () => {
         let valid = true;
+        let nameError = '';
         let emailError = '';
         let passwordError = '';
+        let confirmPasswordError = '';
+
+        if (!formValues.name) {
+            nameError = 'Name is required';
+            valid = false;
+        }
 
         if (!formValues.email) {
             emailError = 'Email is required';
@@ -52,9 +63,19 @@ const AuthModal = () => {
             valid = false;
         }
 
+        if (!formValues.confirmPassword) {
+            confirmPasswordError = 'Please confirm your password';
+            valid = false;
+        } else if (formValues.confirmPassword !== formValues.password) {
+            confirmPasswordError = 'Passwords do not match';
+            valid = false;
+        }
+
         setErrors({
+            name: nameError,
             email: emailError,
-            password: passwordError
+            password: passwordError,
+            confirmPassword: confirmPasswordError
         });
 
         return valid;
@@ -77,17 +98,33 @@ const AuthModal = () => {
                 animation
                 centered
                 keyboard
-                className="rounded-xl h-96 w-96"
+                className="rounded-xl h-auto w-96"
             >
                 <Modal.Body className="p-0 rounded-xl">
                     <div className="flex flex-row w-full h-full min-h-96">
                         <div className="w-1/4 min-h-full bg-indigo-900"></div>
                         <div className="w-3/4 min-h-full bg-gray-100 flex flex-col">
                             <div className="w-full flex items-center justify-center pt-4">
-                                <h1 className="text-black font-semibold text-2xl">Login</h1>
+                                <h1 className="text-black font-semibold text-2xl">Sign Up</h1>
                             </div>
                             <div className="w-full flex flex-col p-6 justify-center">
                                 <Form noValidate onSubmit={handleSubmit}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="text-black">Name</Form.Label>
+                                        <Form.Control
+                                            className={`rounded-lg text-black ${submitted && errors.name ? 'is-invalid' : ''}`}
+                                            type="text"
+                                            name="name"
+                                            placeholder="John Doe"
+                                            value={formValues.name}
+                                            onChange={handleChange}
+                                            isInvalid={!!errors.name}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.name}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-black">Email</Form.Label>
                                         <Form.Control
@@ -120,11 +157,27 @@ const AuthModal = () => {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="text-black">Confirm Password</Form.Label>
+                                        <Form.Control
+                                            className={`rounded-lg text-black ${submitted && errors.confirmPassword ? 'is-invalid' : ''}`}
+                                            type="password"
+                                            name="confirmPassword"
+                                            placeholder="***********"
+                                            value={formValues.confirmPassword}
+                                            onChange={handleChange}
+                                            isInvalid={!!errors.confirmPassword}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.confirmPassword}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+
                                     <button
                                         type="submit"
                                         className="w-full bg-indigo-900 text-white rounded-full p-2 hover:bg-indigo-800"
                                     >
-                                        Login
+                                        Sign Up
                                     </button>
                                 </Form>
                             </div>
@@ -136,4 +189,4 @@ const AuthModal = () => {
     );
 };
 
-export default AuthModal;
+export default SignupModal;

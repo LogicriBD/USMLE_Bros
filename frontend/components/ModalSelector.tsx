@@ -6,6 +6,7 @@ import { shallowEqual } from "react-redux";
 import CategoriesModal from "./Modals/CategoriesModal";
 import AuthModal from "./Modals/AuthModal";
 import { RootState } from "@/lib/store/redux-store";
+import SignUpModal from "./Modals/SignUpModal";
 
 const ModalSelector = () => {
 
@@ -16,6 +17,7 @@ const ModalSelector = () => {
             <React.Fragment>
                 {currentSelectedModal === ModalName.Categories && <CategoriesModal />}
                 {currentSelectedModal === ModalName.Login && <AuthModal />}
+                {currentSelectedModal === ModalName.SignUp && <SignUpModal />}
             </React.Fragment>
         </>
     )
