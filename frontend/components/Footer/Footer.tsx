@@ -24,7 +24,7 @@ const Footer = () => {
                 <p className="text-gray-400">Developed by <a 
                         target="_blank"
                         href="https://robustechbd.com" 
-                        className="font-semibold hover:text-gray-200"
+                        className="font-semibold text-inherit hover:text-gray-200"
                     >RobusTech Bangladesh</a>
                 </p>
             </div>
