@@ -2,6 +2,7 @@ import { modalActions } from "@/lib/store/slices/modal-slice";
 import { Form, Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
+import { ModalName } from "@/utils/enums/ModalEnum";
 
 const SignupModal = () => {
     const dispatch = useDispatch();
@@ -179,6 +180,14 @@ const SignupModal = () => {
                                     >
                                         Sign Up
                                     </button>
+                                    <div className="w-full text-black font-semibold text-md flex items-center justify-center">
+                                        Already have an account? <span
+                                            className="text-indigo-900 cursor-pointer ml-1 underline underline-offset-1"
+                                            onClick={() => dispatch(modalActions.updateModalType(ModalName.Login))}
+                                        >
+                                            Log In
+                                        </span>
+                                    </div>
                                 </Form>
                             </div>
                         </div>
