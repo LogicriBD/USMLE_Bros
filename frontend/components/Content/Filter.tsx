@@ -23,7 +23,7 @@ const Filter = (props: FilterProps) => {
                     {props.categories.map((category, index) => (
                         <div
                             key={index}
-                            className={`text-sky-100 bg-indigo-700 hover:bg-indigo-800 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center
+                            className={`text-sky-100 bg-indigo-900 hover:bg-indigo-800 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center
                             ${index === 3 ? 'hidden md:block' : ''} 
                             ${index === 2 ? 'hidden sm:block md:block' : ''} 
                             ${index === 1 ? 'hidden block sm:block' : ''}`} 
@@ -31,7 +31,7 @@ const Filter = (props: FilterProps) => {
                             {category}
                         </div>
                     ))}
-                    <div className="text-sky-100 bg-indigo-700 focus:bg-sky-300 hover:bg-indigo-800 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center">
+                    <div className="text-sky-100 bg-indigo-900 focus:bg-sky-300 hover:bg-indigo-800 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center">
                         All
                     </div>
                 </div>
