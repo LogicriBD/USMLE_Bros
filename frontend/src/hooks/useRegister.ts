@@ -1,13 +1,14 @@
 import { UserSignUpAction } from "@/actions/user/UserSignUpAction";
 import { RegisterValidator } from "@/validation/authentication/signup";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { modalActions } from "../context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { closeModal } from "@/utils/Modal";
+import { useAppDispatch } from "../context/store/hooks";
+import { authActions } from "../context/store/slices/auth-slice";
 
 export const useRegister = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [formValues, setFormValues] = useState({
     name: "",
@@ -44,8 +45,8 @@ export const useRegister = () => {
     const validator = RegisterValidator(formValues);
     if (validator.valid) {
       const userCreateAction = new UserSignUpAction(formValues);
-      const credentials = await userCreateAction.execute();
-      localStorage.setItem("user", JSON.stringify(credentials));
+      await userCreateAction.execute();
+      dispatch(authActions.setSessionStatus(true));
       closeModal();
     } else {
       setErrors(validator.errors);

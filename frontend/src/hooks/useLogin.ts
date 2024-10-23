@@ -1,13 +1,14 @@
 import { LoginValidator } from "@/validation/authentication/login";
 import { UserLoginAction } from "@/actions/user/UserLoginAction";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { closeModal } from "@/utils/Modal";
+import { useAppDispatch } from "../context/store/hooks";
+import { authActions } from "../context/store/slices/auth-slice";
 
 export const useLogin = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [formValues, setFormValues] = useState({
     email: "",
@@ -40,8 +41,8 @@ export const useLogin = () => {
     const validator = LoginValidator(formValues);
     if (validator.valid) {
       const loginAction = new UserLoginAction(formValues);
-      const credentials = await loginAction.execute();
-      localStorage.setItem("user", JSON.stringify(credentials));
+      await loginAction.execute();
+      dispatch(authActions.setSessionStatus(true));
     } else {
       setErrors({
         email: validator.errors.email,
