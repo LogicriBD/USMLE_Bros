@@ -1,26 +1,22 @@
-import { UserSignUpAction } from "@/actions/user/UserSignUpAction";
-import { RegisterValidator } from "@/validation/authentication/signup";
+import { LoginValidator } from "@/validation/authentication/login";
+import { UserLoginAction } from "@/actions/user/UserLoginAction";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { modalActions } from "../context/store/slices/modal-slice";
+import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { closeModal } from "@/utils/Modal";
 
-export const useRegister = () => {
+export const useLogin = () => {
   const dispatch = useDispatch();
 
   const [formValues, setFormValues] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -41,19 +37,22 @@ export const useRegister = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    const validator = RegisterValidator(formValues);
+    const validator = LoginValidator(formValues);
     if (validator.valid) {
-      const userCreateAction = new UserSignUpAction(formValues);
-      const credentials = await userCreateAction.execute();
+      const loginAction = new UserLoginAction(formValues);
+      const credentials = await loginAction.execute();
       localStorage.setItem("user", JSON.stringify(credentials));
-      closeModal();
     } else {
-      setErrors(validator.errors);
+      setErrors({
+        email: validator.errors.email,
+        password: validator.errors.password,
+      });
     }
+    closeModal();
   };
 
-  const goToLogin = () => {
-    dispatch(modalActions.updateModalType(ModalName.Login));
+  const goToRegister = () => {
+    dispatch(modalActions.updateModalType(ModalName.SignUp));
   };
 
   return {
@@ -62,6 +61,6 @@ export const useRegister = () => {
     submitted,
     handleChange,
     handleSubmit,
-    goToLogin,
+    goToRegister,
   };
 };
