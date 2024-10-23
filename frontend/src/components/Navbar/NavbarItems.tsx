@@ -24,10 +24,10 @@ const NavbarItems = () =>
             <>
                 <div
                     onClick={() => dispatch(modalActions.updateModalType(ModalName.Login))}
-                    className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold text-md rounded-xl px-4 py-2">Login</div>
+                    className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300">Login</div>
                 <div
                     onClick={() => dispatch(modalActions.updateModalType(ModalName.SignUp))}
-                    className="text-gray-100 bg-sky-900 hover:bg-sky-700 cursor-pointer font-bold text-md rounded-xl px-4 py-2">Register</div>
+                    className="text-gray-100 bg-sky-900 hover:bg-sky-700 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300">Register</div>
             </>
         )
     }
@@ -37,7 +37,7 @@ const NavbarItems = () =>
             <>
                 <div
                     onClick={handleLogout}
-                    className="text-gray-100 bg-sky-900 hover:bg-sky-700 cursor-pointer font-bold text-md rounded-xl px-4 py-2">Logout</div>
+                    className="text-gray-100 bg-sky-900 hover:bg-sky-700 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300">Logout</div>
             </>
         )
     }

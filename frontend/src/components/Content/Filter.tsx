@@ -22,7 +22,7 @@ const Filter = (props: FilterProps) => {
                         type="text"
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
-                        className="w-full p-2 px-4 border border-gray-400 bg-stone-200 hover:bg-stone-300 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent pr-10"
+                        className="w-full p-2 px-4 border border-gray-400 bg-stone-200 hover:bg-stone-300 transition duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent pr-10"
                         placeholder="Search"
                     />
                     {searchText !== "" ? (
@@ -41,7 +41,7 @@ const Filter = (props: FilterProps) => {
                     {props.categories.map((category, index) => (
                         <div
                             key={index}
-                            className={`text-sky-100 bg-indigo-900 hover:bg-indigo-800 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center
+                            className={`text-sky-100 bg-indigo-900 hover:bg-indigo-600 transition duration-300 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center
                             ${index === 3 ? 'hidden md:block' : ''} 
                             ${index === 2 ? 'hidden sm:block md:block' : ''} 
                             ${index === 1 ? 'hidden block sm:block' : ''}`} 
@@ -51,7 +51,7 @@ const Filter = (props: FilterProps) => {
                     ))}
                     <div 
                         onClick={() => dispatch(modalActions.updateModalType(ModalName.Categories))}
-                        className="text-sky-100 bg-indigo-900 focus:bg-sky-300 hover:bg-indigo-800 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center">
+                        className="text-sky-100 bg-indigo-900 focus:bg-sky-300 hover:bg-indigo-600 transition duration-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center">
                         All
                     </div>
                 </div>
