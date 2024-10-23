@@ -1,10 +1,11 @@
 import { Form, Modal } from "react-bootstrap";
 import { useRegister } from "@/src/hooks/useRegister";
+import { closeModal } from "@/utils/Modal";
 
 const SignupModal = () =>
 {
 
-    const { formValues, errors, submitted, handleChange, handleSubmit, closeModal, goToLogin } = useRegister();
+    const { formValues, errors, submitted, handleChange, handleSubmit, goToLogin } = useRegister();
     return (
         <>
             <Modal

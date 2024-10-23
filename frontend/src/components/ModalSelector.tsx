@@ -1,17 +1,15 @@
 "use client";
-import { useSelector } from "react-redux";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import React from "react";
-import { shallowEqual } from "react-redux";
 import CategoriesModal from "./Modals/CategoriesModal";
 import AuthModal from "./Modals/AuthModal";
-import { RootState } from "@/src/context/store/redux-store";
 import SignUpModal from "./Modals/SignUpModal";
+import { useAppSelector } from "../context/store/hooks";
 
 const ModalSelector = () =>
 {
 
-    const currentSelectedModal = useSelector((state: RootState) => state.modal.type, shallowEqual);
+    const currentSelectedModal = useAppSelector((state) => state.modal.type);
 
     return (
         <>

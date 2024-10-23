@@ -1,18 +1,15 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { modalReducer, modalSlice } from "./slices/modal-slice";
+import { modalReducer } from "./slices/modal-slice";
+import { authReducer } from "./slices/auth-slice";
 
 const appReducer = combineReducers({
-    modal: modalReducer,
+  modal: modalReducer,
+  auth: authReducer,
 });
 
-export const appStore = () => {
-    return configureStore({
-      reducer: {
-        modal: modalSlice.reducer,
-      },
-    });
-  };
+export const appStore = configureStore({
+  reducer: appReducer,
+});
 
-export type AppStore = ReturnType<typeof appStore>;
-export type RootState = ReturnType<AppStore['getState']>;
-export type AppDispatch = AppStore['dispatch'];
+export type AppStore = ReturnType<typeof appReducer>;
+export type AppDispatch = typeof appStore.dispatch;

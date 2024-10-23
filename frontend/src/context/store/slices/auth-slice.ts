@@ -15,14 +15,11 @@ export const authSlice = createSlice({
   reducers: {
     login: (state: AuthStorageType, action: PayloadAction<AuthStorageType>) => {
       state = action.payload;
-      localStorage.setItem("idToken", state.idToken || "");
-      localStorage.setItem("refresh", state.refresh || "");
     },
     logout: (state: AuthStorageType) => {
       state.isLoggedIn = false;
       state.idToken = undefined;
       state.refresh = undefined;
-      localStorage.clear();
     },
     setSessionStatus: (
       state: AuthStorageType,

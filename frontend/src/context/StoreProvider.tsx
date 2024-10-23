@@ -1,7 +1,8 @@
 'use client'
 import { useRef } from 'react'
 import { Provider } from 'react-redux'
-import { appStore, AppStore } from './store/redux-store';
+import { appStore } from './store/redux-store';
+import { EnhancedStore } from '@reduxjs/toolkit';
 
 export default function StoreProvider({
   children
@@ -9,10 +10,10 @@ export default function StoreProvider({
   children: React.ReactNode
 })
 {
-  const storeRef = useRef<AppStore>()
+  const storeRef = useRef<EnhancedStore>()
   if (!storeRef.current)
   {
-    storeRef.current = appStore()
+    storeRef.current = appStore
   }
 
   return <Provider store={storeRef.current}>{children}</Provider>

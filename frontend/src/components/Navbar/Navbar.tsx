@@ -1,14 +1,10 @@
 "use client";
-import { modalActions } from "@/src/context/store/slices/modal-slice";
-import { ModalName } from "@/utils/enums/ModalEnum";
 import Image from "next/image";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import NavbarItems from "./NavbarItems";
 const Navbar = () =>
 {
-
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const dispatch = useDispatch();
 
     return (
         <nav className="bg-white p-3 sticky top-0 z-50 shadow-md">
@@ -22,12 +18,7 @@ const Navbar = () =>
                     />
                 </div>
                 <div className="hidden md:flex space-x-6 flex justify-center items-center">
-                    <div
-                        onClick={() => dispatch(modalActions.updateModalType(ModalName.Login))}
-                        className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold text-md rounded-xl px-4 py-2">Login</div>
-                    <div
-                        onClick={() => dispatch(modalActions.updateModalType(ModalName.SignUp))}
-                        className="text-gray-100 bg-sky-900 hover:bg-sky-700 cursor-pointer font-bold text-md rounded-xl px-4 py-2">Register</div>
+                    <NavbarItems />
                 </div>
                 <div className="md:hidden">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-black focus:outline-none">
@@ -50,12 +41,7 @@ const Navbar = () =>
             </div>
             {isOpen && (
                 <div className="md:hidden mt-2 pb-2 space-y-2">
-                    <div
-                        onClick={() => dispatch(modalActions.updateModalType(ModalName.Login))}
-                        className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold text-md rounded-lg px-4 py-2">Login</div>
-                    <div
-                        onClick={() => dispatch(modalActions.updateModalType(ModalName.SignUp))}
-                        className="text-gray-100 bg-sky-900 hover:bg-sky-700 cursor-pointer font-bold text-md rounded-lg px-4 py-2">Register</div>
+                    <NavbarItems />
                 </div>
             )}
         </nav>
