@@ -1,113 +1,15 @@
-import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { Form, Modal } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
-import { ModalName } from "@/utils/enums/ModalEnum";
+import { useRegister } from "@/src/hooks/useRegister";
 
 const SignupModal = () =>
 {
-    const dispatch = useDispatch();
 
-    const [formValues, setFormValues] = useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-    });
-
-    const [errors, setErrors] = useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-    });
-
-    const [submitted, setSubmitted] = useState(false);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    {
-        const { name, value } = e.target;
-        setFormValues({
-            ...formValues,
-            [name]: value
-        });
-
-        setErrors({
-            ...errors,
-            [name]: ''
-        });
-    };
-
-    const validate = () =>
-    {
-        let valid = true;
-        let nameError = '';
-        let emailError = '';
-        let passwordError = '';
-        let confirmPasswordError = '';
-
-        if (!formValues.name)
-        {
-            nameError = 'Name is required';
-            valid = false;
-        }
-
-        if (!formValues.email)
-        {
-            emailError = 'Email is required';
-            valid = false;
-        } else if (!/\S+@\S+\.\S+/.test(formValues.email))
-        {
-            emailError = 'Email is invalid';
-            valid = false;
-        }
-
-        if (!formValues.password)
-        {
-            passwordError = 'Password is required';
-            valid = false;
-        } else if (formValues.password.length < 8)
-        {
-            passwordError = 'Password must be at least 8 characters';
-            valid = false;
-        }
-
-        if (!formValues.confirmPassword)
-        {
-            confirmPasswordError = 'Please confirm your password';
-            valid = false;
-        } else if (formValues.confirmPassword !== formValues.password)
-        {
-            confirmPasswordError = 'Passwords do not match';
-            valid = false;
-        }
-
-        setErrors({
-            name: nameError,
-            email: emailError,
-            password: passwordError,
-            confirmPassword: confirmPasswordError
-        });
-
-        return valid;
-    };
-
-    const handleSubmit = (e: React.FormEvent) =>
-    {
-        e.preventDefault();
-        setSubmitted(true);
-
-        if (validate())
-        {
-            console.log('Form submitted', formValues);
-        }
-    };
-
+    const { formValues, errors, submitted, handleChange, handleSubmit, closeModal, goToLogin } = useRegister();
     return (
         <>
             <Modal
                 show={true}
-                onHide={() => dispatch(modalActions.removeModal())}
+                onHide={closeModal}
                 animation
                 centered
                 keyboard
@@ -195,7 +97,7 @@ const SignupModal = () =>
                                     <div className="w-full text-black font-semibold text-md flex items-center justify-center">
                                         Already have an account? <span
                                             className="text-indigo-900 cursor-pointer ml-1 underline underline-offset-1"
-                                            onClick={() => dispatch(modalActions.updateModalType(ModalName.Login))}
+                                            onClick={goToLogin}
                                         >
                                             Log In
                                         </span>

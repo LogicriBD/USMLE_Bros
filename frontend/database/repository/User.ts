@@ -3,14 +3,21 @@ import { firestore } from "../config/firebaseApp";
 import { Roles } from "@/utils/enums/Roles";
 import { ApiError } from "next/dist/server/api-utils";
 
+export type UserData = {
+  id: string;
+  email: string;
+  name: string;
+  role: Roles;
+};
+
 class UserImpl {
-  async findUserById(id: string) {
+  async findUserById(id: string): Promise<UserData> {
     try {
       const userRef = doc(firestore, "users", id);
       const userSnapshot = await getDoc(userRef);
 
       if (userSnapshot.exists()) {
-        return { id: userSnapshot.id, ...userSnapshot.data() };
+        return { id: userSnapshot.id, ...userSnapshot.data() } as UserData;
       } else {
         throw Error(`User not found for id: ${id}`);
       }
@@ -19,13 +26,13 @@ class UserImpl {
     }
   }
 
-  async findUserByEmail(email: string) {
+  async findUserByEmail(email: string): Promise<UserData> {
     try {
       const userRef = doc(firestore, "users", email);
       const userSnapshot = await getDoc(userRef);
 
       if (userSnapshot.exists()) {
-        return { id: userSnapshot.id, ...userSnapshot.data() };
+        return { id: userSnapshot.id, ...userSnapshot.data() } as UserData;
       } else {
         throw Error(`User not found for email: ${email}`);
       }
@@ -34,11 +41,11 @@ class UserImpl {
     }
   }
 
-  async createGeneralUser(email: string, username: string) {
+  async createGeneralUser(email: string, name: string) {
     try {
       const docRef = await addDoc(collection(firestore, "users"), {
         email: email,
-        username: username,
+        name: name,
         role: Roles.User,
       });
       return docRef;
@@ -47,11 +54,11 @@ class UserImpl {
     }
   }
 
-  async createAdminUser(email: string, username: string) {
+  async createAdminUser(email: string, name: string) {
     try {
       const docRef = await addDoc(collection(firestore, "users"), {
         email: email,
-        username: username,
+        name: name,
         role: Roles.Admin,
       });
       return docRef;

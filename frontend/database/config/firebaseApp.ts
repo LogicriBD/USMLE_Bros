@@ -4,13 +4,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBiGNC9yttUEphRHWOp0H1t7ePqTyHF2RE",
-  authDomain: "usmlebros-f6ff9.firebaseapp.com",
-  projectId: "usmlebros-f6ff9",
-  storageBucket: "usmlebros-f6ff9.appspot.com",
-  messagingSenderId: "43192811413",
-  appId: "1:43192811413:web:14c4c6357d03b95a33809c",
-  measurementId: "G-MWS401939N",
+  apiKey: "AIzaSyDLCpJFzDtBjZQxIjC9deHXTixaz4Tij8M",
+  authDomain: "usmle-bros-test.firebaseapp.com",
+  projectId: "usmle-bros-test",
+  storageBucket: "usmle-bros-test.appspot.com",
+  messagingSenderId: "66344304971",
+  appId: "1:66344304971:web:8df571e19fac56cb42a8ce",
+  measurementId: "G-F8D81QNXTG",
 };
 
 const app = initializeApp(firebaseConfig);

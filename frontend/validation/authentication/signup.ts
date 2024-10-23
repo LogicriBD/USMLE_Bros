@@ -1,9 +1,15 @@
+import { validate } from "@/utils/Validate";
 import { z } from "zod";
 
-export const filterSchema = z.object({
-  search: z.string().min(0),
-  status: z.enum(status).optional(),
+export const registerSchema = z.object({
+  name: z.string().min(1).max(255),
+  email: z.string().email(),
+  password: z.string().min(8).max(255),
+  confirmPassword: z.string(),
 });
 
-export type Params = z.infer<typeof filterSchema>;
-export const Validator = validateRequestPayload(filterSchema);
+export type RegisterBody = z.infer<typeof registerSchema>;
+export const RegisterValidator = validate<RegisterBody>(registerSchema, true, [
+  "password",
+  "confirmPassword",
+]);

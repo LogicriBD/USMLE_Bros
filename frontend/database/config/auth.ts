@@ -6,30 +6,22 @@ import {
 } from "firebase/auth";
 
 export const register = async (email: string, password: string) => {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
 
-    return userCredential;
-  } catch (error) {
-    return error;
-  }
+  return userCredential;
 };
 
 export const login = async (email: string, password: string) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    return userCredential;
-  } catch (error) {
-    return error;
-  }
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  return userCredential;
 };
 
 export const logout = async () => {
