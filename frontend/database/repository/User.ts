@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { Roles } from "@/utils/enums/Roles";
 import { ApiError } from "next/dist/server/api-utils";
@@ -28,16 +28,19 @@ class UserImpl {
 
   async findUserByEmail(email: string): Promise<UserData> {
     try {
-      const userRef = doc(firestore, "users", email);
-      const userSnapshot = await getDoc(userRef);
-
-      if (userSnapshot.exists()) {
-        return { id: userSnapshot.id, ...userSnapshot.data() } as UserData;
-      } else {
-        throw Error(`User not found for email: ${email}`);
+      const q = query(collection(firestore, "users"), where("email", "==", email));
+  
+      const querySnapshot = await getDocs(q);
+  
+      if (querySnapshot.empty) {
+        throw new ApiError(404, `User not found for email: ${email}`);
       }
+  
+      const userDoc = querySnapshot.docs[0];
+      
+      return { id: userDoc.id, ...userDoc.data() } as UserData;
     } catch (error: any) {
-      throw new ApiError(404, error.message);
+      throw new ApiError(400, error.message || "Failed to fetch user by email");
     }
   }
 

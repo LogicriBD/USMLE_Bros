@@ -1,15 +1,16 @@
 import { LoginValidator } from "@/validation/authentication/login";
 import { UserLoginAction } from "@/actions/user/UserLoginAction";
-import { useState } from "react";
+import {  useState } from "react";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { closeModal } from "@/utils/Modal";
-import { useAppDispatch } from "../context/store/hooks";
+import { useAppDispatch, useAppSelector } from "../context/store/hooks";
 import { authActions } from "../context/store/slices/auth-slice";
+import { UserFetchByEmailAction } from "@/actions/user/UserFetchByEmailAction";
+import { appStore } from "../context/store/redux-store";
 
 export const useLogin = () => {
   const dispatch = useAppDispatch();
-
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
@@ -43,6 +44,9 @@ export const useLogin = () => {
       const loginAction = new UserLoginAction(formValues);
       await loginAction.execute();
       dispatch(authActions.setSessionStatus(true));
+
+      const userAction = new UserFetchByEmailAction({ email: appStore.getState().user.email });
+      await userAction.execute();
     } else {
       setErrors({
         email: validator.errors.email,
