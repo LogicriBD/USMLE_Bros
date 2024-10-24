@@ -5,6 +5,8 @@ import CategoriesModal from "./Modals/CategoriesModal";
 import AuthModal from "./Modals/AuthModal";
 import SignUpModal from "./Modals/SignUpModal";
 import { useAppSelector } from "../context/store/hooks";
+import SwitchRoleModal from "./Modals/UsersActions/SwitchRoleModal";
+import DeleteUser from "./Modals/UsersActions/DeleteUser";
 
 const ModalSelector = () =>
 {
@@ -17,6 +19,8 @@ const ModalSelector = () =>
                 {currentSelectedModal === ModalName.Categories && <CategoriesModal />}
                 {currentSelectedModal === ModalName.Login && <AuthModal />}
                 {currentSelectedModal === ModalName.SignUp && <SignUpModal />}
+                {currentSelectedModal === ModalName.SwitchRole && <SwitchRoleModal />}
+                {currentSelectedModal === ModalName.DeleteUser && <DeleteUser />}
             </React.Fragment>
         </>
     )

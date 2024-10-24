@@ -12,6 +12,7 @@ import StoreProvider from "../context/StoreProvider";
 import { Suspense } from "react";
 import ModalSelector from "@/src/components/ModalSelector";
 import AuthStateManager from "../context/AuthStateManager";
+import Loader from "../components/Loader/Loader";
 const roboto = Roboto_Slab({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -34,13 +35,14 @@ export default function RootLayout({
         className={`${roboto.className} antialiased`}
       >
         <StoreProvider>
+          <Loader />
           <AuthStateManager>
             <Navbar />
           </AuthStateManager>
           <main className="min-h-screen bg-gray-100">
             {children}
           </main>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Loader />}>
             <ModalSelector />
           </Suspense>
         </StoreProvider>

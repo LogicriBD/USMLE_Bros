@@ -26,7 +26,7 @@ const Navbar = () => {
                 </div>
                 {
                     isLoggedIn && role === Roles.Admin && pathname === "/admin" && (
-                        <div className="text-black text-2xl font-bold">Admin</div>
+                        <div className="text-black text-2xl font-bold">Admin Portal</div>
                     )
                 }
                 <div className="hidden md:flex space-x-6 flex justify-center items-center">
