@@ -63,7 +63,7 @@ const UserTable = () => {
                                             type: ModalName.SwitchRole,
                                             data: user
                                         }))}
-                                        className="bg-indigo-500 text-white px-2 py-1 rounded-md mb-1 hover:bg-indigo-700 transition duration-300"
+                                        className="text-gray-100 bg-sky-900 hover:bg-sky-700 cursor-pointer font-bold md:text-md text-sm rounded-md md:px-4 px-2 py-2 transition duration-300 mb-1"
                                     >
                                         Switch Role
                                     </button>
@@ -74,7 +74,7 @@ const UserTable = () => {
                                             type: ModalName.DeleteUser,
                                             data: user
                                         }))}
-                                        className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-700 transition duration-300"
+                                        className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold md:text-md text-sm rounded-md md:px-4 px-2 py-2 transition duration-300"
                                     >
                                         Delete User
                                     </button>
