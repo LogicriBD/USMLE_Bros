@@ -3,13 +3,14 @@ import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { Roles } from "@/utils/enums/Roles";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const NavbarItems = () =>
 {
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const pathname = usePathname();
     const role = useAppSelector((state) => state.user.role);
 
     const handleLogout = async () =>
@@ -39,14 +40,6 @@ const NavbarItems = () =>
                 <div
                     onClick={handleLogout}
                     className="text-gray-100 bg-sky-900 hover:bg-sky-700 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300">Logout</div>
-                {role === Roles.Admin &&(
-                    <>
-                        <div
-                            onClick={() => router.push("/admin")}
-                            className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300"
-                        >Admin</div>
-                    </>
-                )}
             </>
         )
     }

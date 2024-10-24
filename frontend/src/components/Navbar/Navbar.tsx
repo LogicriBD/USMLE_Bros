@@ -2,14 +2,21 @@
 import Image from "next/image";
 import { useState } from "react";
 import NavbarItems from "./NavbarItems";
-const Navbar = () =>
-{
+import { useAppSelector } from "@/src/context/store/hooks";
+import { Roles } from "@/utils/enums/Roles";
+import AdminNavbarItems from "../AdminNavbar/AdminNavbarItems";
+import { usePathname, useRouter } from "next/navigation";
+const Navbar = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+    const role = useAppSelector((state) => state.user.role);
+    const pathname = usePathname();
+    const router = useRouter();
 
     return (
         <nav className="bg-white p-3 sticky top-0 z-50 shadow-md">
             <div className="container mx-auto flex justify-between items-center">
-                <div className="md:max-w-72 max-w-40 w-[50px]">
+                <div className="md:max-w-72 max-w-40 w-[50px] cursor-pointer" onClick={() => router.push("/")}>
                     <Image
                         src="/logos/icon.png"
                         alt="Logo"
@@ -17,8 +24,19 @@ const Navbar = () =>
                         height={50}
                     />
                 </div>
+                {
+                    isLoggedIn && role === Roles.Admin && pathname === "/admin" && (
+                        <div className="text-black text-2xl font-bold">Admin</div>
+                    )
+                }
                 <div className="hidden md:flex space-x-6 flex justify-center items-center">
-                    <NavbarItems />
+                    {
+                        (isLoggedIn && role === Roles.Admin) ? (
+                            <AdminNavbarItems />
+                        ) : (
+                            <NavbarItems />
+                        )
+                    }
                 </div>
                 <div className="md:hidden">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-black focus:outline-none">
@@ -41,7 +59,13 @@ const Navbar = () =>
             </div>
             {isOpen && (
                 <div className="md:hidden mt-2 pb-2 space-y-2">
-                    <NavbarItems />
+                    {
+                        (isLoggedIn && role === Roles.Admin) ? (
+                            <AdminNavbarItems />
+                        ) : (
+                            <NavbarItems />
+                        )
+                    }
                 </div>
             )}
         </nav>
