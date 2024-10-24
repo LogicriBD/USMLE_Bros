@@ -40,6 +40,7 @@ class UserImpl {
       
       return { id: userDoc.id, ...userDoc.data() } as UserData;
     } catch (error: any) {
+      console.error(error);
       throw new ApiError(400, error.message || "Failed to fetch user by email");
     }
   }

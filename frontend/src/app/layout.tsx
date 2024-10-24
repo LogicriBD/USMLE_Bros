@@ -40,7 +40,7 @@ export default function RootLayout({
           <main className="min-h-screen bg-gray-100">
             {children}
           </main>
-          <Suspense fallback={null}>
+          <Suspense fallback={<div>Loading...</div>}>
             <ModalSelector />
           </Suspense>
         </StoreProvider>

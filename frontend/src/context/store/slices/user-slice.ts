@@ -20,7 +20,10 @@ export const userSlice = createSlice({
             state.email = action.payload;
         },
         setData: (state: UserData, action: PayloadAction<UserData>) => {
-            state = action.payload;
+            state.id = action.payload.id;
+            state.email = action.payload.email;
+            state.name = action.payload.name;
+            state.role = action.payload.role;
         }
     }
 })

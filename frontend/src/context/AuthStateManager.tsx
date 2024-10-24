@@ -1,8 +1,9 @@
 'use client'
 
 import { isUserLoggedIn } from "@/database/config/auth";
-import { useDispatch } from "react-redux";
 import { authActions } from "./store/slices/auth-slice";
+import { useAppDispatch } from "./store/hooks";
+import { useEffect } from "react";
 
 const AuthStateManager = ({
     children
@@ -10,22 +11,18 @@ const AuthStateManager = ({
     children: React.ReactNode
 }) =>
 {
-    const dispatch = useDispatch();
-    const isUserActive = isUserLoggedIn();
-    if (!isUserActive)
-    {
-        dispatch(authActions.logout());
-    }
-    else
-    {
-        dispatch(authActions.setSessionStatus(true));
-    }
+    const dispatch = useAppDispatch();
 
-    return (
-        <>
-            {children}
-        </>
-    );
+    useEffect(() => {
+        const isUserActive = isUserLoggedIn();
+        if (!isUserActive) {
+            dispatch(authActions.logout());
+        } else {
+            dispatch(authActions.setSessionStatus(true));
+        }
+    }, [dispatch]);
+
+    return <>{children}</>;
 }
 
 export default AuthStateManager;
