@@ -4,4 +4,5 @@ export enum ModalName{
     SignUp = "SignUp",
     SwitchRole = "SwitchRole",
     DeleteUser = "DeleteUser",
+    CreateCategory = "CreateCategory",
 }

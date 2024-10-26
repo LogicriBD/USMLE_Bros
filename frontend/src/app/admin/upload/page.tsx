@@ -1,12 +1,43 @@
 "use client"
+import { CategoryFetchAll } from "@/actions/category/CategoryFetchAll";
+import { CategoryData } from "@/database/repository/Category";
 import SideBar from "@/src/components/Upload/SideBar";
 import AuthStateManager from "@/src/context/AuthStateManager"
+import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
+import { categoryActions } from "@/src/context/store/slices/category-slice";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { withAdminPriviledges } from "@/src/hoc/withAdminPrivileges";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const UploadPage = () => {
 
-    const [categories, setCategories] = useState(["Anatomy", "Physiology", "Biochemistry", "Pathology", "Pharmacology", "Microbiology", "Forensic Medicine", "Community Medicine", "ENT", "Ophthalmology", "Medicine", "Surgery", "Pediatrics", "OBG", "Orthopedics", "Dermatology", "Psychiatry", "Radiology", "Anesthesia", "Dentistry", "Emergency Medicine", "General Practice", "Nursing", "Physiotherapy", "Occupational Therapy", "Speech Therapy", "Dietetics", "Nutrition", "Pharmacy", "Medical Laboratory Technology", "Radiography", "Optometry", "Biomedical Engineering", "Biotechnology", "Genetics", "Bioinformatics", "Nursing", "Physiotherapy", "Occupational Therapy", "Speech Therapy", "Dietetics", "Nutrition", "Pharmacy", "Medical Laboratory Technology", "Radiography", "Optometry", "Biomedical Engineering", "Biotechnology", "Genetics", "Bioinformatics", "Nursing", "Physiotherapy", "Occupational Therapy", "Speech Therapy", "Dietetics", "Nutrition", "Pharmacy", "Medical Laboratory Technology", "Radiography", "Optometry", "Biomedical Engineering", "Biotechnology", "Genetics", "Bioinformatics", "Nursing", "Physiotherapy", "Occupational Therapy", "Speech Therapy", "Dietetics", "Nutrition", "Pharmacy", "Medical Laboratory Technology", "Radiography", "Optometry", "Biomedical Engineering", "Biotechnology", "Genetics", "Bioinformatics", "Nursing", "Physiotherapy", "Occupational Therapy", "Speech Therapy", "Dietetics", "Nutrition", "Pharmacy", "Medical Laboratory Technology", "Radiography", "Optometry", "Biomedical Engineering", "Biotechnology", "Genetics", "Bioinformatics", "Nursing", "Physiotherapy", "Occupational Therapy", "Speech Therapy", "Dietetics", "Nutrition", "Pharmacy", "Medical Laboratory Technology", "Radiography", "Optometry", "Biomedical Engineering", "Biotechnology", "Genetics", "Bioinformatics", "Nursing", "Physiotherapy", "Occupational Therapy", "Speech Therapy", "Dietetics", "Nutrition", "Pharmacy", "Medical Laboratory Technology"]);
+    const [categories, setCategories] = useState<CategoryData[]>([]);
+    const dispatch = useAppDispatch();
+    const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
+    const modal = useAppSelector((state) => state.modal.type);
+
+    const fetchCategories = async () => {
+        try{
+            dispatch(loaderActions.turnOn());
+            const categoryAction = await new CategoryFetchAll();
+            const categories = await categoryAction.execute();
+            setCategories(categories);
+            if(categories.length > 0){
+                dispatch(categoryActions.setCategories(categories));
+                if(selectedCategory === null){
+                    dispatch(categoryActions.setSelectedCategory(categories[0]));
+                }
+            }
+        }catch(error){
+            console.error(error);
+        }finally{
+            dispatch(loaderActions.turnOff());
+        }
+    }
+
+    useEffect(() => {
+        fetchCategories();
+    },[modal]);
 
     return(
         <AuthStateManager>

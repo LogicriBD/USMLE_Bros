@@ -7,7 +7,9 @@ const Loader = () => {
     const isLoading = useAppSelector((state) => state.loader.isLoading);
 
     return isLoading ? (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div 
+            style={{zIndex: "1100"}}
+            className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
             <Image
                 src="/logos/icon.png"
                 alt="Loading"

@@ -1,11 +1,19 @@
 import { faCaretDown, faCaretUp, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
+import { modalActions } from "@/src/context/store/slices/modal-slice";
+import { ModalName } from "@/utils/enums/ModalEnum";
+import { CategoryData } from "@/database/repository/Category";
+import { categoryActions } from "@/src/context/store/slices/category-slice";
 type Props = {
-    categories: string[];
+    categories: CategoryData[];
 }
 const SideBar = (props: Props) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const dispatch = useAppDispatch();
+    const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
 
     return (
         <div className="md:w-64 w-full bg-gray-800 text-white md:min-h-screen min-h-0">
@@ -34,23 +42,37 @@ const SideBar = (props: Props) => {
                 transform transition-all duration-500 ease-in-out origin-top overflow-hidden mb-0`}
             >
                 <li className="border-b border-gray-700">
-                    <button className="p-2 w-full flex items-center bg-gray-200 text-sky-800 text-md font-semibold hover:bg-gray-700 hover:text-sky-200 transition">
+                    <button
+                        onClick={() => {
+                            dispatch(modalActions.updateModalType(ModalName.CreateCategory));
+                            setIsOpen(false);
+                        }}
+                        className="p-2 w-full flex items-center bg-gray-200 text-sky-800 text-md font-semibold hover:bg-gray-700 hover:text-sky-200 transition duration-300">
                         <span>Create New Category</span>
                         <span>
                             <FontAwesomeIcon icon={faPlusCircle} className="ml-2 text-lg" />
                         </span>
                     </button>
                 </li>
-                {props.categories.map((item, index) => (
-                    <li key={index} className="border-b border-gray-700">
-                        <button
-                            className="w-full text-left px-6 py-3 hover:bg-gray-600 transition"
-                        >
-                            {item}
-                        </button>
-                    </li>
-                ))}
+                {props.categories.length > 0 ? (
+                    props.categories.map((item, index) => (
+                        <li key={index} className="border-b border-gray-700">
+                            <button
+                                onClick={() => {
+                                    dispatch(categoryActions.setSelectedCategory(item));
+                                    setIsOpen(false);
+                                }}
+                                className={`${selectedCategory?.id === item.id ? `bg-gray-600` : `bg-inherit`} w-full text-left px-6 py-3 hover:bg-gray-600 transition duration-300`}
+                            >
+                                {item.name}
+                            </button>
+                        </li>
+                    ))
+                ) : (
+                    <div className="p-2 text-center text-gray-200">No Categories Found</div>
+                )}
             </ul>
+
         </div>
     );
 };
