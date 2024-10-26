@@ -14,7 +14,7 @@ const Navbar = () => {
     const router = useRouter();
 
     return (
-        <nav className="bg-white p-3 sticky top-0 z-50 shadow-md">
+        <nav className="bg-white p-3 sticky top-0 z-40 shadow-md">
             <div className="container mx-auto flex justify-between items-center">
                 <div className="md:max-w-72 max-w-40 w-[50px] cursor-pointer" onClick={() => router.push("/")}>
                     <Image
@@ -25,7 +25,7 @@ const Navbar = () => {
                     />
                 </div>
                 {
-                    isLoggedIn && role === Roles.Admin && pathname === "/admin" && (
+                    isLoggedIn && role === Roles.Admin && pathname.includes("/admin") && (
                         <div className="text-black text-2xl font-bold">Admin Portal</div>
                     )
                 }
