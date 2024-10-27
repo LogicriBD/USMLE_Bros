@@ -1,22 +1,55 @@
-import { useAppSelector } from "@/src/context/store/hooks";
-import MyJoditEditor from "./Editor/JoditEditor";
-import { useState } from "react";
+import { ContentFetchAll } from "@/actions/content/ContentFetchAll";
+import { ContentMetaData } from "@/database/repository/Content";
+import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+
 
 const Uploader = () => {
 
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
+    const dispatch = useAppDispatch();
 
-    const [content, setContent] = useState("");
+    const [contentMetadata, setContentMetadata] = useState<ContentMetaData[]>([]);
 
-    const handleContentChange = (newContent: string) => {
-        setContent(newContent);
-    };
+    const fetchContents = async () => {
+        try{
+            dispatch(loaderActions.turnOn());
+            const contentAction = await new ContentFetchAll();
+            const contents = await contentAction.execute();
+            setContentMetadata(contents);
+        }catch(error){
+            console.error(error);
+        }
+        finally{
+            dispatch(loaderActions.turnOff());
+        }
+    }
+
+    useEffect(() => {
+        fetchContents();
+    }, [selectedCategory]);
 
     return selectedCategory ? (
         <div className="w-full bg-inherit px-2">
-            <div className="w-full p-3 flex justify-center items-center text-black md:text-4xl text-2xl font-bold border-b border-gray-400">{selectedCategory?.name}</div>
-            <div className="h-full p-3">
-                <MyJoditEditor value={content} onChange={handleContentChange} />
+            <div className="w-full md:p-3 p-1 flex justify-center items-center text-black md:text-4xl text-2xl font-bold border-b border-gray-400">{selectedCategory?.name}</div>
+            <div className="h-full md:p-3 p-1">
+                <div 
+                    onClick={() => {}}
+                    className="w-full rounded-md flex justify-between items-center bg-gray-800 text-white p-3 cursor-pointer hover:bg-gray-600">
+                    Add a New Content  <FontAwesomeIcon icon={faPlusCircle} className="ml-2 text-lg" />
+                </div>
+                <div className="w-full">
+                    {contentMetadata.length > 0 ? (
+                        contentMetadata.map((item, index) => (
+                            <div key={index} className="w-full rounded-md md:p-3 p-1 bg-gray-200 text-sky-800 hover:bg-gray-400 flex justify-between items-center cursor-pointer">{item.title}</div>
+                        ))
+                    ) : (
+                        <div className="w-full p-3 flex justify-center items-center text-black md:text-2xl text-xl font-semibold">No Content Found</div>
+                    )}
+                </div>
             </div>
         </div>
     ) : (
