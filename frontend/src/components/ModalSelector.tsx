@@ -8,6 +8,8 @@ import { useAppSelector } from "../context/store/hooks";
 import SwitchRoleModal from "./Modals/UsersActions/SwitchRoleModal";
 import DeleteUser from "./Modals/UsersActions/DeleteUser";
 import CreateCategory from "./Modals/Content/CreateCategory";
+import CreateContent from "./Modals/Content/CreateContent";
+import ErrorModal from "./Modals/ErrorModal";
 
 const ModalSelector = () =>
 {
@@ -23,6 +25,8 @@ const ModalSelector = () =>
                 {currentSelectedModal === ModalName.SwitchRole && <SwitchRoleModal />}
                 {currentSelectedModal === ModalName.DeleteUser && <DeleteUser />}
                 {currentSelectedModal === ModalName.CreateCategory && <CreateCategory />}
+                {currentSelectedModal === ModalName.CreateContent && <CreateContent />}
+                {currentSelectedModal === ModalName.ErrorModal && <ErrorModal />}
             </React.Fragment>
         </>
     )

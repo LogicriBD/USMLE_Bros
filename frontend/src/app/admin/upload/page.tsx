@@ -15,7 +15,7 @@ const UploadPage = () => {
     const [categories, setCategories] = useState<CategoryData[]>([]);
     const dispatch = useAppDispatch();
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
-    const modal = useAppSelector((state) => state.modal.type);
+    const isSubmit = useAppSelector((state) => state.submit.toggle);
 
     const fetchCategories = async () => {
         try {
@@ -38,7 +38,7 @@ const UploadPage = () => {
 
     useEffect(() => {
         fetchCategories();
-    }, [modal]);
+    }, [isSubmit]);
 
     return (
         <AuthStateManager>

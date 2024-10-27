@@ -5,4 +5,6 @@ export enum ModalName{
     SwitchRole = "SwitchRole",
     DeleteUser = "DeleteUser",
     CreateCategory = "CreateCategory",
+    CreateContent = "CreateContent",
+    ErrorModal = "ErrorModal",
 }

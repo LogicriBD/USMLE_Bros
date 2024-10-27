@@ -1,6 +1,7 @@
 import { UserChangeRole } from "@/actions/user/UserChangeRole";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { submitActions } from "@/src/context/store/slices/submit-slice";
 import { withAdminPriviledges } from "@/src/hoc/withAdminPrivileges";
 import { closeModal } from "@/utils/Modal";
 import { Roles } from "@/utils/enums/Roles";
@@ -20,6 +21,7 @@ const SwitchRoleModal = () => {
             const role = newRole();
             const userAction = new UserChangeRole({id:user.id, role:role});
             await userAction.execute();
+            dispatch(submitActions.toggleSubmit());
         }catch(error: any){
             console.error(error);
         }finally{

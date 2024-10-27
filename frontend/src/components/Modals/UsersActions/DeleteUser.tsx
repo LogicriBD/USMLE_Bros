@@ -1,6 +1,7 @@
 import { UserDelete } from "@/actions/user/UserDelete";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { submitActions } from "@/src/context/store/slices/submit-slice";
 import { closeModal } from "@/utils/Modal";
 import { Button, Modal } from "react-bootstrap";
 
@@ -13,6 +14,7 @@ const DeleteUser = () => {
             dispatch(loaderActions.turnOn());
             const userDeleteAction = new UserDelete({id: user.id});
             await userDeleteAction.execute();
+            dispatch(submitActions.toggleSubmit());
         }catch(error:any){
             console.error(error);
         }finally{

@@ -12,7 +12,7 @@ const UserTable = () => {
 
     const [users, setUsers] = useState<UserData[]>([]);
     const dispatch = useAppDispatch();
-    const modalState = useAppSelector((state) => state.modal.type);
+    const isSubmit = useAppSelector((state) => state.submit.toggle);
 
     const fetchUsers = async () => {
         try {
@@ -22,6 +22,7 @@ const UserTable = () => {
             setUsers(users);
         } catch (error: any) {
             console.error(error);
+            dispatch(modalActions.addModal({type:ModalName.ErrorModal, data:error}));
         } finally {
             dispatch(loaderActions.turnOff());
         }
@@ -29,7 +30,7 @@ const UserTable = () => {
 
     useEffect(() => {
         fetchUsers();
-    }, [modalState]);
+    }, [isSubmit]);
 
     return (
         <div className="md:w-full w-80 h-full md:p-10 p-2 flex justify-center items-center overflow-x-auto">

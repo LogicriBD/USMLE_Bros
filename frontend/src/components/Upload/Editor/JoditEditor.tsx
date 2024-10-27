@@ -1,3 +1,4 @@
+"use client"
 import React, { useRef } from "react";
 import dynamic from "next/dynamic";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
@@ -60,7 +61,7 @@ const editorConfig = {
     uploader: {
         insertImageAsBase64URI: true,
     },
-    height: 750
+    height: 650
 };
 
 export default function MyJoditEditor({ value, onChange }) {

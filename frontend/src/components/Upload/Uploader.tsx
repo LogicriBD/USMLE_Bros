@@ -1,7 +1,10 @@
+"use client"
 import { ContentFetchAll } from "@/actions/content/ContentFetchAll";
 import { ContentMetaData } from "@/database/repository/Content";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { modalActions } from "@/src/context/store/slices/modal-slice";
+import { ModalName } from "@/utils/enums/ModalEnum";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -34,10 +37,10 @@ const Uploader = () => {
 
     return selectedCategory ? (
         <div className="w-full bg-inherit px-2">
-            <div className="w-full md:p-3 p-1 flex justify-center items-center text-black md:text-4xl text-2xl font-bold border-b border-gray-400">{selectedCategory?.name}</div>
-            <div className="h-full md:p-3 p-1">
+            <div className="w-full p-2 flex justify-center items-center text-black md:text-4xl text-2xl font-bold border-b border-gray-400">{selectedCategory?.name}</div>
+            <div className="h-full p-2">
                 <div 
-                    onClick={() => {}}
+                    onClick={() => {dispatch(modalActions.updateModalType(ModalName.CreateContent))}}
                     className="w-full rounded-md flex justify-between items-center bg-gray-800 text-white p-3 cursor-pointer hover:bg-gray-600">
                     Add a New Content  <FontAwesomeIcon icon={faPlusCircle} className="ml-2 text-lg" />
                 </div>

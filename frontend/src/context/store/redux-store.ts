@@ -4,6 +4,7 @@ import { authReducer } from "./slices/auth-slice";
 import { userReducer } from "./slices/user-slice";
 import { loaderReducer } from "./slices/loader-slice";
 import { categoryReducer } from "./slices/category-slice";
+import { submitReducer } from "./slices/submit-slice";
 
 const appReducer = combineReducers({
   modal: modalReducer,
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
   user: userReducer,
   loader: loaderReducer,
   category: categoryReducer,
+  submit: submitReducer,
 });
 
 export const appStore = configureStore({
