@@ -102,7 +102,12 @@ class UserImpl {
         name: name,
         role: Roles.User,
       });
-      return docRef;
+      const userSnapshot = await getDoc(docRef);
+      if (userSnapshot.exists()) {
+        return { id: userSnapshot.id, ...userSnapshot.data() } as UserData;
+      } else {
+        throw new ApiError(400, "User not found");
+      }
     } catch (error: any) {
       throw new ApiError(400, error.message);
     }

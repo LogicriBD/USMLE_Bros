@@ -2,6 +2,7 @@ import { register } from "@/database/config/auth";
 import { User } from "@/database/repository/User";
 import { appStore } from "@/src/context/store/redux-store";
 import { authActions } from "@/src/context/store/slices/auth-slice";
+import { userActions } from "@/src/context/store/slices/user-slice";
 import { Action, FormResponse } from "@/types/Action";
 import { FirebaseErrors } from "@/types/FirebaseErrors";
 import { logger } from "@/utils/Logger";
@@ -18,7 +19,10 @@ export class UserSignUpAction implements Action<FormResponse> {
         this.payload.email,
         this.payload.password
       );
-      await User.createGeneralUser(this.payload.email, this.payload.name);
+      const user = await User.createGeneralUser(
+        this.payload.email,
+        this.payload.name
+      );
       if (userCredential && userCredential.user) {
         const idToken = await userCredential.user.getIdToken();
         appStore.dispatch(
@@ -28,6 +32,7 @@ export class UserSignUpAction implements Action<FormResponse> {
             isLoggedIn: true,
           })
         );
+        appStore.dispatch(userActions.setRole(user.role));
         return {
           success: true,
         };
