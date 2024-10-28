@@ -2,11 +2,18 @@ import { Form, Modal } from "react-bootstrap";
 import { useRegister } from "@/src/hooks/useRegister";
 import { closeModal } from "@/utils/Modal";
 import Error from "../Error";
+import Loading from "@/src/app/loading";
 
 const SignupModal = () =>
 {
 
     const { formValues, error, errors, submitted, handleChange, handleSubmit, goToLogin } = useRegister();
+
+    if (submitted)
+    {
+        return (<Loading />)
+    }
+
     return (
         <>
             <Modal

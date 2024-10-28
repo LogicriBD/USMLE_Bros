@@ -3,6 +3,7 @@ import { appStore } from "@/src/context/store/redux-store";
 import { authActions } from "@/src/context/store/slices/auth-slice";
 import { Action } from "@/types/Action";
 import { ApiError } from "next/dist/server/api-utils";
+import Cookies from "js-cookie";
 
 export class UserLogoutAction implements Action<void> {
   constructor() {}
@@ -11,6 +12,7 @@ export class UserLogoutAction implements Action<void> {
       await logout();
       appStore.dispatch(authActions.logout());
       localStorage.clear();
+      Cookies.remove("access");
     } catch (error: any) {
       throw new ApiError(400, error.message);
     }

@@ -4,7 +4,6 @@ import { useState } from "react";
 import NavbarItems from "./NavbarItems";
 import { useAppSelector } from "@/src/context/store/hooks";
 import { Roles } from "@/utils/enums/Roles";
-import AdminNavbarItems from "../AdminNavbar/AdminNavbarItems";
 import { usePathname, useRouter } from "next/navigation";
 import { Spinner } from "react-bootstrap";
 const Navbar = () =>
@@ -15,6 +14,7 @@ const Navbar = () =>
     const role = useAppSelector((state) => state.user.role);
     const pathname = usePathname();
     const router = useRouter();
+    const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
 
     if (isAuthLoading)
     {
@@ -39,17 +39,13 @@ const Navbar = () =>
                     />
                 </div>
                 {
-                    isLoggedIn && role === Roles.Admin && pathname.includes("/admin") && (
+                    isLoggedIn && isAdminPortal && (
                         <div className="text-black text-2xl font-bold">Admin Portal</div>
                     )
                 }
                 <div className="hidden md:flex space-x-6 flex justify-center items-center">
                     {
-                        (isLoggedIn && role === Roles.Admin) ? (
-                            <AdminNavbarItems />
-                        ) : (
-                            <NavbarItems />
-                        )
+                        <NavbarItems />
                     }
                 </div>
                 <div className="md:hidden">
@@ -74,11 +70,7 @@ const Navbar = () =>
             {isOpen && (
                 <div className="md:hidden mt-2 pb-2 space-y-2">
                     {
-                        (isLoggedIn && role === Roles.Admin) ? (
-                            <AdminNavbarItems />
-                        ) : (
-                            <NavbarItems />
-                        )
+                        <NavbarItems />
                     }
                 </div>
             )}

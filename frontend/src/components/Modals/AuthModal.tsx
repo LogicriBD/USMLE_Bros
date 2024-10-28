@@ -2,6 +2,7 @@ import { useLogin } from "@/src/hooks/useLogin";
 import { closeModal } from "@/utils/Modal";
 import { Form, Modal } from "react-bootstrap";
 import Error from "../Error";
+import Loading from "@/src/app/loading";
 
 
 const AuthModal = () =>
@@ -13,6 +14,11 @@ const AuthModal = () =>
         handleChange,
         handleSubmit,
         goToRegister } = useLogin();
+
+    if (submitted)
+    {
+        return (<Loading />);
+    }
 
     return (
         <>

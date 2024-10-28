@@ -2,6 +2,7 @@ import { UserDelete } from "@/actions/user/UserDelete";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
+import { withAdminPriviledges } from "@/src/hoc/withAdminPrivileges";
 import { logger } from "@/utils/Logger";
 import { closeModal } from "@/utils/Modal";
 import { Button, Modal } from "react-bootstrap";
@@ -55,4 +56,4 @@ const DeleteUser = () =>
         </Modal>
     );
 }
-export default DeleteUser;
+export default withAdminPriviledges(DeleteUser);

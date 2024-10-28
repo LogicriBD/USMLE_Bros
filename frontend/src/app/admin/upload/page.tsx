@@ -7,7 +7,6 @@ import AuthStateManager from "@/src/context/AuthStateManager"
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { categoryActions } from "@/src/context/store/slices/category-slice";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
-import { withAdminPriviledges } from "@/src/hoc/withAdminPrivileges";
 import { logger } from "@/utils/Logger";
 import { useEffect, useState } from "react";
 
@@ -64,4 +63,4 @@ const UploadPage = () =>
     )
 }
 
-export default withAdminPriviledges(UploadPage);
+export default UploadPage;

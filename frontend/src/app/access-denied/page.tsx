@@ -1,4 +1,4 @@
-const AccessDenied = () =>
+const AccessDeniedPage = () =>
 {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
@@ -6,7 +6,7 @@ const AccessDenied = () =>
                 <h1 className="text-6xl font-bold text-gray-800">Access Denied</h1>
                 <p className="text-xl text-gray-600 mt-4">Sorry you do not have access to view this page {":("}</p>
                 <p className="text-md text-gray-500 mt-2">
-                    This page can only be accessed by administrators
+                    This page you requested can only be accessed by administrators
                 </p>
                 <a
                     href="/"
@@ -19,4 +19,4 @@ const AccessDenied = () =>
     );
 };
 
-export default AccessDenied;
+export default AccessDeniedPage;
