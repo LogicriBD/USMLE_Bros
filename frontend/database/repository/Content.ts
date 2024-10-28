@@ -9,11 +9,12 @@ export type ContentMetaData = {
   categoryId: string;
   userName: string;
   createdAt: Date;
+  userId: string;
 };
 
 export type ContentData = {
   id?: string;
-  metedataId: string;
+  metedataId?: string;
   content: any;
 };
 
@@ -32,6 +33,7 @@ class ContentRepository {
           categoryId: content.metadata.categoryId,
           userName: content.metadata.userName,
           createdAt: content.metadata.createdAt,
+          userId: content.metadata.userId,
         }
       );
 
@@ -50,6 +52,24 @@ class ContentRepository {
       const querySnapshot = await getDocs(
         collection(firestore, "contentmetadata")
       );
+      const metadata: ContentMetaData[] = [];
+      querySnapshot.forEach((doc) => {
+        metadata.push({ id: doc.id, ...doc.data() } as ContentMetaData);
+      });
+      return metadata;
+    } catch (error: any) {
+      throw new ApiError(400, error.message);
+    }
+  }
+
+  async fetchMetadataByCategory(categoryId: string) {
+    try {
+      const q = query(
+        collection(firestore, "contentmetadata"),
+        where("categoryId", "==", categoryId)
+      );
+
+      const querySnapshot = await getDocs(q);
       const metadata: ContentMetaData[] = [];
       querySnapshot.forEach((doc) => {
         metadata.push({ id: doc.id, ...doc.data() } as ContentMetaData);

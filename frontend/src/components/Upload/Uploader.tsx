@@ -1,46 +1,44 @@
 "use client"
-import { ContentFetchAll } from "@/actions/content/ContentFetchAll";
+import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory";
 import { ContentMetaData } from "@/database/repository/Content";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
+import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 import { logger } from "@/utils/Logger";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 
 
-const Uploader = () =>
-{
+const Uploader = () => {
 
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
+    const isSubmit = useAppSelector((state) => state.submit.toggle);
     const dispatch = useAppDispatch();
 
     const [contentMetadata, setContentMetadata] = useState<ContentMetaData[]>([]);
 
-    const fetchContents = async () =>
-    {
-        try
-        {
-            dispatch(loaderActions.turnOn());
-            const contentAction = await new ContentFetchAll();
-            const contents = await contentAction.execute();
-            setContentMetadata(contents);
-        } catch (error)
-        {
+    const fetchContents = async () => {
+        try {
+            if(selectedCategory){
+                dispatch(loaderActions.turnOn());
+                const contentAction = new ContentFetchByCategory({categoryId: selectedCategory.id});
+                const contents = await contentAction.execute();
+                setContentMetadata(contents);
+            }
+        } catch (error) {
             logger.error(error);
         }
-        finally
-        {
+        finally {
             dispatch(loaderActions.turnOff());
         }
     }
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         fetchContents();
-    }, [selectedCategory]);
+    }, [selectedCategory, isSubmit]);
 
     return selectedCategory ? (
         <div className="w-full bg-inherit px-2">
@@ -54,7 +52,21 @@ const Uploader = () =>
                 <div className="w-full">
                     {contentMetadata.length > 0 ? (
                         contentMetadata.map((item, index) => (
-                            <div key={index} className="w-full rounded-md md:p-3 p-1 bg-gray-200 text-sky-800 hover:bg-gray-400 flex justify-between items-center cursor-pointer">{item.title}</div>
+                            <div key={index} className="my-2 flex flex-col bg-gray-200 text-sky-800 rounded-lg px-3 py-2 shadow-md hover:bg-gray-300 transition duration-200 ease-in-out cursor-pointer">
+                                <div className="flex justify-between">
+                                    <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                                    <p className="text-sm font-semibold">{formatFirebaseDate(item.createdAt)}</p>
+                                </div>
+                                <div className="flex justify-between">
+                                    <h3 className="text-sm font-normal">{item.userName}</h3>
+                                    <div className="mt-2">
+                                        <FontAwesomeIcon icon={faEdit} className="mr-2" /> 
+                                        <FontAwesomeIcon icon={faTrash} className="mr-2" /> 
+                                    </div>
+                                </div>
+                                
+                                
+                            </div>
                         ))
                     ) : (
                         <div className="w-full p-3 flex justify-center items-center text-black md:text-2xl text-xl font-semibold">No Content Found</div>

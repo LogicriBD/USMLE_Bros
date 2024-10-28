@@ -9,7 +9,7 @@ const SuccessModal = () =>
     return (
         <Modal
             show={true}
-            size="lg"
+            size="sm"
             centered
             animation
             keyboard
