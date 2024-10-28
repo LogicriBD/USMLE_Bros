@@ -8,7 +8,7 @@ export class UserLogoutAction implements Action<void> {
   constructor() {}
   async execute(): Promise<void> {
     try {
-      await logout;
+      await logout();
       appStore.dispatch(authActions.logout());
       localStorage.clear();
     } catch (error: any) {

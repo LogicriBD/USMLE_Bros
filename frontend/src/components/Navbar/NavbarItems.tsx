@@ -2,16 +2,15 @@ import { UserLogoutAction } from "@/actions/user/UserLogoutAction";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
-import { Roles } from "@/utils/enums/Roles";
-import { usePathname, useRouter } from "next/navigation";
+
+import { useRouter } from "next/navigation";
 
 const NavbarItems = () =>
 {
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const pathname = usePathname();
-    const role = useAppSelector((state) => state.user.role);
+
 
     const handleLogout = async () =>
     {

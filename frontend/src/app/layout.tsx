@@ -13,6 +13,8 @@ import { Suspense } from "react";
 import ModalSelector from "@/src/components/ModalSelector";
 import AuthStateManager from "../context/AuthStateManager";
 import Loader from "../components/Loader/Loader";
+import { appStore } from "../context/store/redux-store";
+import { loaderActions } from "../context/store/slices/loader-slice";
 const roboto = Roboto_Slab({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -26,6 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>)
 {
+  appStore.dispatch(loaderActions.authTurnOn());
   return (
     <html lang="en">
       <head>

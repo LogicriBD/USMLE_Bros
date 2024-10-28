@@ -78,7 +78,6 @@ export const validateUserSession = () => {
     auth,
     async (user) => {
       if (user) {
-        console.log(user);
         appStore.dispatch(authActions.setSessionStatus(true));
         const userFetchByEmailAction = new UserFetchByEmailAction({
           email: user.email!,

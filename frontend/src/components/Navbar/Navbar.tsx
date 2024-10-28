@@ -19,7 +19,7 @@ const Navbar = () =>
     if (isAuthLoading)
     {
         return (
-            <div className="w-full flex flex-row justify-center items-center">
+            <div className="w-full flex flex-row justify-center items-center my-4 px-4 py-2">
                 <Spinner animation="border" variant="primary" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>

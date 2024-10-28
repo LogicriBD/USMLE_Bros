@@ -1,3 +1,4 @@
+"use client";
 import { validateUserSession } from "@/database/config/auth";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
@@ -9,21 +10,21 @@ const AuthGuard = (
     { children }: { children: React.ReactNode }
 ) =>
 {
+    const dispatch = useAppDispatch();
+    dispatch(loaderActions.authTurnOn());
     const router = useRouter();
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const isAuthLoading = useAppSelector((state) => state.loader.authLoading);
-    const dispatch = useAppDispatch();
 
     useEffect(() =>
     {
-        dispatch(loaderActions.authTurnOn());
         validateUserSession();
-        if (isLoggedIn === false)
+        if (isAuthLoading === false && !isLoggedIn)
         {
-            router.push('/login');
+            router.push("/");
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isLoggedIn]);
+    }, [isAuthLoading]);
 
     if (isAuthLoading)
     {
