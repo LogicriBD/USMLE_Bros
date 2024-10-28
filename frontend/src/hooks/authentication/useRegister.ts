@@ -1,10 +1,10 @@
 import { UserSignUpAction } from "@/actions/user/UserSignUpAction";
 import { RegisterValidator } from "@/validation/authentication/signup";
 import { useState } from "react";
-import { modalActions } from "../context/store/slices/modal-slice";
+import { modalActions } from "../../context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
-import { useAppDispatch } from "../context/store/hooks";
-import { authActions } from "../context/store/slices/auth-slice";
+import { useAppDispatch } from "../../context/store/hooks";
+import { authActions } from "../../context/store/slices/auth-slice";
 
 export const useRegister = () => {
   const dispatch = useAppDispatch();

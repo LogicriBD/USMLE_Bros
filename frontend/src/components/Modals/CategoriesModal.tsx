@@ -1,13 +1,15 @@
 "use client";
 
+import { useAppDispatch } from "@/src/context/store/hooks";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
-import { useState } from "react";
+import { useCategories } from "@/src/hooks/categories/useCategories";
 import { Modal } from "react-bootstrap";
-import { useDispatch } from "react-redux";
 
-const CategoriesModal = () => {
-    const [categories, setCategories] = useState<string[]>(["Anatomy", "Physiology", "Pathology", "Biochemistry"]);
-    const dispatch = useDispatch();
+const CategoriesModal = () =>
+{
+    const dispatch = useAppDispatch();
+    const { categories } = useCategories()
+
     return (
         <Modal
             show={true}
@@ -17,7 +19,7 @@ const CategoriesModal = () => {
             keyboard
             className="rounded-xl h-96 w-96"
         >
-            <Modal.Body className="p-0 rounded-xl">
+            <Modal.Body className="p-0 rounded-xl overflow-y-scroll">
                 <div className="flex flex-row w-full h-full min-h-96">
                     <div className="w-1/4 min-h-full bg-indigo-900"></div>
                     <div className="w-3/4 min-h-full bg-gray-100 flex flex-col">
@@ -31,7 +33,7 @@ const CategoriesModal = () => {
                                         key={index}
                                         className={`text-sky-100 bg-indigo-900 hover:bg-indigo-600 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full md:px-4 px-2 py-2 text-center flex items-center justify-center transition duration-300`}
                                     >
-                                        {category}
+                                        {category.name}
                                     </div>
                                 ))}
                             </div>

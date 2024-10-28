@@ -1,55 +1,19 @@
 "use client";
 import { faCaretDown, faCaretUp, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
+import { useState } from "react";
+import { useAppDispatch } from "@/src/context/store/hooks";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
-import { CategoryData } from "@/database/repository/Category";
 import { categoryActions } from "@/src/context/store/slices/category-slice";
-import { loaderActions } from "@/src/context/store/slices/loader-slice";
-import { logger } from "@/utils/Logger";
-import { CategoryFetchAll } from "@/actions/category/CategoryFetchAll";
+import { useCategories } from "@/src/hooks/categories/useCategories";
 
 const SideBar = () =>
 {
     const [isOpen, setIsOpen] = useState(false);
 
     const dispatch = useAppDispatch();
-    const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
-    const [categories, setCategories] = useState<CategoryData[]>([]);
-    const isSubmit = useAppSelector((state) => state.submit.toggle);
-
-    const fetchCategories = async () =>
-    {
-        try
-        {
-            dispatch(loaderActions.turnOn());
-            const categoryAction = await new CategoryFetchAll();
-            const categories = await categoryAction.execute();
-            setCategories(categories);
-            if (categories.length > 0)
-            {
-                dispatch(categoryActions.setCategories(categories));
-                if (selectedCategory === null)
-                {
-                    dispatch(categoryActions.setSelectedCategory(categories[0]));
-                }
-            }
-        } catch (error)
-        {
-            logger.error(error);
-        } finally
-        {
-            dispatch(loaderActions.turnOff());
-        }
-    }
-
-    useEffect(() =>
-    {
-        fetchCategories();
-    }, [isSubmit]);
-
+    const { categories, selectedCategory } = useCategories();
 
     return (
         <div className="md:w-64 w-full bg-gray-800 text-white md:min-h-screen min-h-0">

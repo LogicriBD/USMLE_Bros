@@ -1,20 +1,18 @@
+"use client";
+import { useAppDispatch } from "@/src/context/store/hooks";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
+import { useCategories } from "@/src/hooks/categories/useCategories";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { logger } from "@/utils/Logger";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 
-type FilterProps = {
-    categories: string[];
-};
-
-const Filter = (props: FilterProps) =>
+const Filter = () =>
 {
-
-    const dispatch = useDispatch();
-    const [searchText, setSearchText] = useState<string>("");
+    const dispatch = useAppDispatch();
+    const [searchText, setSearchText] = useState("");
+    const { categories } = useCategories();
 
     return (
         <div className="flex flex-col w-full">
@@ -40,7 +38,7 @@ const Filter = (props: FilterProps) =>
             </div>
             <div className="flex items-center justify-center">
                 <div className="flex space-x-4 flex-row mt-4">
-                    {props.categories.map((category, index) => (
+                    {categories.map((category, index) => (
                         <div
                             key={index}
                             className={`text-sky-100 bg-indigo-900 hover:bg-indigo-600 transition duration-300 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center
@@ -48,7 +46,7 @@ const Filter = (props: FilterProps) =>
                             ${index === 2 ? 'hidden sm:block md:block' : ''} 
                             ${index === 1 ? 'hidden block sm:block' : ''}`}
                         >
-                            {category}
+                            {category.name}
                         </div>
                     ))}
                     <div

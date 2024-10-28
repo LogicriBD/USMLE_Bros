@@ -1,5 +1,5 @@
 import { Form, Modal } from "react-bootstrap";
-import { useRegister } from "@/src/hooks/useRegister";
+import { useRegister } from "@/src/hooks/authentication/useRegister";
 import { closeModal } from "@/utils/Modal";
 import Error from "../Error";
 import Loading from "@/src/app/loading";
