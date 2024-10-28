@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { validateUserSession } from "@/database/config/auth";
 import { useAppDispatch } from "./store/hooks";
 import { loaderActions } from "./store/slices/loader-slice";
+import { useEffect } from "react";
 
 const AuthStateManager = ({
     children
@@ -11,8 +13,11 @@ const AuthStateManager = ({
 }) =>
 {
     const dispatch = useAppDispatch();
-    dispatch(loaderActions.authTurnOn());
-    validateUserSession();
+    useEffect(() =>
+    {
+        dispatch(loaderActions.authTurnOn());
+        validateUserSession();
+    }, [])
 
     return <>{children}</>;
 }

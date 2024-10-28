@@ -9,6 +9,7 @@ export class UserFetchByEmailAction implements Action<UserData> {
   async execute(): Promise<UserData> {
     try {
       const user: UserData = await User.findUserByEmail(this.payload.email);
+      console.log(user);
       appStore.dispatch(
         userActions.setData({
           id: user.id,

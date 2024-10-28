@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { validateUserSession } from "@/database/config/auth";
 import { useRouter } from "next/navigation";
@@ -11,20 +12,23 @@ const AuthGuard = (
 ) =>
 {
     const dispatch = useAppDispatch();
-    dispatch(loaderActions.authTurnOn());
     const router = useRouter();
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const isAuthLoading = useAppSelector((state) => state.loader.authLoading);
 
     useEffect(() =>
     {
+        dispatch(loaderActions.authTurnOn());
         validateUserSession();
-        if (isAuthLoading === false && !isLoggedIn)
+    }, []);
+
+    useEffect(() =>
+    {
+        if (!isLoggedIn && !isAuthLoading)
         {
-            router.push("/");
+            router.push("/login");
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isAuthLoading]);
+    }, [isLoggedIn, isAuthLoading]);
 
     if (isAuthLoading)
     {

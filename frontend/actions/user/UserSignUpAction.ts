@@ -13,11 +13,11 @@ export class UserSignUpAction implements Action<FormResponse> {
   ) {}
   async execute(): Promise<FormResponse> {
     try {
-      await User.createGeneralUser(this.payload.email, this.payload.name);
       const userCredential: UserCredential = await register(
         this.payload.email,
         this.payload.password
       );
+      await User.createGeneralUser(this.payload.email, this.payload.name);
       if (userCredential && userCredential.user) {
         const idToken = await userCredential.user.getIdToken();
         appStore.dispatch(
