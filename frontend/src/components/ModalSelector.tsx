@@ -10,6 +10,7 @@ import DeleteUser from "./Modals/UsersActions/DeleteUser";
 import CreateCategory from "./Modals/Content/CreateCategory";
 import CreateContent from "./Modals/Content/CreateContent";
 import ErrorModal from "./Modals/ErrorModal";
+import SuccessModal from "./Modals/SuccessModal";
 
 const ModalSelector = () =>
 {
@@ -27,6 +28,7 @@ const ModalSelector = () =>
                 {currentSelectedModal === ModalName.CreateCategory && <CreateCategory />}
                 {currentSelectedModal === ModalName.CreateContent && <CreateContent />}
                 {currentSelectedModal === ModalName.ErrorModal && <ErrorModal />}
+                {currentSelectedModal === ModalName.SuccessModal && <SuccessModal />}
             </React.Fragment>
         </>
     )

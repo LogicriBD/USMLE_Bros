@@ -3,7 +3,6 @@ import { UserLoginAction } from "@/actions/user/UserLoginAction";
 import { useState } from "react";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
-import { closeModal } from "@/utils/Modal";
 import { useAppDispatch } from "../context/store/hooks";
 import { authActions } from "../context/store/slices/auth-slice";
 import { UserFetchByEmailAction } from "@/actions/user/UserFetchByEmailAction";
@@ -56,27 +55,35 @@ export const useLogin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    const validator = LoginValidator(formValues);
-    if (validator.valid) {
-      const loginAction = new UserLoginAction(formValues);
-      const loginResponse = await loginAction.execute();
-      if (!loginResponse.success) {
-        setError(loginResponse.message);
-        return;
-      }
-      dispatch(authActions.setSessionStatus(true));
+    try {
+      const validator = LoginValidator(formValues);
+      if (validator.valid) {
+        const loginAction = new UserLoginAction(formValues);
+        const loginResponse = await loginAction.execute();
+        if (!loginResponse.success) {
+          setError(loginResponse.message);
+          return;
+        }
+        dispatch(authActions.setSessionStatus(true));
 
-      const userAction = new UserFetchByEmailAction({
-        email: appStore.getState().user.email,
-      });
-      await userAction.execute();
-    } else {
-      setErrors({
-        email: validator.errors.email,
-        password: validator.errors.password,
-      });
+        const userAction = new UserFetchByEmailAction({
+          email: appStore.getState().user.email,
+        });
+        await userAction.execute();
+        dispatch(modalActions.updateModalType(ModalName.SuccessModal));
+      } else {
+        setSubmitted(false);
+        setErrors({
+          email: validator.errors.email,
+          password: validator.errors.password,
+        });
+      }
+    } catch (error: any) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(error);
+      }
+      setSubmitted(false);
     }
-    closeModal();
   };
 
   const goToRegister = () => {

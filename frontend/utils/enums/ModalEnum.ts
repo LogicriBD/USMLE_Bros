@@ -1,10 +1,11 @@
-export enum ModalName{
-    Categories = "Categories",
-    Login = "Login",
-    SignUp = "SignUp",
-    SwitchRole = "SwitchRole",
-    DeleteUser = "DeleteUser",
-    CreateCategory = "CreateCategory",
-    CreateContent = "CreateContent",
-    ErrorModal = "ErrorModal",
+export enum ModalName {
+  Categories = "Categories",
+  Login = "Login",
+  SignUp = "SignUp",
+  SwitchRole = "SwitchRole",
+  DeleteUser = "DeleteUser",
+  CreateCategory = "CreateCategory",
+  CreateContent = "CreateContent",
+  ErrorModal = "ErrorModal",
+  SuccessModal = "SuccessModal",
 }
