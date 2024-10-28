@@ -1,23 +1,29 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { appStore } from "./context/store/redux-store";
-import { validateUserSession } from "@/database/config/auth";
+import { getAuthorizationInformation } from "./lib/getAuthorizationInformation";
 
-export function middleware(request: NextRequest) {
-  validateUserSession();
-  const user = appStore.getState().user;
-  const isLoggedIn = appStore.getState().auth.isLoggedIn;
-  const url = request.url;
-  if (url.includes("/admin")) {
-    if (user.role !== "Admin") {
-      return NextResponse.redirect(new URL("/access-denied", request.url));
-    }
-  } else {
-    if (!isLoggedIn) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
+export async function middleware(request: NextRequest) {
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get("access");
+
+  if (!cookie) {
+    return NextResponse.redirect(new URL("/", request.url).toString());
   }
-  return NextResponse.next();
+  const token = cookie.value;
+  if (!token) {
+    return NextResponse.redirect(new URL("/", request.url).toString());
+  }
+  try {
+    const { role } = await getAuthorizationInformation(request.url, token);
+    if (role !== "Admin") {
+      return NextResponse.redirect(new URL("/", request.url).toString());
+    }
+    return NextResponse.next();
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    return NextResponse.redirect(new URL("/", request.url).toString());
+  }
 }
 
 export const config = {

@@ -19,6 +19,7 @@
     "@types/js-cookie": "^3.0.6",
     "bootstrap": "^5.3.3",
     "firebase": "^10.14.1",
+    "firebase-admin": "^12.7.0",
     "http-status-codes": "^2.3.0",
     "jodit": "^4.2.38",
     "jodit-react": "^4.1.2",

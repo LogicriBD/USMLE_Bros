@@ -14,6 +14,7 @@ import { appStore } from "@/src/context/store/redux-store";
 import { authActions } from "@/src/context/store/slices/auth-slice";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { UserFetchByEmailAction } from "@/actions/user/UserFetchByEmailAction";
+import Cookies from "js-cookie";
 
 const auth = getAuth(app);
 
@@ -43,6 +44,8 @@ export const register = async (email: string, password: string) => {
     password,
     createUserWithEmailAndPassword
   );
+  const idToken = await userCredential.user.getIdToken(true);
+  Cookies.set("access", idToken);
   return userCredential;
 };
 
@@ -52,6 +55,8 @@ export const login = async (email: string, password: string) => {
     password,
     signInWithEmailAndPassword
   );
+  const idToken = await userCredential.user.getIdToken(true);
+  Cookies.set("access", idToken);
   return userCredential;
 };
 

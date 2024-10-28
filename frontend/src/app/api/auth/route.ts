@@ -1,0 +1,28 @@
+import { auth, firestore } from "@/database/config/adminApp";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  try {
+    console.log(process.env.NEXT_FIREBASE_PRIVATE_KEY);
+    const token = request.headers.get("Authorization")?.split("Bearer ")[1];
+    if (!token) {
+      return NextResponse.json({ error: "No token provided" }, { status: 401 });
+    }
+    const decodedToken = await auth.verifyIdToken(token);
+    const email = decodedToken.email;
+    const user = firestore.collection("users").where("email", "==", email);
+    const userSnapshot = await user.get();
+    if (userSnapshot.empty) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+    const userDoc = userSnapshot.docs[0];
+    const userData = userDoc.data();
+    return NextResponse.json({
+      role: userData.role,
+      email: userData.email,
+    });
+  } catch (error: any) {
+    console.error(error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
