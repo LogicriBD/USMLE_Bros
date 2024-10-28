@@ -19,8 +19,6 @@ export class UserSignUpAction implements Action<void> {
       );
       if (userCredential && userCredential.user) {
         const idToken = await userCredential.user.getIdToken();
-        localStorage.setItem("idToken", idToken || "");
-        localStorage.setItem("refresh", userCredential.user.refreshToken || "");
         appStore.dispatch(
           authActions.login({
             idToken,

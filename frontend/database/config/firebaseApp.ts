@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { browserLocalPersistence, initializeAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -13,10 +13,13 @@ const firebaseConfig = {
   measurementId: "G-F8D81QNXTG",
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig, {
+  name: "usmle-bros-test",
+});
 
-export const auth = getAuth(app);
+export const auth = initializeAuth(app, {
+  persistence: browserLocalPersistence,
+});
+
 export const firestore = getFirestore(app);
 export const storage = getStorage(app);
-
-export default app;

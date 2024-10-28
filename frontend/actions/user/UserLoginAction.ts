@@ -16,8 +16,6 @@ export class UserLoginAction implements Action<void> {
       );
       if (userCredential && userCredential.user && userCredential.user.email) {
         const idToken = await userCredential.user.getIdToken();
-        localStorage.setItem("idToken", idToken || "");
-        localStorage.setItem("refresh", userCredential.user.refreshToken || "");
         appStore.dispatch(
           authActions.login({
             idToken,

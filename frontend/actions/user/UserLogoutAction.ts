@@ -10,6 +10,7 @@ export class UserLogoutAction implements Action<void> {
     try {
       await logout;
       appStore.dispatch(authActions.logout());
+      localStorage.clear();
     } catch (error: any) {
       throw new ApiError(400, error.message);
     }
