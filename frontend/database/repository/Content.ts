@@ -14,13 +14,14 @@ export type ContentMetaData = {
 
 export type ContentData = {
   id?: string;
-  metedataId?: string;
+  metadataId?: string;
   content: any;
+  isLocked: boolean;
 };
 
 export type Content = {
   metadata: ContentMetaData;
-  content: ContentData;
+  content: ContentData[];
 };
 
 class ContentRepository {
@@ -38,10 +39,15 @@ class ContentRepository {
       );
 
       const metadataId = metadataRef.id;
-      await addDoc(collection(firestore, "content"), {
-        metadataId: metadataId,
-        content: content.content.content,
-      });
+
+      for (const c of content.content) {
+        await addDoc(collection(firestore, "content"), {
+          metadataId: metadataId,
+          content: c.content,
+          isLocked: c.isLocked,
+        });
+      }
+      
     } catch (error: any) {
       throw new ApiError(400, error.message);
     }

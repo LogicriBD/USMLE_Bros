@@ -4,7 +4,8 @@ import { logger } from "@/utils/Logger";
 import { ApiError } from "next/dist/server/api-utils";
 
 export class ContentCreate implements Action<void> {
-  constructor(private payload: { content: Content }) {}
+  constructor(private payload: { content: Content }) { }
+
   async execute(): Promise<void> {
     try {
       await Content.createContent(this.payload.content);

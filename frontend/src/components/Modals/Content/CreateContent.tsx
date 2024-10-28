@@ -9,6 +9,7 @@ import { ContentCreate } from "@/actions/content/ContentCreate";
 import { logger } from "@/utils/Logger";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
+import { splitContentByH1Sections } from "@/utils/helpers/ContentParser";
 
 const CreateContent = () => {
 
@@ -32,8 +33,8 @@ const CreateContent = () => {
     };
 
     const handleSubmit = async () => {
-        try{
-            if(title === ""){
+        try {
+            if (title === "") {
                 setError("Title is required");
                 return;
             }
@@ -42,31 +43,34 @@ const CreateContent = () => {
 
             setError(undefined);
 
-            if(selectedCategory){
-                const metadata: ContentMetaData ={
+            if (selectedCategory) {
+                const metadata: ContentMetaData = {
                     title: title,
                     categoryId: selectedCategory.id,
                     userName: user.name,
                     createdAt: new Date(),
                     userId: user.id
-                } 
-
-                const contentdata: ContentData = {
-                    content: content
                 }
 
-                const C:Content = {
+                const contentSections = splitContentByH1Sections(content);
+
+                const contentdata: ContentData[] = contentSections.map((section) => ({
+                    content: section,
+                    isLocked: false,
+                }));
+
+                const C: Content = {
                     metadata: metadata,
                     content: contentdata
                 }
 
-                const contentAction = new ContentCreate({content: C});
+                const contentAction = new ContentCreate({ content: C });
                 await contentAction.execute();
                 dispatch(submitActions.toggleSubmit());
             }
-        }catch(error){
+        } catch (error) {
             logger.error(error);
-        }finally{
+        } finally {
             dispatch(loaderActions.turnOff());
             closeModal();
         }
@@ -102,11 +106,11 @@ const CreateContent = () => {
                 </div>
             </Modal.Body>
             <Modal.Footer
-            className="p-2">
-                <button 
+                className="p-2">
+                <button
                     onClick={handleClose}
                     className="p-2 rounded-md font-semibold text-gray-800 bg-gray-300 hover:bg-gray-400 transition duration-300">Close</button>
-                <button 
+                <button
                     onClick={handleSubmit}
                     className="p-2 rounded-md font-semibold text-white bg-gray-600 hover:bg-gray-900 transition duration-300">Submit</button>
             </Modal.Footer>

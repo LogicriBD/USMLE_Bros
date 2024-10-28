@@ -58,14 +58,12 @@ const Uploader = () => {
                                     <p className="text-sm font-semibold">{formatFirebaseDate(item.createdAt)}</p>
                                 </div>
                                 <div className="flex justify-between">
-                                    <h3 className="text-sm font-normal">{item.userName}</h3>
+                                    <h3 className="text-sm font-normal">Author: {item.userName}</h3>
                                     <div className="mt-2">
                                         <FontAwesomeIcon icon={faEdit} className="mr-2" /> 
                                         <FontAwesomeIcon icon={faTrash} className="mr-2" /> 
                                     </div>
                                 </div>
-                                
-                                
                             </div>
                         ))
                     ) : (
