@@ -45,6 +45,11 @@ export const useLogin = () => {
     });
     if (!validator.valid) {
       setErrors(validator.errors);
+    } else {
+      setErrors({
+        email: "",
+        password: "",
+      });
     }
   };
 

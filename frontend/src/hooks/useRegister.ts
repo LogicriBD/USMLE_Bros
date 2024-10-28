@@ -48,6 +48,13 @@ export const useRegister = () => {
     });
     if (!validator.valid) {
       setErrors(validator.errors);
+    } else {
+      setErrors({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
     }
   };
 
