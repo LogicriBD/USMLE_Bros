@@ -6,12 +6,26 @@ import { useAppSelector } from "@/src/context/store/hooks";
 import { Roles } from "@/utils/enums/Roles";
 import AdminNavbarItems from "../AdminNavbar/AdminNavbarItems";
 import { usePathname, useRouter } from "next/navigation";
-const Navbar = () => {
+import { Spinner } from "react-bootstrap";
+const Navbar = () =>
+{
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+    const isAuthLoading = useAppSelector((state) => state.loader.authLoading);
     const role = useAppSelector((state) => state.user.role);
     const pathname = usePathname();
     const router = useRouter();
+
+    if (isAuthLoading)
+    {
+        return (
+            <div className="w-full flex flex-row justify-center items-center">
+                <Spinner animation="border" variant="primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        )
+    }
 
     return (
         <nav className="bg-white p-3 sticky top-0 z-40 shadow-md">

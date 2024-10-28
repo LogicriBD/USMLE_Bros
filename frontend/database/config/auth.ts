@@ -10,6 +10,10 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { app } from "./firebaseApp";
+import { appStore } from "@/src/context/store/redux-store";
+import { authActions } from "@/src/context/store/slices/auth-slice";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { UserFetchByEmailAction } from "@/actions/user/UserFetchByEmailAction";
 
 const auth = getAuth(app);
 
@@ -61,7 +65,7 @@ export const logout = async () => {
 };
 
 export const getCurrentUser = () => {
-  return onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, (user) => {
     if (user) {
       return user;
     }
@@ -69,11 +73,28 @@ export const getCurrentUser = () => {
   });
 };
 
-export const isUserLoggedIn = () => {
-  return onAuthStateChanged(auth, (user) => {
-    if (user) {
-      return true;
+export const validateUserSession = () => {
+  onAuthStateChanged(
+    auth,
+    async (user) => {
+      if (user) {
+        console.log(user);
+        appStore.dispatch(authActions.setSessionStatus(true));
+        const userFetchByEmailAction = new UserFetchByEmailAction({
+          email: user.email!,
+        });
+        await userFetchByEmailAction.execute();
+      } else {
+        appStore.dispatch(authActions.setSessionStatus(false));
+        appStore.dispatch(authActions.logout());
+      }
+      appStore.dispatch(loaderActions.authTurnOff());
+    },
+    (error) => {
+      console.error(error);
+      appStore.dispatch(authActions.setSessionStatus(false));
+      appStore.dispatch(authActions.logout());
+      appStore.dispatch(loaderActions.authTurnOff());
     }
-    return false;
-  });
+  );
 };

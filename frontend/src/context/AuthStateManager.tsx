@@ -1,10 +1,9 @@
 'use client'
 
-import { getCurrentUser, isUserLoggedIn } from "@/database/config/auth";
-import { authActions } from "./store/slices/auth-slice";
-import { useAppDispatch } from "./store/hooks";
-import { useEffect, useState } from "react";
-import Loading from "../app/loading";
+import { validateUserSession } from "@/database/config/auth";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { useEffect } from "react";
+import { loaderActions } from "./store/slices/loader-slice";
 
 const AuthStateManager = ({
     children
@@ -12,30 +11,14 @@ const AuthStateManager = ({
     children: React.ReactNode
 }) =>
 {
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const dispatch = useAppDispatch();
 
-    const [loading, setLoading] = useState(true);
     useEffect(() =>
     {
-        setLoading(true);
-        const isUserActive = isUserLoggedIn();
-        console.log(isUserActive, getCurrentUser());
-        if (!isUserActive)
-        {
-            dispatch(authActions.logout());
-        } else
-        {
-            dispatch(authActions.setSessionStatus(true));
-        }
-        setLoading(false);
-    }, [dispatch]);
-
-    if (loading)
-    {
-        return (
-            <Loading />
-        )
-    }
+        dispatch(loaderActions.authTurnOn());
+        validateUserSession();
+    }, [isLoggedIn]);
 
     return <>{children}</>;
 }

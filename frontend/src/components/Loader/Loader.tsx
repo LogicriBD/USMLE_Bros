@@ -2,13 +2,14 @@
 import { useAppSelector } from "@/src/context/store/hooks";
 import Image from "next/image";
 
-const Loader = () => {
+const Loader = () =>
+{
 
     const isLoading = useAppSelector((state) => state.loader.isLoading);
 
     return isLoading ? (
-        <div 
-            style={{zIndex: "1100"}}
+        <div
+            style={{ zIndex: "1100" }}
             className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
             <Image
                 src="/logos/icon.png"

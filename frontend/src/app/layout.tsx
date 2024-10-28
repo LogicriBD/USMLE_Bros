@@ -35,16 +35,16 @@ export default function RootLayout({
         className={`${roboto.className} antialiased`}
       >
         <StoreProvider>
-          <Loader />
           <AuthStateManager>
+            <Loader />
             <Navbar />
+            <main className="min-h-screen bg-gray-100">
+              {children}
+            </main>
+            <Suspense fallback={<Loader />}>
+              <ModalSelector />
+            </Suspense>
           </AuthStateManager>
-          <main className="min-h-screen bg-gray-100">
-            {children}
-          </main>
-          <Suspense fallback={<Loader />}>
-            <ModalSelector />
-          </Suspense>
         </StoreProvider>
         <Footer />
       </body>

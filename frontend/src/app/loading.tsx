@@ -1,8 +1,20 @@
+import Image from "next/image";
+
 const Loading = () =>
 {
     return (
         <div className="w-screen h-screen flex justify-center items-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+            <div
+                style={{ zIndex: "1100" }}
+                className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+                <Image
+                    src="/logos/icon.png"
+                    alt="Loading"
+                    width={100}
+                    height={100}
+                    className="animate-pulse"
+                />
+            </div>
         </div>
     );
 }
