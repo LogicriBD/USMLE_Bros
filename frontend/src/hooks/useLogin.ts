@@ -7,6 +7,7 @@ import { useAppDispatch } from "../context/store/hooks";
 import { authActions } from "../context/store/slices/auth-slice";
 import { UserFetchByEmailAction } from "@/actions/user/UserFetchByEmailAction";
 import { appStore } from "../context/store/redux-store";
+import { logger } from "@/utils/Logger";
 
 export const useLogin = () => {
   const dispatch = useAppDispatch();
@@ -80,9 +81,7 @@ export const useLogin = () => {
         });
       }
     } catch (error: any) {
-      if (process.env.NODE_ENV === "development") {
-        console.error(error);
-      }
+      logger.error(error);
       setSubmitted(false);
     }
   };

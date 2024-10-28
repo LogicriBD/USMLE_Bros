@@ -8,35 +8,44 @@ import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { categoryActions } from "@/src/context/store/slices/category-slice";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { withAdminPriviledges } from "@/src/hoc/withAdminPrivileges";
+import { logger } from "@/utils/Logger";
 import { useEffect, useState } from "react";
 
-const UploadPage = () => {
+const UploadPage = () =>
+{
 
     const [categories, setCategories] = useState<CategoryData[]>([]);
     const dispatch = useAppDispatch();
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
     const isSubmit = useAppSelector((state) => state.submit.toggle);
 
-    const fetchCategories = async () => {
-        try {
+    const fetchCategories = async () =>
+    {
+        try
+        {
             dispatch(loaderActions.turnOn());
             const categoryAction = await new CategoryFetchAll();
             const categories = await categoryAction.execute();
             setCategories(categories);
-            if (categories.length > 0) {
+            if (categories.length > 0)
+            {
                 dispatch(categoryActions.setCategories(categories));
-                if (selectedCategory === null) {
+                if (selectedCategory === null)
+                {
                     dispatch(categoryActions.setSelectedCategory(categories[0]));
                 }
             }
-        } catch (error) {
-            console.error(error);
-        } finally {
+        } catch (error)
+        {
+            logger.error(error);
+        } finally
+        {
             dispatch(loaderActions.turnOff());
         }
     }
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         fetchCategories();
     }, [isSubmit]);
 

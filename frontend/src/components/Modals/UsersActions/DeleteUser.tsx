@@ -2,22 +2,28 @@ import { UserDelete } from "@/actions/user/UserDelete";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
+import { logger } from "@/utils/Logger";
 import { closeModal } from "@/utils/Modal";
 import { Button, Modal } from "react-bootstrap";
 
-const DeleteUser = () => {
+const DeleteUser = () =>
+{
     const user = useAppSelector((state) => state.modal.data);
     const dispatch = useAppDispatch();
 
-    const deleteUser = async () => {
-        try{
+    const deleteUser = async () =>
+    {
+        try
+        {
             dispatch(loaderActions.turnOn());
-            const userDeleteAction = new UserDelete({id: user.id});
+            const userDeleteAction = new UserDelete({ id: user.id });
             await userDeleteAction.execute();
             dispatch(submitActions.toggleSubmit());
-        }catch(error:any){
-            console.error(error);
-        }finally{
+        } catch (error: any)
+        {
+            logger.error(error);
+        } finally
+        {
             dispatch(loaderActions.turnOff());
             closeModal();
         }

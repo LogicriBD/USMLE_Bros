@@ -4,6 +4,7 @@ import { authActions } from "@/src/context/store/slices/auth-slice";
 import { userActions } from "@/src/context/store/slices/user-slice";
 import { Action, FormResponse } from "@/types/Action";
 import { FirebaseErrors } from "@/types/FirebaseErrors";
+import { logger } from "@/utils/Logger";
 import { UserCredential } from "firebase/auth";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -32,9 +33,7 @@ export class UserLoginAction implements Action<FormResponse> {
         throw new ApiError(400, "Internal Server Error");
       }
     } catch (error: any) {
-      if (process.env.NODE_ENV === "development") {
-        console.error(error.message);
-      }
+      logger.error(error.message);
       if (error.message === FirebaseErrors.InvalidCredentials) {
         return {
           success: false,

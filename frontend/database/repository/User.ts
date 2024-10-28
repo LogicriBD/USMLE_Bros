@@ -1,7 +1,18 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { Roles } from "@/utils/enums/Roles";
 import { ApiError } from "next/dist/server/api-utils";
+import { logger } from "@/utils/Logger";
 
 export type UserData = {
   id: string;
@@ -28,19 +39,22 @@ class UserImpl {
 
   async findUserByEmail(email: string): Promise<UserData> {
     try {
-      const q = query(collection(firestore, "users"), where("email", "==", email));
-  
+      const q = query(
+        collection(firestore, "users"),
+        where("email", "==", email)
+      );
+
       const querySnapshot = await getDocs(q);
-  
+
       if (querySnapshot.empty) {
         throw new ApiError(404, `User not found for email: ${email}`);
       }
-  
+
       const userDoc = querySnapshot.docs[0];
-      
+
       return { id: userDoc.id, ...userDoc.data() } as UserData;
     } catch (error: any) {
-      console.error(error);
+      logger.error(error);
       throw new ApiError(400, error.message || "Failed to fetch user by email");
     }
   }
@@ -62,9 +76,9 @@ class UserImpl {
     try {
       const userRef = doc(firestore, "users", id);
       await deleteDoc(userRef);
-      console.log("User deleted successfully");
+      logger.log("User deleted successfully");
     } catch (error: any) {
-      console.error("Error deleting user:", error);
+      logger.error("Error deleting user:", error);
       throw new ApiError(400, error.message);
     }
   }
@@ -76,7 +90,7 @@ class UserImpl {
         role: role,
       });
     } catch (error: any) {
-      console.error("Error updating user role:", error);
+      logger.error("Error updating user role:", error);
       throw new ApiError(400, error.message);
     }
   }

@@ -3,28 +3,35 @@ import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
 import { withAdminPriviledges } from "@/src/hoc/withAdminPrivileges";
+import { logger } from "@/utils/Logger";
 import { closeModal } from "@/utils/Modal";
 import { Roles } from "@/utils/enums/Roles";
 import { Button, Modal } from "react-bootstrap"
 
-const SwitchRoleModal = () => {
+const SwitchRoleModal = () =>
+{
 
     const user = useAppSelector((state) => state.modal.data);
     const dispatch = useAppDispatch();
-    const newRole = () => {
+    const newRole = () =>
+    {
         return user.role === Roles.Admin ? Roles.User : Roles.Admin;
     }
 
-    const changeRole = async() => {
-        try{
+    const changeRole = async () =>
+    {
+        try
+        {
             dispatch(loaderActions.turnOn());
             const role = newRole();
-            const userAction = new UserChangeRole({id:user.id, role:role});
+            const userAction = new UserChangeRole({ id: user.id, role: role });
             await userAction.execute();
             dispatch(submitActions.toggleSubmit());
-        }catch(error: any){
-            console.error(error);
-        }finally{
+        } catch (error: any)
+        {
+            logger.error(error);
+        } finally
+        {
             dispatch(loaderActions.turnOff());
             closeModal();
         }
@@ -48,7 +55,7 @@ const SwitchRoleModal = () => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={() => closeModal()}>Close</Button>
-                <button 
+                <button
                     onClick={changeRole}
                     className="bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-700 transition duration-300"
                 >Switch</button>

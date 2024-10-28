@@ -4,27 +4,33 @@ import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
 import { withAdminPriviledges } from "@/src/hoc/withAdminPrivileges";
+import { logger } from "@/utils/Logger";
 import { closeModal } from "@/utils/Modal";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const CreateCategory = () => {
+const CreateCategory = () =>
+{
 
     const dispatch = useAppDispatch();
     const [name, setName] = useState<string>("");
 
-    const handleSubmit = async () => {
-        try{
+    const handleSubmit = async () =>
+    {
+        try
+        {
             dispatch(loaderActions.turnOn());
-            const categoryAction = new CategoryCreate({name:name});
+            const categoryAction = new CategoryCreate({ name: name });
             await categoryAction.execute();
             dispatch(submitActions.toggleSubmit());
-        }catch(error){
-            console.error(error);
-            dispatch(modalActions.addModal({type:ModalName.ErrorModal, data:error}));
+        } catch (error)
+        {
+            logger.error(error);
+            dispatch(modalActions.addModal({ type: ModalName.ErrorModal, data: error }));
         }
-        finally{
+        finally
+        {
             dispatch(loaderActions.turnOff());
             closeModal();
         }

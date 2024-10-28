@@ -1,9 +1,10 @@
 import { auth, firestore } from "@/database/config/adminApp";
+import { logger } from "@/utils/Logger";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    console.log(process.env.NEXT_FIREBASE_PRIVATE_KEY);
+    logger.log(process.env.NEXT_FIREBASE_PRIVATE_KEY);
     const token = request.headers.get("Authorization")?.split("Bearer ")[1];
     if (!token) {
       return NextResponse.json({ error: "No token provided" }, { status: 401 });
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
       email: userData.email,
     });
   } catch (error: any) {
-    console.error(error);
+    logger.error(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

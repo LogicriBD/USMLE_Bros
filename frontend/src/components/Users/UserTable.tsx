@@ -5,30 +5,37 @@ import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
+import { logger } from "@/utils/Logger";
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 
-const UserTable = () => {
+const UserTable = () =>
+{
 
     const [users, setUsers] = useState<UserData[]>([]);
     const dispatch = useAppDispatch();
     const isSubmit = useAppSelector((state) => state.submit.toggle);
 
-    const fetchUsers = async () => {
-        try {
+    const fetchUsers = async () =>
+    {
+        try
+        {
             dispatch(loaderActions.turnOn());
             const usersAction = new UserFetchAll();
             const users = await usersAction.execute();
             setUsers(users);
-        } catch (error: any) {
-            console.error(error);
-            dispatch(modalActions.addModal({type:ModalName.ErrorModal, data:error}));
-        } finally {
+        } catch (error: any)
+        {
+            logger.error(error);
+            dispatch(modalActions.addModal({ type: ModalName.ErrorModal, data: error }));
+        } finally
+        {
             dispatch(loaderActions.turnOff());
         }
     }
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         fetchUsers();
     }, [isSubmit]);
 
@@ -52,7 +59,7 @@ const UserTable = () => {
                 </thead>
                 <tbody>
                     {users && users.map((user, index) => (
-                        <tr>
+                        <tr key={index}>
                             <td className="md:p-2">{index + 1}</td>
                             <td className="md:p-2">{user.email}</td>
                             <td className="md:p-2">{user.name}</td>

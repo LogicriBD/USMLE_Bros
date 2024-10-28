@@ -1,5 +1,6 @@
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
+import { logger } from "@/utils/Logger";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
@@ -9,7 +10,8 @@ type FilterProps = {
     categories: string[];
 };
 
-const Filter = (props: FilterProps) => {
+const Filter = (props: FilterProps) =>
+{
 
     const dispatch = useDispatch();
     const [searchText, setSearchText] = useState<string>("");
@@ -26,12 +28,12 @@ const Filter = (props: FilterProps) => {
                         placeholder="Search"
                     />
                     {searchText !== "" ? (
-                        <FontAwesomeIcon 
-                            icon={faSearch} 
-                            className="absolute right-3 top-3 text-gray-900 cursor-pointer" 
-                            onClick={() => console.log(searchText)}
+                        <FontAwesomeIcon
+                            icon={faSearch}
+                            className="absolute right-3 top-3 text-gray-900 cursor-pointer"
+                            onClick={() => logger.log(searchText)}
                         />
-                    ):(
+                    ) : (
                         <FontAwesomeIcon icon={faSearch} className="absolute right-3 top-3 text-gray-400" />
                     )}
                 </div>
@@ -44,12 +46,12 @@ const Filter = (props: FilterProps) => {
                             className={`text-sky-100 bg-indigo-900 hover:bg-indigo-600 transition duration-300 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center
                             ${index === 3 ? 'hidden md:block' : ''} 
                             ${index === 2 ? 'hidden sm:block md:block' : ''} 
-                            ${index === 1 ? 'hidden block sm:block' : ''}`} 
+                            ${index === 1 ? 'hidden block sm:block' : ''}`}
                         >
                             {category}
                         </div>
                     ))}
-                    <div 
+                    <div
                         onClick={() => dispatch(modalActions.updateModalType(ModalName.Categories))}
                         className="text-sky-100 bg-indigo-900 focus:bg-sky-300 hover:bg-indigo-600 transition duration-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center">
                         All

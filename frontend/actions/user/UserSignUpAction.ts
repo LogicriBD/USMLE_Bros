@@ -4,6 +4,7 @@ import { appStore } from "@/src/context/store/redux-store";
 import { authActions } from "@/src/context/store/slices/auth-slice";
 import { Action, FormResponse } from "@/types/Action";
 import { FirebaseErrors } from "@/types/FirebaseErrors";
+import { logger } from "@/utils/Logger";
 import { UserCredential } from "firebase/auth";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -34,9 +35,8 @@ export class UserSignUpAction implements Action<FormResponse> {
         throw new ApiError(400, "User not found");
       }
     } catch (error: any) {
-      if (process.env.NODE_ENV === "development") {
-        console.error(error);
-      }
+      logger.error(error);
+
       if (error.message === FirebaseErrors.EmailAlreadyInUse) {
         return {
           success: false,

@@ -1,5 +1,6 @@
 'use client' // Error components must be Client Components
 
+import { logger } from '@/utils/Logger'
 import { useEffect } from 'react'
 
 export default function Error({
@@ -12,7 +13,7 @@ export default function Error({
 {
     useEffect(() =>
     {
-        console.error(error)
+        logger.error(error)
     }, [error])
 
     return (
