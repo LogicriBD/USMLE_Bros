@@ -42,11 +42,13 @@ export const useRegister = () => {
         [name]: value,
       });
     }
-
-    setErrors({
-      ...errors,
-      [name]: "",
+    const validator = RegisterValidator({
+      ...formValues,
+      [name]: value,
     });
+    if (!validator.valid) {
+      setErrors(validator.errors);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

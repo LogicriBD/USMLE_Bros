@@ -39,11 +39,13 @@ export const useLogin = () => {
         [name]: value,
       });
     }
-
-    setErrors({
-      ...errors,
-      [name]: "",
+    const validator = LoginValidator({
+      ...formValues,
+      [name]: value,
     });
+    if (!validator.valid) {
+      setErrors(validator.errors);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

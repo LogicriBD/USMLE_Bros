@@ -3,7 +3,8 @@ import { ZodError, ZodSchema } from "zod";
 export const validate = <T extends object>(
   schema: ZodSchema,
   hasMatchingFields: boolean = false,
-  matchingFields: string[] = []
+  matchingFields: string[] = [],
+  customMessage?: any
 ): ((data: T) => { valid: boolean; errors: T }) => {
   return (data: T) => {
     const errorsObject = createEmptyErrorsObject(data);
@@ -12,7 +13,16 @@ export const validate = <T extends object>(
       if (hasMatchingFields) {
         const matchingFieldsError = handleMatchingFields(data, matchingFields);
         if (matchingFieldsError) {
-          errorsObject[matchingFieldsError.field] = matchingFieldsError.message;
+          if (customMessage) {
+            errorsObject[matchingFieldsError.field] = customMessage[
+              matchingFieldsError.field
+            ]
+              ? customMessage[matchingFieldsError.field]
+              : matchingFieldsError.message;
+          } else {
+            errorsObject[matchingFieldsError.field] =
+              matchingFieldsError.message;
+          }
           return {
             valid: false,
             errors: errorsObject as T,
@@ -28,7 +38,8 @@ export const validate = <T extends object>(
         error.errors,
         hasMatchingFields,
         data,
-        matchingFields
+        matchingFields,
+        customMessage
       );
       return {
         valid: false,
@@ -45,10 +56,22 @@ const createEmptyErrorsObject = <T extends object>(data: T) => {
   }, {} as Record<string, string>);
 };
 
-const handleMatchingFields = (data: any, matchingFields: string[]) => {
+const handleMatchingFields = (
+  data: any,
+  matchingFields: string[],
+  customMessage?: any
+) => {
   const initialData = data[matchingFields[0]];
   for (let i = 1; i < matchingFields.length; i++) {
     if (data[matchingFields[i]] !== initialData) {
+      if (customMessage) {
+        return {
+          field: matchingFields[i],
+          message: customMessage[matchingFields[i]]
+            ? customMessage[matchingFields[i]]
+            : `${matchingFields[i]} does not match ${matchingFields[0]}`,
+        };
+      }
       return {
         field: matchingFields[i],
         message: `${matchingFields[i]} does not match ${matchingFields[0]}`,
@@ -62,7 +85,8 @@ const parseZodErrors = (
   zodErrors: ZodError[],
   hasMatchingFields: boolean,
   data: any,
-  matchingFields: string[]
+  matchingFields: string[],
+  customMessage?: any
 ) => {
   const parsedErrors = zodErrors.map((error: any) => ({
     field: error.path.join("."),
@@ -70,7 +94,11 @@ const parseZodErrors = (
   }));
 
   if (hasMatchingFields) {
-    const matchingFieldsError = handleMatchingFields(data, matchingFields);
+    const matchingFieldsError = handleMatchingFields(
+      data,
+      matchingFields,
+      customMessage
+    );
     if (matchingFieldsError) {
       parsedErrors.push(matchingFieldsError);
     }
