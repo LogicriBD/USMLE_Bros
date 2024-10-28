@@ -9,3 +9,12 @@ export function splitContentByH1Sections(content: any): any[] {
 
     return sections;
 }
+export function extractFirstH1(content: string): string | null {
+    const match = content.match(/<h1>(.*?)<\/h1>/);
+    if (match) {
+        const h1Content = match[1];
+        const strippedContent = h1Content.replace(/<[^>]*>/g, ''); 
+        return strippedContent.trim(); 
+    }
+    return null;
+}

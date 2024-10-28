@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { ApiError } from "next/dist/server/api-utils";
 import { logger } from "@/utils/Logger";
@@ -47,7 +47,7 @@ class ContentRepository {
           isLocked: c.isLocked,
         });
       }
-      
+
     } catch (error: any) {
       throw new ApiError(400, error.message);
     }
@@ -86,7 +86,25 @@ class ContentRepository {
     }
   }
 
-  async fetchContentById(metadataId: string) {
+  async lockContentById(contentId: string) {
+    try {
+      const contentRef = doc(firestore, "content", contentId);
+      const contentDoc = await getDoc(contentRef);
+
+      if (!contentDoc.exists()) {
+        throw new ApiError(404, `Content not found for id: ${contentId}`);
+      }
+
+      const currentLockStatus = contentDoc.data()?.isLocked;
+      await updateDoc(contentRef, {
+        isLocked: !currentLockStatus,
+      });
+    } catch (error: any) {
+      throw new ApiError(400, error.message);
+    }
+  }
+
+  async fetchContentsById(metadataId: string) {
     try {
       const q = query(
         collection(firestore, "content"),
@@ -101,9 +119,12 @@ class ContentRepository {
         );
       }
 
-      const contentDoc = querySnapshot.docs[0];
+      const contentDocs = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as ContentData[];
 
-      return { id: contentDoc.id, ...contentDoc.data() } as ContentData;
+      return contentDocs;
     } catch (error: any) {
       logger.error(error);
       throw new ApiError(400, error.message);

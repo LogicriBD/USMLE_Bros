@@ -7,7 +7,7 @@ import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 import { logger } from "@/utils/Logger";
-import { faEdit, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faLock, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 
@@ -22,9 +22,9 @@ const Uploader = () => {
 
     const fetchContents = async () => {
         try {
-            if(selectedCategory){
+            if (selectedCategory) {
                 dispatch(loaderActions.turnOn());
-                const contentAction = new ContentFetchByCategory({categoryId: selectedCategory.id});
+                const contentAction = new ContentFetchByCategory({ categoryId: selectedCategory.id });
                 const contents = await contentAction.execute();
                 setContentMetadata(contents);
             }
@@ -52,16 +52,26 @@ const Uploader = () => {
                 <div className="w-full">
                     {contentMetadata.length > 0 ? (
                         contentMetadata.map((item, index) => (
-                            <div key={index} className="my-2 flex flex-col bg-gray-200 text-sky-800 rounded-lg px-3 py-2 shadow-md hover:bg-gray-300 transition duration-200 ease-in-out cursor-pointer">
-                                <div className="flex justify-between">
-                                    <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                            <div key={index} className="my-2 flex flex-col bg-gray-200 text-sky-800 border-1 border-gray-600 rounded-lg px-3 py-2 shadow-md">
+                                <div className="flex md:justify-between flex-col md:flex-row ">
+                                    <h3 className="md:text-lg text-sm font-semibold mb-2">{item.title}</h3>
+                                    <span 
+                                        onClick={() => { dispatch(modalActions.addModal({
+                                            type:ModalName.ContentLock, 
+                                            data:item.id
+                                        }))}}
+                                        className="p-2 text-gray-200 bg-gray-700 rounded-md text-sm font-semibold mb-2 md:mb-0 hover:bg-gray-500 transition duration-300 cursor-pointer">
+                                        Lock this content <FontAwesomeIcon icon={faLock} className="pl-2" />
+                                    </span>
                                     <p className="text-sm font-semibold">{formatFirebaseDate(item.createdAt)}</p>
                                 </div>
-                                <div className="flex justify-between">
+                                <div className="flex md:justify-between flex-col md:flex-row">
                                     <h3 className="text-sm font-normal">Author: {item.userName}</h3>
-                                    <div className="mt-2">
-                                        <FontAwesomeIcon icon={faEdit} className="mr-2" /> 
-                                        <FontAwesomeIcon icon={faTrash} className="mr-2" /> 
+                                    <div className="md:pt-2 flex justify-end space-x-4">
+                                        <FontAwesomeIcon icon={faEye} className="pr-2 cursor-pointer" title="View" />
+                                        <FontAwesomeIcon icon={faEdit} className="pr-2 cursor-pointer" title="Edit" />
+                                        <FontAwesomeIcon icon={faTrash} className="pr-2 cursor-pointer" title="Delete" />
+
                                     </div>
                                 </div>
                             </div>
