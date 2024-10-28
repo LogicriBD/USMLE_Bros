@@ -6,6 +6,10 @@ import { ModalName } from "@/utils/enums/ModalEnum";
 import { useAppDispatch } from "../../context/store/hooks";
 import { authActions } from "../../context/store/slices/auth-slice";
 
+/**
+ *
+ * @returns formValues, errors, submitted, handleChange, handleSubmit, goToLogin, error where formValues refers to the values of the form, errors refers to the errors in the form, submitted refers to the status of the form submission, handleChange is the function that handles the change in the form, handleSubmit is the function that handles the submission of the form, goToLogin is the function that navigates to the login modal, error is the error message that is displayed when the form submission fails
+ */
 export const useRegister = () => {
   const dispatch = useAppDispatch();
 

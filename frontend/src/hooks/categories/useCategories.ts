@@ -7,6 +7,11 @@ import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { logger } from "@/utils/Logger";
 import { useEffect, useState } from "react";
 
+/**
+ *
+ * @param dependency Infers Rendering Logic, if empty the categories are only fetched when the component is mounted, otherwise it is fetched every single time the contents of the dependency array changes
+ * @returns categories and selectedCategory, where categories refer to all the categories and selectedCategory refers to the category that is currently selected
+ */
 export const useCategories = (dependency: any[] = []) => {
   const dispatch = useAppDispatch();
   const selectedCategory = useAppSelector(

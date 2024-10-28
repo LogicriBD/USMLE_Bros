@@ -12,7 +12,7 @@ const Filter = () =>
 {
     const dispatch = useAppDispatch();
     const [searchText, setSearchText] = useState("");
-    const { categories } = useCategories();
+    const { categories, selectedCategory } = useCategories();
 
     return (
         <div className="flex flex-col w-full">
@@ -41,7 +41,7 @@ const Filter = () =>
                     {categories.map((category, index) => (
                         <div
                             key={index}
-                            className={`text-sky-100 bg-indigo-900 hover:bg-indigo-600 transition duration-300 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center
+                            className={`${selectedCategory?.id === category.id ? "text-indigo-900 bg-gray-200" : "text-sky-100 bg-indigo-900"} hover:bg-indigo-600 transition duration-300 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full px-4 py-2 text-center
                             ${index === 3 ? 'hidden md:block' : ''} 
                             ${index === 2 ? 'hidden sm:block md:block' : ''} 
                             ${index === 1 ? 'hidden block sm:block' : ''}`}

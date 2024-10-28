@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 import { UserFetchAll } from "@/actions/user/UserFetchAll";
 import { UserData } from "@/database/repository/User";
