@@ -21,6 +21,8 @@ export const useLogin = () => {
     password: "",
   });
 
+  const [error, setError] = useState<string | undefined>("");
+
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +52,11 @@ export const useLogin = () => {
     const validator = LoginValidator(formValues);
     if (validator.valid) {
       const loginAction = new UserLoginAction(formValues);
-      await loginAction.execute();
+      const loginResponse = await loginAction.execute();
+      if (!loginResponse.success) {
+        setError(loginResponse.message);
+        return;
+      }
       dispatch(authActions.setSessionStatus(true));
 
       const userAction = new UserFetchByEmailAction({
@@ -77,5 +83,6 @@ export const useLogin = () => {
     handleChange,
     handleSubmit,
     goToRegister,
+    error,
   };
 };

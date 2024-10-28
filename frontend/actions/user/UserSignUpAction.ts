@@ -2,15 +2,15 @@ import { register } from "@/database/config/auth";
 import { User } from "@/database/repository/User";
 import { appStore } from "@/src/context/store/redux-store";
 import { authActions } from "@/src/context/store/slices/auth-slice";
-import { Action } from "@/types/Action";
+import { Action, FormResponse } from "@/types/Action";
 import { UserCredential } from "firebase/auth";
 import { ApiError } from "next/dist/server/api-utils";
 
-export class UserSignUpAction implements Action<void> {
+export class UserSignUpAction implements Action<FormResponse> {
   constructor(
     private payload: { email: string; password: string; name: string }
   ) {}
-  async execute(): Promise<void> {
+  async execute(): Promise<FormResponse> {
     try {
       await User.createGeneralUser(this.payload.email, this.payload.name);
       const userCredential: UserCredential = await register(
@@ -26,11 +26,20 @@ export class UserSignUpAction implements Action<void> {
             isLoggedIn: true,
           })
         );
+        return {
+          success: true,
+        };
       } else {
         throw new ApiError(400, "User not found");
       }
     } catch (error: any) {
-      throw new ApiError(400, error.message);
+      if (process.env.NODE_ENV === "development") {
+        console.error(error);
+      }
+      return {
+        success: false,
+        message: "Could not register user, something went wrong",
+      };
     }
   }
 }

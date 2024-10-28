@@ -1,11 +1,12 @@
 import { Form, Modal } from "react-bootstrap";
 import { useRegister } from "@/src/hooks/useRegister";
 import { closeModal } from "@/utils/Modal";
+import Error from "../Error";
 
 const SignupModal = () =>
 {
 
-    const { formValues, errors, submitted, handleChange, handleSubmit, goToLogin } = useRegister();
+    const { formValues, error, errors, submitted, handleChange, handleSubmit, goToLogin } = useRegister();
     return (
         <>
             <Modal
@@ -24,6 +25,7 @@ const SignupModal = () =>
                                 <h1 className="text-black font-semibold text-2xl">Sign Up</h1>
                             </div>
                             <div className="w-full flex flex-col p-6 justify-center">
+                                <Error error={error} />
                                 <Form noValidate onSubmit={handleSubmit}>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-black">Name</Form.Label>

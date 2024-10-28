@@ -24,6 +24,8 @@ export const useRegister = () => {
     confirmPassword: "",
   });
 
+  const [error, setError] = useState<string | undefined>("");
+
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +55,11 @@ export const useRegister = () => {
     const validator = RegisterValidator(formValues);
     if (validator.valid) {
       const userCreateAction = new UserSignUpAction(formValues);
-      await userCreateAction.execute();
+      const registerResponse = await userCreateAction.execute();
+      if (!registerResponse.success) {
+        setError(registerResponse.message);
+        return;
+      }
       dispatch(authActions.setSessionStatus(true));
       closeModal();
     } else {
@@ -72,5 +78,6 @@ export const useRegister = () => {
     handleChange,
     handleSubmit,
     goToLogin,
+    error,
   };
 };

@@ -2,13 +2,13 @@ import { login } from "@/database/config/auth";
 import { appStore } from "@/src/context/store/redux-store";
 import { authActions } from "@/src/context/store/slices/auth-slice";
 import { userActions } from "@/src/context/store/slices/user-slice";
-import { Action } from "@/types/Action";
+import { Action, FormResponse } from "@/types/Action";
 import { UserCredential } from "firebase/auth";
 import { ApiError } from "next/dist/server/api-utils";
 
-export class UserLoginAction implements Action<void> {
+export class UserLoginAction implements Action<FormResponse> {
   constructor(private payload: { email: string; password: string }) {}
-  async execute(): Promise<void> {
+  async execute(): Promise<FormResponse> {
     try {
       const userCredential: UserCredential = await login(
         this.payload.email,
@@ -24,11 +24,30 @@ export class UserLoginAction implements Action<void> {
           })
         );
         appStore.dispatch(userActions.setEmail(userCredential.user.email));
+        return {
+          success: true,
+        };
       } else {
-        throw new ApiError(400, "User not found");
+        throw new ApiError(400, "Internal Server Error");
       }
     } catch (error: any) {
-      throw new ApiError(400, error.message);
+      if (process.env.NODE_ENV === "development") {
+        console.error(error.message);
+      }
+      if (
+        error.message ===
+        "FirebaseError: Firebase: Error (auth/invalid-credential)."
+      ) {
+        return {
+          success: false,
+          message: "Incorrect email or password",
+        };
+      } else {
+        return {
+          success: false,
+          message: "Could not login user, something went wrong",
+        };
+      }
     }
   }
 }
