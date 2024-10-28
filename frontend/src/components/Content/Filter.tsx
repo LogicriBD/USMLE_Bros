@@ -12,7 +12,7 @@ const Filter = () =>
 {
     const dispatch = useAppDispatch();
     const [searchText, setSearchText] = useState("");
-    const { categories, selectedCategory } = useCategories();
+    const { categories, selectedCategory, selectCategory } = useCategories();
 
     return (
         <div className="flex flex-col w-full">
@@ -45,6 +45,7 @@ const Filter = () =>
                             ${index === 3 ? 'hidden md:block' : ''} 
                             ${index === 2 ? 'hidden sm:block md:block' : ''} 
                             ${index === 1 ? 'hidden block sm:block' : ''}`}
+                            onClick={() => selectCategory(category)}
                         >
                             {category.name}
                         </div>

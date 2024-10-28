@@ -13,7 +13,11 @@ const SideBar = () =>
     const [isOpen, setIsOpen] = useState(false);
 
     const dispatch = useAppDispatch();
-    const { categories, selectedCategory } = useCategories();
+    const callback = () =>
+    {
+        dispatch(categoryActions.setSelectedCategory(null));
+    }
+    const { categories, selectedCategory } = useCategories([], callback);
 
     return (
         <div className="md:w-64 w-full bg-gray-800 text-white md:min-h-screen min-h-0">

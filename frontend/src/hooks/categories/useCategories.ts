@@ -10,9 +10,14 @@ import { useEffect, useState } from "react";
 /**
  *
  * @param dependency Infers Rendering Logic, if empty the categories are only fetched when the component is mounted, otherwise it is fetched every single time the contents of the dependency array changes
- * @returns categories and selectedCategory, where categories refer to all the categories and selectedCategory refers to the category that is currently selected
+ * @param unmountCallback A callback function that is called when the component is unmounted
+ * @returns categories, selectedCategory and selectCategory, where categories refer to all the categories, selectedCategory refers to the category that is currently selected and selectedCategory is the function that selects a category
+ * @mirzaazwad
  */
-export const useCategories = (dependency: any[] = []) => {
+export const useCategories = (
+  dependency: any[] = [],
+  unmountCallback?: () => void
+) => {
   const dispatch = useAppDispatch();
   const selectedCategory = useAppSelector(
     (state) => state.category.selectedCategory
@@ -27,7 +32,7 @@ export const useCategories = (dependency: any[] = []) => {
       setCategories(categories);
       if (categories.length > 0) {
         dispatch(categoryActions.setCategories(categories));
-        if (selectedCategory === null) {
+        if (!selectedCategory) {
           dispatch(categoryActions.setSelectedCategory(categories[0]));
         }
       }
@@ -41,9 +46,20 @@ export const useCategories = (dependency: any[] = []) => {
   useEffect(() => {
     fetchCategories();
     return () => {
-      dispatch(categoryActions.setSelectedCategory(null));
+      if (unmountCallback) {
+        unmountCallback();
+      }
     };
   }, [...dependency]);
 
-  return { categories, selectedCategory };
+  /**
+   *
+   * @param category The category that is to be select selected
+   * @returns void
+   */
+  const selectCategory = (category: CategoryData) => {
+    dispatch(categoryActions.setSelectedCategory(category));
+  };
+
+  return { categories, selectedCategory, selectCategory };
 };

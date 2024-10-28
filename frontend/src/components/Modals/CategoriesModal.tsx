@@ -8,7 +8,7 @@ import { Modal } from "react-bootstrap";
 const CategoriesModal = () =>
 {
     const dispatch = useAppDispatch();
-    const { categories } = useCategories()
+    const { categories, selectCategory, selectedCategory } = useCategories()
 
     return (
         <Modal
@@ -31,7 +31,8 @@ const CategoriesModal = () =>
                                 {categories.map((category, index) => (
                                     <div
                                         key={index}
-                                        className={`text-sky-100 bg-indigo-900 hover:bg-indigo-600 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full md:px-4 px-2 py-2 text-center flex items-center justify-center transition duration-300`}
+                                        className={`${selectedCategory?.id === category.id ? "text-indigo-900 bg-gray-200" : "text-sky-100 bg-indigo-900"} hover:bg-indigo-600 focus:bg-sky-300 focus:text-indigo-700 cursor-pointer font-bold text-sm rounded-full md:px-4 px-2 py-2 text-center flex items-center justify-center transition duration-300`}
+                                        onClick={() => selectCategory(category)}
                                     >
                                         {category.name}
                                     </div>
