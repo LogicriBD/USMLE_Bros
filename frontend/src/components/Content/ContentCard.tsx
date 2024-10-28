@@ -1,14 +1,29 @@
+import { useAppDispatch } from "@/src/context/store/hooks";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { useRouter } from "next/navigation";
 import { Image } from "react-bootstrap";
 
 type Props = {
+  id: string;
   image: string;
   title: string;
   description?: string;
 };
 
-const ContentCard = (props: Props) => {
+const ContentCard = (props: Props) =>
+{
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const navigate = (url: string) =>
+  {
+    dispatch(loaderActions.turnOn());
+    router.push(url);
+  }
+
   return (
-    <div className="max-w-sm bg-inherit overflow-hidden border-b-2 border-gray-300 cursor-pointer">
+    <div className="max-w-sm bg-inherit overflow-hidden border-b-2 border-gray-300 cursor-pointer" onClick={() => navigate(`/content/${props.id}`)}>
       <div className="w-full h-48 overflow-hidden">
         <Image
           src={props.image}
@@ -21,7 +36,7 @@ const ContentCard = (props: Props) => {
         <h3 className="text-lg font-semibold text-gray-800 mb-2 hover:text-indigo-700 transition-colors duration-300">
           {props.title}
         </h3>
-       {props.description && <p className="text-gray-600">{props.description}</p>}
+        {props.description && <p className="text-gray-600">{props.description}</p>}
       </div>
     </div>
   );
