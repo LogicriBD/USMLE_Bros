@@ -29,6 +29,7 @@ export const useRegister = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
+    setError(undefined);
 
     if (type === "checkbox" || type === "radio") {
       setFormValues({
