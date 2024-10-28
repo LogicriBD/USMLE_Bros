@@ -1,19 +1,28 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import ContentCard from "@/src/components/Content/ContentCard";
 import Filter from "@/src/components/Content/Filter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "../context/store/hooks";
+import { loaderActions } from "../context/store/slices/loader-slice";
 
 export default function Home()
 {
 
-  const [categories, setCategories] = useState<string[]>(["Anatomy", "Physiology", "Pathology", "Biochemistry"]);
-  const [contents, setContents] = useState<any[]>([{ image: "/images/dummy.jpg", title: "How anatomy works" },
+  const [categories] = useState<string[]>(["Anatomy", "Physiology", "Pathology", "Biochemistry"]);
+  const [contents] = useState<any[]>([{ image: "/images/dummy.jpg", title: "How anatomy works" },
   { image: "/images/dummy.jpg", title: "A quick brown fox jumps over the lazy dog" },
   { image: "/images/dummy.jpg", title: "A quick brown fox jumps over the lazy dog" },
   { image: "/images/dummy.jpg", title: "A quick brown fox jumps over the lazy dog" },
   { image: "/images/dummy.jpg", title: "A quick brown fox jumps over the lazy dog" },
   { image: "/images/dummy.jpg", title: "A quick brown fox jumps over the lazy dog" }
   ]);
+  const dispatch = useAppDispatch();
+
+  useEffect(() =>
+  {
+    dispatch(loaderActions.turnOff());
+  }, [])
 
   return (
     <div className="flex flex-col w-full p-4">

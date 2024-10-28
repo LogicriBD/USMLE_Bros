@@ -2,11 +2,11 @@ import { User, UserData } from "@/database/repository/User";
 import { appStore } from "@/src/context/store/redux-store";
 import { userActions } from "@/src/context/store/slices/user-slice";
 import { Action } from "@/types/Action";
-import { ApiError } from "next/dist/server/api-utils";
+import { logger } from "@/utils/Logger";
 
-export class UserFetchByEmailAction implements Action<UserData> {
+export class UserFetchByEmailAction implements Action<UserData | undefined> {
   constructor(private payload: { email: string }) {}
-  async execute(): Promise<UserData> {
+  async execute(): Promise<UserData | undefined> {
     try {
       const user: UserData = await User.findUserByEmail(this.payload.email);
       appStore.dispatch(
@@ -19,7 +19,7 @@ export class UserFetchByEmailAction implements Action<UserData> {
       );
       return user;
     } catch (error: any) {
-      throw new ApiError(400, error.message);
+      logger.error(error);
     }
   }
 }

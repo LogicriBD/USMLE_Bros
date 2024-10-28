@@ -13,18 +13,24 @@ const AdminItems = () =>
     const pathName = usePathname();
     const router = useRouter();
     const isAdminPath = pathName.includes("/admin");
+    const dispatch = useAppDispatch();
+    const navigate = (url: string) =>
+    {
+        dispatch(loaderActions.turnOn());
+        router.push(url);
+    }
 
     if (!isAdminPath)
     {
         return (<div
-            onClick={() => router.push("/admin")}
+            onClick={() => navigate("/admin")}
             className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300"
         >Admin</div>)
     }
     else
     {
         return (<div
-            onClick={() => router.push("/")}
+            onClick={() => navigate("/")}
             className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300">
             Home</div>)
     }
@@ -33,13 +39,20 @@ const AdminItems = () =>
 const AdminUploadItems = () =>
 {
     const pathName = usePathname();
+    const dispatch = useAppDispatch();
     const router = useRouter();
     const isAdminUploadPath = pathName.includes("/admin/upload");
+    const navigate = (url: string) =>
+    {
+        dispatch(loaderActions.turnOn());
+        router.push(url);
+    }
+
     if (!isAdminUploadPath)
     {
         return (
             <div
-                onClick={() => router.push("/admin/upload")}
+                onClick={() => navigate("/admin/upload")}
                 className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300"
             >
                 Upload
@@ -50,7 +63,7 @@ const AdminUploadItems = () =>
     {
         return (
             <div
-                onClick={() => router.push("/admin")}
+                onClick={() => navigate("/admin")}
                 className="text-sky-900 bg-gray-200 hover:bg-gray-300 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300"
             >
                 Users
