@@ -62,6 +62,7 @@ export const useLogin = () => {
         const loginResponse = await loginAction.execute();
         if (!loginResponse.success) {
           setError(loginResponse.message);
+          setSubmitted(false);
           return;
         }
         dispatch(authActions.setSessionStatus(true));

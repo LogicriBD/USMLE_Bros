@@ -66,6 +66,7 @@ export const useRegister = () => {
       const registerResponse = await userCreateAction.execute();
       if (!registerResponse.success) {
         setError(registerResponse.message);
+        setSubmitted(false);
         return;
       }
       dispatch(authActions.setSessionStatus(true));
