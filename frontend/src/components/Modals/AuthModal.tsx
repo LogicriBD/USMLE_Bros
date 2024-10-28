@@ -37,13 +37,14 @@ const AuthModal = () =>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-black">Email</Form.Label>
                                         <Form.Control
-                                            className={`rounded-lg text-black ${submitted && errors.email ? 'is-invalid' : ''}`}
+                                            className={`rounded-lg text-black ${errors.email ? 'is-invalid' : ''}`}
                                             type="email"
                                             name="email"
                                             placeholder="someone@example.com"
                                             value={formValues.email}
                                             onChange={handleChange}
                                             isInvalid={!!errors.email}
+                                            disabled={submitted}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.email}
@@ -53,13 +54,14 @@ const AuthModal = () =>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-black">Password</Form.Label>
                                         <Form.Control
-                                            className={`rounded-lg text-black ${submitted && errors.password ? 'is-invalid' : ''}`}
+                                            className={`rounded-lg text-black ${errors.password ? 'is-invalid' : ''}`}
                                             type="password"
                                             name="password"
                                             placeholder="***********"
                                             value={formValues.password}
                                             onChange={handleChange}
                                             isInvalid={!!errors.password}
+                                            disabled={submitted}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.password}
@@ -69,6 +71,7 @@ const AuthModal = () =>
                                     <button
                                         type="submit"
                                         className="w-full bg-indigo-900 text-white rounded-full p-2 hover:bg-indigo-800"
+                                        disabled={submitted}
                                     >
                                         Login
                                     </button>

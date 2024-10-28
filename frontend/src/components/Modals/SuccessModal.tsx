@@ -9,25 +9,19 @@ const SuccessModal = () =>
     return (
         <Modal
             show={true}
-            size="sm"
+            size="lg"
             centered
             animation
             keyboard
             onHide={() => { closeModal() }}
         >
-            <Modal.Header closeButton>
-                <Modal.Title className="text-black bg-inherit">
-                    Success <FontAwesomeIcon icon={faCheckCircle} className="ml-2 text-lg text-red-500" />
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+            <Modal.Header closeButton />
+            <Modal.Body className="px-4 py-2 mb-4">
+                <div className="w-full flex items-center justify-center mb-4 px-6 py-4">
+                    <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 text-8xl" />
+                </div>
                 <div className="text-black text-md font-semibold flex items-center justify-center">You have successfully logged in to USMLE bros!</div>
             </Modal.Body>
-            <Modal.Footer>
-                <button
-                    onClick={() => { closeModal() }}
-                    className="p-2 rounded-md font-semibold text-white bg-gray-600 hover:bg-gray-900 transition duration-300">Close</button>
-            </Modal.Footer>
         </Modal>
     );
 }

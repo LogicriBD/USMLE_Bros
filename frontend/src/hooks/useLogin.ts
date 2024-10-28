@@ -87,6 +87,7 @@ export const useLogin = () => {
   };
 
   const goToRegister = () => {
+    if (submitted) return;
     dispatch(modalActions.updateModalType(ModalName.SignUp));
   };
 

@@ -76,6 +76,7 @@ export const useRegister = () => {
   };
 
   const goToLogin = () => {
+    if (submitted) return;
     dispatch(modalActions.updateModalType(ModalName.Login));
   };
 

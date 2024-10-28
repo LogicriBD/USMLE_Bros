@@ -30,13 +30,14 @@ const SignupModal = () =>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-black">Name</Form.Label>
                                         <Form.Control
-                                            className={`rounded-lg text-black ${submitted && errors.name ? 'is-invalid' : ''}`}
+                                            className={`rounded-lg text-black ${errors.name ? 'is-invalid' : ''}`}
                                             type="text"
                                             name="name"
                                             placeholder="John Doe"
                                             value={formValues.name}
                                             onChange={handleChange}
                                             isInvalid={!!errors.name}
+                                            disabled={submitted}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.name}
@@ -46,13 +47,14 @@ const SignupModal = () =>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-black">Email</Form.Label>
                                         <Form.Control
-                                            className={`rounded-lg text-black ${submitted && errors.email ? 'is-invalid' : ''}`}
+                                            className={`rounded-lg text-black ${errors.email ? 'is-invalid' : ''}`}
                                             type="email"
                                             name="email"
                                             placeholder="someone@example.com"
                                             value={formValues.email}
                                             onChange={handleChange}
                                             isInvalid={!!errors.email}
+                                            disabled={submitted}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.email}
@@ -62,13 +64,14 @@ const SignupModal = () =>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-black">Password</Form.Label>
                                         <Form.Control
-                                            className={`rounded-lg text-black ${submitted && errors.password ? 'is-invalid' : ''}`}
+                                            className={`rounded-lg text-black ${errors.password ? 'is-invalid' : ''}`}
                                             type="password"
                                             name="password"
                                             placeholder="***********"
                                             value={formValues.password}
                                             onChange={handleChange}
                                             isInvalid={!!errors.password}
+                                            disabled={submitted}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.password}
@@ -78,13 +81,14 @@ const SignupModal = () =>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-black">Confirm Password</Form.Label>
                                         <Form.Control
-                                            className={`rounded-lg text-black ${submitted && errors.confirmPassword ? 'is-invalid' : ''}`}
+                                            className={`rounded-lg text-black ${errors.confirmPassword ? 'is-invalid' : ''}`}
                                             type="password"
                                             name="confirmPassword"
                                             placeholder="***********"
                                             value={formValues.confirmPassword}
                                             onChange={handleChange}
                                             isInvalid={!!errors.confirmPassword}
+                                            disabled={submitted}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.confirmPassword}
@@ -94,6 +98,7 @@ const SignupModal = () =>
                                     <button
                                         type="submit"
                                         className="w-full bg-indigo-900 text-white rounded-full p-2 hover:bg-indigo-800"
+                                        disabled={submitted}
                                     >
                                         Sign Up
                                     </button>
