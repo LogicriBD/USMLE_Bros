@@ -3,6 +3,7 @@ import { User } from "@/database/repository/User";
 import { appStore } from "@/src/context/store/redux-store";
 import { authActions } from "@/src/context/store/slices/auth-slice";
 import { Action, FormResponse } from "@/types/Action";
+import { FirebaseErrors } from "@/types/FirebaseErrors";
 import { UserCredential } from "firebase/auth";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -35,6 +36,12 @@ export class UserSignUpAction implements Action<FormResponse> {
     } catch (error: any) {
       if (process.env.NODE_ENV === "development") {
         console.error(error);
+      }
+      if (error.message === FirebaseErrors.EmailAlreadyInUse) {
+        return {
+          success: false,
+          message: "Email already in use",
+        };
       }
       return {
         success: false,
