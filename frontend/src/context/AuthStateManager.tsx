@@ -13,11 +13,14 @@ const AuthStateManager = ({
 {
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         const isUserActive = isUserLoggedIn();
-        if (!isUserActive) {
+        if (!isUserActive)
+        {
             dispatch(authActions.logout());
-        } else {
+        } else
+        {
             dispatch(authActions.setSessionStatus(true));
         }
     }, [dispatch]);
