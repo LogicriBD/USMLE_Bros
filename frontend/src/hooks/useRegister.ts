@@ -27,11 +27,19 @@ export const useRegister = () => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
+    const { name, value, type } = e.target;
+
+    if (type === "checkbox" || type === "radio") {
+      setFormValues({
+        ...formValues,
+        [name]: !formValues[name],
+      });
+    } else {
+      setFormValues({
+        ...formValues,
+        [name]: value,
+      });
+    }
 
     setErrors({
       ...errors,

@@ -1,10 +1,10 @@
 import { LoginValidator } from "@/validation/authentication/login";
 import { UserLoginAction } from "@/actions/user/UserLoginAction";
-import {  useState } from "react";
+import { useState } from "react";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { closeModal } from "@/utils/Modal";
-import { useAppDispatch, useAppSelector } from "../context/store/hooks";
+import { useAppDispatch } from "../context/store/hooks";
 import { authActions } from "../context/store/slices/auth-slice";
 import { UserFetchByEmailAction } from "@/actions/user/UserFetchByEmailAction";
 import { appStore } from "../context/store/redux-store";
@@ -24,11 +24,19 @@ export const useLogin = () => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
+    const { name, value, type } = e.target;
+
+    if (type === "checkbox" || type === "radio") {
+      setFormValues({
+        ...formValues,
+        [name]: !formValues[name],
+      });
+    } else {
+      setFormValues({
+        ...formValues,
+        [name]: value,
+      });
+    }
 
     setErrors({
       ...errors,
@@ -45,7 +53,9 @@ export const useLogin = () => {
       await loginAction.execute();
       dispatch(authActions.setSessionStatus(true));
 
-      const userAction = new UserFetchByEmailAction({ email: appStore.getState().user.email });
+      const userAction = new UserFetchByEmailAction({
+        email: appStore.getState().user.email,
+      });
       await userAction.execute();
     } else {
       setErrors({
