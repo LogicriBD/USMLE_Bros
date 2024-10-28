@@ -32,7 +32,14 @@ export class UserSignUpAction implements Action<FormResponse> {
             isLoggedIn: true,
           })
         );
-        appStore.dispatch(userActions.setRole(user.role));
+        appStore.dispatch(
+          userActions.setData({
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          })
+        );
         return {
           success: true,
         };
