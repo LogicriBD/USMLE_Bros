@@ -6,7 +6,7 @@ import { logger } from "@/utils/Logger";
 import { Dom } from "jodit/esm/modules";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
-const modifiedEditorConfiguration = (value: string, onChange: (newContent: string) => void) =>
+const modifiedEditorConfiguration = (value: string, onChange: (newContent: string, imageUrl?: string) => void) =>
 {
     return {
         readonly: false,
@@ -143,8 +143,7 @@ const modifiedEditorConfiguration = (value: string, onChange: (newContent: strin
             defaultHandlerSuccess: function (data)
             {
                 const url = data.get('file') as string;
-                console.log(url);
-                onChange(`${value}<img src="${url}"/>`)
+                onChange(`${value}<img src="${url}"/><br/><p></p>`, url)
             },
             error: function (e)
             {

@@ -20,6 +20,7 @@ export type ContentMetaData = {
   createdAt: Date;
   userId: string;
   imageUrl?: string;
+  sections?: string[];
 };
 
 export type ContentData = {
@@ -41,11 +42,7 @@ class ContentRepository {
       const metadataRef = await addDoc(
         collection(firestore, "contentmetadata"),
         {
-          title: content.metadata.title,
-          categoryId: content.metadata.categoryId,
-          userName: content.metadata.userName,
-          createdAt: content.metadata.createdAt,
-          userId: content.metadata.userId,
+          ...content.metadata,
         }
       );
 
@@ -115,17 +112,36 @@ class ContentRepository {
     }
   }
 
+  async fetchMetadataById(id: string) {
+    try {
+      const metadataRef = doc(firestore, "contentmetadata", id);
+      const metadataSnapshot = await getDoc(metadataRef);
+
+      if (metadataSnapshot.exists()) {
+        return {
+          id: metadataSnapshot.id,
+          ...metadataSnapshot.data(),
+        } as ContentMetaData;
+      } else {
+        throw Error(`User not found for id: ${id}`);
+      }
+    } catch (err: any) {
+      logger.error(err);
+      throw new ApiError(400, err.message);
+    }
+  }
+
   async fetchContentsById(metadataId: string, all: boolean = false) {
     try {
       const q = all
         ? query(
             collection(firestore, "content"),
-            where("metadataId", "==", metadataId),
-            where("isLocked", "==", false)
+            where("metadataId", "==", metadataId)
           )
         : query(
             collection(firestore, "content"),
-            where("metadataId", "==", metadataId)
+            where("metadataId", "==", metadataId),
+            where("isLocked", "==", false)
           );
 
       const querySnapshot = await getDocs(q);

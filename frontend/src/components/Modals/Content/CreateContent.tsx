@@ -9,7 +9,7 @@ import { ContentCreate } from "@/actions/content/ContentCreate";
 import { logger } from "@/utils/Logger";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
-import { splitContentByH1Sections } from "@/utils/helpers/ContentParser";
+import { extractFirstH1, splitContentByH1Sections } from "@/utils/helpers/ContentParser";
 
 const CreateContent = () =>
 {
@@ -55,6 +55,21 @@ const CreateContent = () =>
 
             if (selectedCategory)
             {
+                const contentSections = splitContentByH1Sections(content);
+                const sections = contentSections.map((content) =>
+                {
+                    const section = extractFirstH1(content);
+                    if (section)
+                    {
+                        return section
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                })
+                const filterNullSections = sections.filter((section) => section !== null);
+
                 const metadata: ContentMetaData = {
                     title: title,
                     categoryId: selectedCategory.id,
@@ -66,8 +81,12 @@ const CreateContent = () =>
                 {
                     metadata.imageUrl = images[0];
                 }
+                if (filterNullSections.length > 0)
+                {
+                    metadata.sections = filterNullSections
+                }
 
-                const contentSections = splitContentByH1Sections(content);
+
 
                 const contentdata: ContentData[] = contentSections.map((section) => ({
                     content: section,

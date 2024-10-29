@@ -1,56 +1,126 @@
+"use client";
+import { ContentsFetchById } from "@/actions/content/ContentFetchById";
+import { ContentFetchMetadataById } from "@/actions/content/ContentFetchMetadataById";
+import { ContentData } from "@/database/repository/Content";
+import Contents from "@/src/components/Content/Contents";
 import Sidebar from "@/src/components/Content/Sidebar";
+import Error from "@/src/components/Error";
+import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { LoreumIpsum } from "@/utils/constants/LoremIpsum";
+import { extractFirstH1 } from "@/utils/helpers/ContentParser";
+import { logger } from "@/utils/Logger";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
+export interface ContentDataWithTitle extends ContentData
+{
+    title?: string
+}
 
 
 const ContentPage = () =>
 {
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+    const dispatch = useAppDispatch();
+    const params = useParams();
+    const [contents, setContents] = useState<any[]>([]);
+    const [error, setError] = useState<string | undefined>();
+    const [sections, setSections] = useState<{ section: string, locked: boolean }[]>([]);
+
+    const fetchSections = async (titles: string[], contentMap: Map<string, ContentData>) =>
+    {
+        try
+        {
+            const contentMetadata = new ContentFetchMetadataById(params.id as string);
+            const metadata = await contentMetadata.execute();
+            const sections = metadata?.sections ? metadata.sections : [];
+            const contents: ContentDataWithTitle[] = []
+            const modifiedSections = sections.map((section, index) =>
+            {
+                if (titles.includes(section))
+                {
+                    contents.push({
+                        ...contentMap.get(section)!,
+                        isLocked: false
+                    })
+                    return {
+                        section,
+                        locked: false
+                    }
+                }
+                else
+                {
+                    contents.push({
+                        title: section,
+                        content: `<p>${LoreumIpsum}</p>`,
+                        isLocked: true,
+                        serialNumber: index
+                    })
+                    return {
+                        section,
+                        locked: true
+                    }
+                }
+            })
+            setSections(modifiedSections)
+            setContents(contents);
+        }
+        catch (err: any)
+        {
+            logger.error(err);
+        }
+    }
+
+    const fetchContents = async () =>
+    {
+        try
+        {
+            const contentFetchById = new ContentsFetchById({
+                metadataId: params.id as string,
+                all: isLoggedIn
+            });
+            const contents = await contentFetchById.execute();
+            setContents(contents);
+            setContents((prev) =>
+            {
+                return prev.sort((a, b) => a.serialNumber - b.serialNumber)
+            })
+            const map = new Map<string, ContentData>();
+            const titles = contents.map((content) =>
+            {
+                const currentTitle = extractFirstH1(content.content);
+                if (currentTitle)
+                {
+                    map.set(currentTitle, content);
+                    return currentTitle;
+                }
+            })
+            await fetchSections(titles.filter((title) => title !== undefined), map);
+            dispatch(loaderActions.turnOff());
+        }
+        catch (err: any)
+        {
+            setError(err.message);
+            dispatch(loaderActions.turnOff());
+        }
+
+    }
+
+    useEffect(() =>
+    {
+        fetchContents();
+    }, [isLoggedIn])
+
+
     return (
         <div className="w-full flex flex-row h-screen">
-            <Sidebar />
+            <Sidebar sections={sections} />
             <div className="w-full overflow-scroll px-4 py-2 mx-4 my-2">
-                <h1>Introduction</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h2>Getting Started</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h2>Authentication</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h3>Database</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h3>Storage</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h3>Hosting</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h4>Functions</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h3>Functions</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h2>Database</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h1>Getting Started</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h1>Authentication</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h1>Database</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h1>Storage</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h1>Hosting</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-                <h1>Functions</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <Error error={error} />
+                {contents.map((content) => (
+                    <Contents key={content.id} content={content.content} isLocked={content.isLocked} title={content.title} />
+                ))}
             </div>
         </div>
     );
