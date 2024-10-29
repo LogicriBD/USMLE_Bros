@@ -1,6 +1,6 @@
 "use client"
 import { Modal } from "react-bootstrap";
-import MyJoditEditor from "../../Upload/Editor/JoditEditor";
+import Editor from "../../Upload/Editor";
 import { useState } from "react";
 import { closeModal } from "@/utils/Modal";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
@@ -11,7 +11,8 @@ import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
 import { splitContentByH1Sections } from "@/utils/helpers/ContentParser";
 
-const CreateContent = () => {
+const CreateContent = () =>
+{
 
     const dispatch = useAppDispatch();
 
@@ -22,27 +23,33 @@ const CreateContent = () => {
 
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
     const user = useAppSelector((state) => state.user);
-    const handleContentChange = (newContent: string) => {
+    const handleContentChange = (newContent: string) =>
+    {
         setContent(newContent);
     };
 
-    const handleClose = () => {
+    const handleClose = () =>
+    {
         setShowModal(false);
         setContent("");
         closeModal();
     };
 
-    const handleSubmit = async () => {
-        if (title === "") {
+    const handleSubmit = async () =>
+    {
+        if (title === "")
+        {
             setError("Title is required");
             return;
         }
-        try {
+        try
+        {
             dispatch(loaderActions.turnOn());
 
             setError(undefined);
 
-            if (selectedCategory) {
+            if (selectedCategory)
+            {
                 const metadata: ContentMetaData = {
                     title: title,
                     categoryId: selectedCategory.id,
@@ -68,9 +75,11 @@ const CreateContent = () => {
                 await contentAction.execute();
                 dispatch(submitActions.toggleSubmit());
             }
-        } catch (error) {
+        } catch (error)
+        {
             logger.error(error);
-        } finally {
+        } finally
+        {
             dispatch(loaderActions.turnOff());
             closeModal();
         }
@@ -100,8 +109,8 @@ const CreateContent = () => {
                     {error && (<div className="text-red-500 font-normal text-sm px-2">{error}</div>)}
                 </div>
                 <div className="w-full">
-                    {showModal && ( // Conditionally render editor to unmount cleanly
-                        <MyJoditEditor value={content} onChange={handleContentChange} />
+                    {showModal && (
+                        <Editor value={content} onChange={handleContentChange} />
                     )}
                 </div>
             </Modal.Body>

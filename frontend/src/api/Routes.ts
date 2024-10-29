@@ -2,10 +2,13 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const Routes = {
   user: {
-    delete: "/admin/api/delete",
+    delete: "/admin/delete",
   },
   auth: {
-    verify: "/api/auth",
+    verify: "/auth",
+  },
+  content: {
+    upload: "/admin/upload/file",
   },
 };
 
