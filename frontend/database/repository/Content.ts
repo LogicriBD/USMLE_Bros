@@ -19,6 +19,7 @@ export type ContentMetaData = {
   userName: string;
   createdAt: Date;
   userId: string;
+  imageUrl?: string;
 };
 
 export type ContentData = {

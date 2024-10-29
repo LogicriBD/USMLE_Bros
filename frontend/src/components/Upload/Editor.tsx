@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import dynamic from "next/dynamic";
 import { routes } from "@/src/api/Routes";
 import { logger } from "@/utils/Logger";
+import { Dom } from "jodit/esm/modules";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const modifiedEditorConfiguration = (value: string, onChange: (newContent: string) => void) =>
@@ -28,7 +29,7 @@ const modifiedEditorConfiguration = (value: string, onChange: (newContent: strin
                 '#5B0F00', '#660000', '#783F04', '#7F6000', '#274E13', '#0C343D', '#1C4587', '#073763', '#20124D', '#4C1130'
             ]
         },
-        removeButtons: [],
+        removeButtons: process.env.NODE_ENV === 'production' ? ['source'] : [],
         disablePlugins: [],
         extraButtons: [],
         buttons: [
@@ -63,6 +64,70 @@ const modifiedEditorConfiguration = (value: string, onChange: (newContent: strin
             "|",
             "undo",
             "redo",
+            {
+                name: "Insert Section",
+                tooltip: 'Wrap selection in tag',
+                list: ['Section', 'Subsection', 'Subsubsection'],
+
+                childTemplate: (editor, key, value) =>
+                {
+                    if (key === 'Section')
+                    {
+                        return `<span class="h1">${editor.i18n(value)}</span>`
+                    }
+                    else if (key === 'Subsection')
+                    {
+                        return `<span class="h2">${editor.i18n(value)}</span>`
+                    }
+                    else
+                    {
+                        return `<span class="h3">${editor.i18n(value)}</span>`
+                    }
+                },
+
+                isChildActive: (editor, control) =>
+                {
+                    const current = editor.s.current();
+
+                    if (current)
+                    {
+                        const currentBox = Dom.closest(
+                            current,
+                            (node) => Dom.isTag(node, control.list),
+                            editor.editor
+                        );
+
+                        return Boolean(
+                            currentBox &&
+                            currentBox !== editor.editor &&
+                            control.args !== undefined &&
+                            currentBox.nodeName.toLowerCase() === control.args[0]
+                        );
+                    }
+
+                    return false;
+                },
+
+                exec(editor, _, { control })
+                {
+                    let selectedValue = control.args && control.args[0];
+                    let value = "h1"
+                    if (selectedValue === "Subsection")
+                    {
+                        value = "h2"
+                    }
+                    else if (selectedValue === "Subsubsection")
+                    {
+                        value = "h3"
+                    }
+                    else
+                    {
+                        selectedValue = "Section"
+                    }
+                    editor.s.insertHTML(`<${value}>${selectedValue}</${value}>`)
+                    return false;
+                }
+            }
         ],
         uploader: {
             url: routes.content.upload,

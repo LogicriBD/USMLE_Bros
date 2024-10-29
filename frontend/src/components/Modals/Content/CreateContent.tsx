@@ -20,12 +20,17 @@ const CreateContent = () =>
     const [showModal, setShowModal] = useState<boolean>(true);
     const [title, setTitle] = useState<string>("");
     const [error, setError] = useState<string | undefined>("");
+    const [images, setImages] = useState<string[]>([]);
 
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
     const user = useAppSelector((state) => state.user);
-    const handleContentChange = (newContent: string) =>
+    const handleContentChange = (newContent: string, imageUrl?: string) =>
     {
         setContent(newContent);
+        if (imageUrl)
+        {
+            setImages((prev) => [...prev, imageUrl])
+        }
     };
 
     const handleClose = () =>
@@ -56,6 +61,10 @@ const CreateContent = () =>
                     userName: user.name,
                     createdAt: new Date(),
                     userId: user.id
+                }
+                if (images.length > 0)
+                {
+                    metadata.imageUrl = images[0];
                 }
 
                 const contentSections = splitContentByH1Sections(content);
