@@ -71,12 +71,7 @@ export const logout = async () => {
 };
 
 export const getCurrentUser = () => {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      return user;
-    }
-    return null;
-  });
+  return auth.currentUser;
 };
 
 export const validateUserSession = () => {
