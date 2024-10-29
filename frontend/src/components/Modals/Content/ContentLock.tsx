@@ -70,11 +70,13 @@ const ContentLock = () => {
                 </span>
                 <div className="p-3 bg-gray-100 rounded-b-md overflow-y-auto">
                     {contents.length > 0 ? (
-                        contents.map((content, index) => (
+                        contents
+                            .sort((a, b) => a.serialNumber - b.serialNumber)
+                            .map((content, index) => (
                             <div key={index} className="my-2 flex flex-col bg-white text-gray-800 border border-gray-300 rounded-lg shadow-md transition-shadow duration-200 ease-in-out hover:shadow-lg">
                                 <div className="flex md:justify-start flex-col md:flex-row items-center p-3">
                                     <span
-                                        className="cursor-pointer hover:text-blue-500 transition duration-150 ease-in-out mr-2"
+                                        className="cursor-pointer hover</div>:text-blue-500 transition duration-150 ease-in-out mr-2"
                                         onClick={() => { content.id ? lockContent(content.id) : console.log("No content id") }}
                                     >
                                         {content.isLocked ? (

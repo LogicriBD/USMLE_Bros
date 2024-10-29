@@ -17,6 +17,7 @@ export type ContentData = {
   metadataId?: string;
   content: any;
   isLocked: boolean;
+  serialNumber: number;
 };
 
 export type Content = {
@@ -45,6 +46,7 @@ class ContentRepository {
           metadataId: metadataId,
           content: c.content,
           isLocked: c.isLocked,
+          serialNumber: c.serialNumber
         });
       }
 

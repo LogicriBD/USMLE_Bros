@@ -33,6 +33,7 @@ const editorConfig = {
         "italic",
         "underline",
         'fontsize',
+        'font',
         "brush",
         "|",
         "superscript",

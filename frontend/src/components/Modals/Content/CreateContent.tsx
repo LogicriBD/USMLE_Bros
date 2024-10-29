@@ -33,12 +33,11 @@ const CreateContent = () => {
     };
 
     const handleSubmit = async () => {
+        if (title === "") {
+            setError("Title is required");
+            return;
+        }
         try {
-            if (title === "") {
-                setError("Title is required");
-                return;
-            }
-
             dispatch(loaderActions.turnOn());
 
             setError(undefined);
@@ -57,6 +56,7 @@ const CreateContent = () => {
                 const contentdata: ContentData[] = contentSections.map((section) => ({
                     content: section,
                     isLocked: false,
+                    serialNumber: contentSections.indexOf(section),
                 }));
 
                 const C: Content = {
