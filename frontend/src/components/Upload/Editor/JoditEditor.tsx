@@ -60,12 +60,26 @@ const editorConfig = {
         "redo",
     ],
     uploader: {
-        insertImageAsBase64URI: true,
+        url: 'http://localhost:3000/api/upload',
+        format: 'multipart',
+        method: 'POST',
+        process: (data) =>
+        {
+            const file = data.get('files[0]');
+            if (file)
+            {
+                data.delete('files[0]');
+                data.append('file', file);
+            }
+            return data;
+        },
+        filesVariableName: 'file',
     },
     height: 650
 };
 
-export default function MyJoditEditor({ value, onChange }) {
+export default function MyJoditEditor({ value, onChange })
+{
     const editor = useRef(null);
 
     return (

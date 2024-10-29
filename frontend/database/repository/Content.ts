@@ -1,4 +1,13 @@
-import { addDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { ApiError } from "next/dist/server/api-utils";
 import { logger } from "@/utils/Logger";
@@ -46,10 +55,9 @@ class ContentRepository {
           metadataId: metadataId,
           content: c.content,
           isLocked: c.isLocked,
-          serialNumber: c.serialNumber
+          serialNumber: c.serialNumber,
         });
       }
-
     } catch (error: any) {
       throw new ApiError(400, error.message);
     }
@@ -106,12 +114,18 @@ class ContentRepository {
     }
   }
 
-  async fetchContentsById(metadataId: string) {
+  async fetchContentsById(metadataId: string, all: boolean = false) {
     try {
-      const q = query(
-        collection(firestore, "content"),
-        where("metadataId", "==", metadataId)
-      );
+      const q = all
+        ? query(
+            collection(firestore, "content"),
+            where("metadataId", "==", metadataId),
+            where("isLocked", "==", false)
+          )
+        : query(
+            collection(firestore, "content"),
+            where("metadataId", "==", metadataId)
+          );
 
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {

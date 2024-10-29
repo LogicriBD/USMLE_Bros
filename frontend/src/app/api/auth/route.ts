@@ -2,14 +2,15 @@ import { auth, firestore } from "@/database/config/adminApp";
 import { logger } from "@/utils/Logger";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     logger.log(process.env.NEXT_FIREBASE_PRIVATE_KEY);
-    const token = request.headers.get("Authorization")?.split("Bearer ")[1];
-    if (!token) {
+    const formData = await request.formData();
+    const accessToken = formData.get("accessToken") as string;
+    if (!accessToken) {
       return NextResponse.json({ error: "No token provided" }, { status: 401 });
     }
-    const decodedToken = await auth.verifyIdToken(token);
+    const decodedToken = await auth.verifyIdToken(accessToken);
     const email = decodedToken.email;
     const user = firestore.collection("users").where("email", "==", email);
     const userSnapshot = await user.get();

@@ -1,7 +1,12 @@
-import { getAuthorizationInformation } from "@/src/lib/getAuthorizationInformation";
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "./Logger";
 import { cookies } from "next/headers";
+import { FetchHandler } from "./RequestHandler";
+import { routes } from "@/src/api/Routes";
+
+type AuthorizationRequest = {
+  accessToken: string;
+};
 
 export class Authorization {
   private redirectUrl: string;
@@ -27,10 +32,10 @@ export class Authorization {
       );
     }
     try {
-      const { role } = await getAuthorizationInformation(
-        this.request.url,
-        token
-      );
+      const fetchHandler = new FetchHandler<AuthorizationRequest>();
+      const { role } = await fetchHandler.postRequest(routes.auth.verify, {
+        accessToken: token,
+      });
       if (this.isAdminRoute && role !== "Admin") {
         return NextResponse.redirect(
           new URL("/access-denied", this.request.url).toString()
