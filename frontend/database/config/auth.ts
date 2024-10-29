@@ -88,12 +88,15 @@ export const validateUserSession = () => {
         const userFetchByEmailAction = new UserFetchByEmailAction({
           email: user.email!,
         });
+        const idToken = await user.getIdToken(true);
+        Cookies.set("access", idToken);
         await userFetchByEmailAction.execute();
       } else {
         appStore.dispatch(authActions.setSessionStatus(false));
         appStore.dispatch(authActions.logout());
       }
       appStore.dispatch(loaderActions.authTurnOff());
+      return user;
     },
     (error) => {
       logger.error(error);
