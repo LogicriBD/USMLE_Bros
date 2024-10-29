@@ -2,7 +2,7 @@ import { User } from "@/database/repository/User";
 import { routes } from "@/src/api/Routes";
 import { Action } from "@/types/Action";
 import { logger } from "@/utils/Logger";
-import { FetchHandler } from "@/utils/RequestHandler";
+import { FetchHandler } from "@/utils/FetchHandler";
 import { ApiError } from "next/dist/server/api-utils";
 
 type DeleteUser = {

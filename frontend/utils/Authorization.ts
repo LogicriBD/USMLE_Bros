@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "./Logger";
 import { cookies } from "next/headers";
-import { FetchHandler } from "./RequestHandler";
+import { FetchHandler } from "./FetchHandler";
 import { routes } from "@/src/api/Routes";
 
 type AuthorizationRequest = {
