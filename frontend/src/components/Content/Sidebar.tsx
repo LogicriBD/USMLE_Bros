@@ -1,12 +1,12 @@
 import { ContentsFetchById } from "@/actions/content/ContentFetchById";
 import { ContentFetchMetadataById } from "@/actions/content/ContentFetchMetadataById";
-import { appStore } from "@/src/context/store/redux-store";
 import { ISection } from "@/types/Content";
 import { extractFirstH1 } from "@/utils/helpers/ContentParser";
 import { logger } from "@/utils/Logger";
 import SidebarElement from "./SidebarElement";
 import Error from "../Error";
-
+import { ServerAuthContext } from "@/utils/ServerAuthContext";
+export const dynamic = 'force-dynamic';
 
 
 
@@ -19,7 +19,7 @@ const Sidebar = async ({ id }: { id: string }) =>
         try
         {
             const contentFetchMetadataById = new ContentFetchMetadataById(id as string);
-            const loggedIn = appStore.getState().auth.isLoggedIn;
+            const loggedIn = ServerAuthContext.isLoggedIn();
             const contentFetchById = new ContentsFetchById({ metadataId: id as string, all: loggedIn });
             const contents = await contentFetchById.execute();
             const titles = contents.map(content => extractFirstH1(content.content)).filter(title => title !== undefined) as string[];

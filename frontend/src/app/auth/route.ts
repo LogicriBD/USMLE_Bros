@@ -1,5 +1,6 @@
 import { auth, firestore } from "@/database/config/adminApp";
 import { logger } from "@/utils/Logger";
+import { ServerAuthContext } from "@/utils/ServerAuthContext";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -8,10 +9,11 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const accessToken = formData.get("accessToken") as string;
     if (accessToken === "undefined") {
+      ServerAuthContext.setLoggedIn(false);
       return NextResponse.json({ error: "No token provided" }, { status: 401 });
     }
-    console.log(accessToken);
     const decodedToken = await auth.verifyIdToken(accessToken);
+    ServerAuthContext.setLoggedIn(true);
     const email = decodedToken.email;
     const user = firestore.collection("users").where("email", "==", email);
     const userSnapshot = await user.get();

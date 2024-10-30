@@ -2,12 +2,12 @@ import { logger } from "@/utils/Logger";
 import Error from "../Error";
 import { ContentFetchMetadataById } from "@/actions/content/ContentFetchMetadataById";
 import { ContentsFetchById } from "@/actions/content/ContentFetchById";
-import { appStore } from "@/src/context/store/redux-store";
 import { extractFirstH1 } from "@/utils/helpers/ContentParser";
 import { ContentDataWithTitle } from "@/types/Content";
 import ParseHTMLContent from "@/src/components/Content/ParseHTMLContent";
 import { LoreumIpsum } from "@/utils/constants/LoremIpsum";
-
+import { ServerAuthContext } from "@/utils/ServerAuthContext";
+export const dynamic = 'force-dynamic';
 
 
 const ContentDisplay = async ({ id }: { id: string }) =>
@@ -17,7 +17,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
         try
         {
             const contentFetchMetadataById = new ContentFetchMetadataById(id as string);
-            const loggedIn = appStore.getState().auth.isLoggedIn;
+            const loggedIn = ServerAuthContext.isLoggedIn();
             const contentFetchById = new ContentsFetchById({ metadataId: id as string, all: loggedIn });
             const contents = await contentFetchById.execute();
             const sortedContents = contents.sort((a, b) => a.serialNumber - b.serialNumber);

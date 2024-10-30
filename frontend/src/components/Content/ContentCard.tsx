@@ -15,6 +15,7 @@ const ContentCard = (props: Props) =>
 
   const navigate = (url: string) =>
   {
+    router.refresh();
     router.push(url);
   }
 

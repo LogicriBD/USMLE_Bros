@@ -5,6 +5,7 @@ import { modalActions } from "../../context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { useAppDispatch } from "../../context/store/hooks";
 import { authActions } from "../../context/store/slices/auth-slice";
+import { useRouter } from "next/navigation";
 
 /**
  *
@@ -26,6 +27,7 @@ export const useRegister = () => {
     password: "",
     confirmPassword: "",
   });
+  const router = useRouter();
 
   const [error, setError] = useState<string | undefined>("");
 
@@ -75,6 +77,8 @@ export const useRegister = () => {
         return;
       }
       dispatch(authActions.setSessionStatus(true));
+      router.refresh();
+      router.push("/");
       dispatch(modalActions.updateModalType(ModalName.SuccessModal));
     } else {
       setErrors(validator.errors);

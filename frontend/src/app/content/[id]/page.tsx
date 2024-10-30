@@ -1,7 +1,6 @@
 import ContentDisplay from "@/src/components/Content/ContentDisplay";
 import Sidebar from "@/src/components/Content/Sidebar";
 
-
 const ContentPage = ({ params }: { params: { id: string } }) =>
 {
     return (

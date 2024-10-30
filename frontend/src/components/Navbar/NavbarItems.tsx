@@ -85,6 +85,7 @@ const NavbarItems = () =>
         dispatch(loaderActions.turnOn());
         const userLogoutAction = new UserLogoutAction();
         await userLogoutAction.execute();
+        router.refresh();
         router.push("/");
         dispatch(authActions.logout());
         dispatch(loaderActions.turnOff());

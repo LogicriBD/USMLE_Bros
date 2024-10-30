@@ -3,8 +3,6 @@ import { logger } from "./Logger";
 import { cookies } from "next/headers";
 import { FetchHandler } from "./FetchHandler";
 import { routes } from "@/src/api/Routes";
-import { appStore } from "@/src/context/store/redux-store";
-import { authActions } from "@/src/context/store/slices/auth-slice";
 
 type AuthorizationRequest = {
   accessToken?: string;
@@ -28,11 +26,6 @@ export class Authorization {
       const response = await fetchHandler.postRequest(routes.auth.verify, {
         accessToken: token,
       });
-      if (response.status === "401") {
-        appStore.dispatch(authActions.setSessionStatus(false));
-      } else {
-        appStore.dispatch(authActions.setSessionStatus(true));
-      }
       const role = response.role;
       if (this.isAdminRoute && role !== "Admin") {
         return NextResponse.redirect(
