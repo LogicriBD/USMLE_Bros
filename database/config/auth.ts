@@ -20,6 +20,11 @@ import { UserLogoutAction } from "@/actions/user/UserLogoutAction";
 
 const auth = getAuth(app);
 
+const CookieSafety = {
+  secure: true,
+  httpOnly: true,
+};
+
 type Action = (
   auth: Auth,
   email: string,
@@ -47,11 +52,7 @@ export const register = async (email: string, password: string) => {
     createUserWithEmailAndPassword
   );
   const idToken = await userCredential.user.getIdToken(true);
-  Cookies.set(
-    "access",
-    idToken,
-    JSON.parse(process.env.NEXT_PUBLIC_COOKIE_SAFETY!)
-  );
+  setAccessTokenInCookie(idToken);
   return userCredential;
 };
 
@@ -62,11 +63,7 @@ export const login = async (email: string, password: string) => {
     signInWithEmailAndPassword
   );
   const idToken = await userCredential.user.getIdToken(true);
-  Cookies.set(
-    "access",
-    idToken,
-    JSON.parse(process.env.NEXT_PUBLIC_COOKIE_SAFETY!)
-  );
+  setAccessTokenInCookie(idToken);
   return userCredential;
 };
 
@@ -93,11 +90,7 @@ export const validateUserSession = () => {
           email: user.email!,
         });
         const idToken = await user.getIdToken(true);
-        Cookies.set(
-          "access",
-          idToken,
-          JSON.parse(process.env.NEXT_PUBLIC_COOKIE_SAFETY!)
-        );
+        setAccessTokenInCookie(idToken);
         await userFetchByEmailAction.execute();
       } else {
         const logoutAction = new UserLogoutAction();
@@ -113,4 +106,12 @@ export const validateUserSession = () => {
       appStore.dispatch(loaderActions.authTurnOff());
     }
   );
+};
+
+const setAccessTokenInCookie = (idToken: string) => {
+  if (process.env.NODE_ENV === "production") {
+    Cookies.set("access", idToken, CookieSafety);
+  } else {
+    Cookies.set("access", idToken);
+  }
 };
