@@ -1,13 +1,16 @@
 "use client";
 import { useAppDispatch } from "@/src/context/store/hooks";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
+import { ISection } from "@/types/Content";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 
-const Sidebar = ({ sections }: { sections: { section: string, locked: boolean }[] }) =>
+
+
+const Sidebar = ({ sections }: { sections: ISection[] }) =>
 {
 
     const dispatch = useAppDispatch();

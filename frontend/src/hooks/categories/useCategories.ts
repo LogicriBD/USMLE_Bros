@@ -3,7 +3,6 @@ import { CategoryFetchAll } from "@/actions/category/CategoryFetchAll";
 import { CategoryData } from "@/database/repository/Category";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { categoryActions } from "@/src/context/store/slices/category-slice";
-import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { logger } from "@/utils/Logger";
 import { useEffect, useState } from "react";
 
@@ -23,10 +22,10 @@ export const useCategories = (
     (state) => state.category.selectedCategory
   );
   const [categories, setCategories] = useState<CategoryData[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchCategories = async () => {
     try {
-      dispatch(loaderActions.turnOn());
       const categoryAction = await new CategoryFetchAll();
       const categories = await categoryAction.execute();
       setCategories(categories);
@@ -39,11 +38,12 @@ export const useCategories = (
     } catch (error) {
       logger.error(error);
     } finally {
-      dispatch(loaderActions.turnOff());
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchCategories();
     return () => {
       if (unmountCallback) {
@@ -61,5 +61,5 @@ export const useCategories = (
     dispatch(categoryActions.setSelectedCategory(category));
   };
 
-  return { categories, selectedCategory, selectCategory };
+  return { categories, selectedCategory, selectCategory, loading };
 };

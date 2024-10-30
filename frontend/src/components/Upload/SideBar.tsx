@@ -7,6 +7,7 @@ import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { categoryActions } from "@/src/context/store/slices/category-slice";
 import { useCategories } from "@/src/hooks/categories/useCategories";
+import SpinLoading from "../Spinner";
 
 const SideBar = () =>
 {
@@ -17,7 +18,16 @@ const SideBar = () =>
     {
         dispatch(categoryActions.setSelectedCategory(null));
     }
-    const { categories, selectedCategory } = useCategories([], callback);
+    const { categories, selectedCategory, loading } = useCategories([], callback);
+
+    if (loading)
+    {
+        return (
+            <div className="md:w-64 w-full bg-gray-800 text-white md:min-h-screen min-h-0">
+                <SpinLoading invert />
+            </div>
+        )
+    }
 
     return (
         <div className="md:w-64 w-full bg-gray-800 text-white md:min-h-screen min-h-0">

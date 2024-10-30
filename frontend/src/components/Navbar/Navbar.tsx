@@ -5,7 +5,7 @@ import NavbarItems from "./NavbarItems";
 import { useAppSelector } from "@/src/context/store/hooks";
 import { Roles } from "@/utils/enums/Roles";
 import { usePathname, useRouter } from "next/navigation";
-import { Spinner } from "react-bootstrap";
+import SpinLoading from "../Spinner";
 const Navbar = () =>
 {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -19,11 +19,7 @@ const Navbar = () =>
     if (isAuthLoading)
     {
         return (
-            <div className="w-full flex flex-row justify-center items-center my-4 px-4 py-2">
-                <Spinner animation="border" variant="primary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            </div>
+            <SpinLoading />
         )
     }
 

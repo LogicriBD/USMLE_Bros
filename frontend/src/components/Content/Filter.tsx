@@ -3,39 +3,24 @@ import { useAppDispatch } from "@/src/context/store/hooks";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { useCategories } from "@/src/hooks/categories/useCategories";
 import { ModalName } from "@/utils/enums/ModalEnum";
-import { logger } from "@/utils/Logger";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import SpinLoading from "../Spinner";
 
 const Filter = () =>
 {
     const dispatch = useAppDispatch();
-    const [searchText, setSearchText] = useState("");
-    const { categories, selectedCategory, selectCategory } = useCategories();
+    const { categories, selectedCategory, selectCategory, loading } = useCategories();
+
+    if (loading)
+    {
+        return (
+            <div className="w-full">
+                <SpinLoading />
+            </div>
+        )
+    }
 
     return (
         <div className="flex flex-col w-full">
-            <div className="w-full flex items-center justify-center">
-                <div className="relative md:w-1/2 w-3/4">
-                    <input
-                        type="text"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                        className="w-full p-2 px-4 border border-gray-400 bg-stone-200 hover:bg-stone-300 transition duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent pr-10"
-                        placeholder="Search"
-                    />
-                    {searchText !== "" ? (
-                        <FontAwesomeIcon
-                            icon={faSearch}
-                            className="absolute right-3 top-3 text-gray-900 cursor-pointer"
-                            onClick={() => logger.log(searchText)}
-                        />
-                    ) : (
-                        <FontAwesomeIcon icon={faSearch} className="absolute right-3 top-3 text-gray-400" />
-                    )}
-                </div>
-            </div>
             <div className="flex items-center justify-center">
                 <div className="flex space-x-4 flex-row mt-4">
                     {categories.map((category, index) => (

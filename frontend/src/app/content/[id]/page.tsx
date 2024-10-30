@@ -2,21 +2,17 @@
 import { ContentsFetchById } from "@/actions/content/ContentFetchById";
 import { ContentFetchMetadataById } from "@/actions/content/ContentFetchMetadataById";
 import { ContentData } from "@/database/repository/Content";
-import Contents from "@/src/components/Content/Contents";
+import Contents from "@/src/components/Content/ParseHTMLContent";
 import Sidebar from "@/src/components/Content/Sidebar";
 import Error from "@/src/components/Error";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { ContentDataWithTitle, ISection } from "@/types/Content";
 import { LoreumIpsum } from "@/utils/constants/LoremIpsum";
 import { extractFirstH1 } from "@/utils/helpers/ContentParser";
 import { logger } from "@/utils/Logger";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-export interface ContentDataWithTitle extends ContentData
-{
-    title?: string
-}
 
 
 const ContentPage = () =>
@@ -26,7 +22,7 @@ const ContentPage = () =>
     const params = useParams();
     const [contents, setContents] = useState<any[]>([]);
     const [error, setError] = useState<string | undefined>();
-    const [sections, setSections] = useState<{ section: string, locked: boolean }[]>([]);
+    const [sections, setSections] = useState<ISection[]>([]);
 
     const fetchSections = async (titles: string[], contentMap: Map<string, ContentData>) =>
     {
