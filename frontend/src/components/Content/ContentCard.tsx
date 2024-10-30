@@ -1,5 +1,3 @@
-import { useAppDispatch } from "@/src/context/store/hooks";
-import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { useRouter } from "next/navigation";
 import { Image } from "react-bootstrap";
 
@@ -14,11 +12,9 @@ const ContentCard = (props: Props) =>
 {
 
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const navigate = (url: string) =>
   {
-    dispatch(loaderActions.turnOn());
     router.push(url);
   }
 

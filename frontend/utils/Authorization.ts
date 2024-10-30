@@ -3,9 +3,11 @@ import { logger } from "./Logger";
 import { cookies } from "next/headers";
 import { FetchHandler } from "./FetchHandler";
 import { routes } from "@/src/api/Routes";
+import { appStore } from "@/src/context/store/redux-store";
+import { authActions } from "@/src/context/store/slices/auth-slice";
 
 type AuthorizationRequest = {
-  accessToken: string;
+  accessToken?: string;
 };
 
 export class Authorization {
@@ -20,22 +22,18 @@ export class Authorization {
     const cookieStore = await cookies();
     const cookie = cookieStore.get("access");
 
-    if (!cookie) {
-      return NextResponse.redirect(
-        new URL(this.redirectUrl, this.request.url).toString()
-      );
-    }
-    const token = cookie.value;
-    if (!token) {
-      return NextResponse.redirect(
-        new URL(this.redirectUrl, this.request.url).toString()
-      );
-    }
+    const token = cookie?.value;
     try {
       const fetchHandler = new FetchHandler<AuthorizationRequest>();
-      const { role } = await fetchHandler.postRequest(routes.auth.verify, {
+      const response = await fetchHandler.postRequest(routes.auth.verify, {
         accessToken: token,
       });
+      if (response.status === "401") {
+        appStore.dispatch(authActions.setSessionStatus(false));
+      } else {
+        appStore.dispatch(authActions.setSessionStatus(true));
+      }
+      const role = response.role;
       if (this.isAdminRoute && role !== "Admin") {
         return NextResponse.redirect(
           new URL("/access-denied", this.request.url).toString()

@@ -7,9 +7,10 @@ export async function POST(request: NextRequest) {
     logger.log(process.env.NEXT_FIREBASE_PRIVATE_KEY);
     const formData = await request.formData();
     const accessToken = formData.get("accessToken") as string;
-    if (!accessToken) {
+    if (accessToken === "undefined") {
       return NextResponse.json({ error: "No token provided" }, { status: 401 });
     }
+    console.log(accessToken);
     const decodedToken = await auth.verifyIdToken(accessToken);
     const email = decodedToken.email;
     const user = firestore.collection("users").where("email", "==", email);

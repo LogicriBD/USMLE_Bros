@@ -4,14 +4,14 @@ import { modalActions } from '@/src/context/store/slices/modal-slice';
 import { ModalName } from '@/utils/enums/ModalEnum';
 import parse from 'html-react-parser';
 
-interface IContents
+interface IParseHTMLContent
 {
     title?: string;
     content: string;
     isLocked: boolean;
 }
 
-const Contents = ({ title, content, isLocked }: IContents) =>
+const ParseHTMLContent = ({ title, content, isLocked }: IParseHTMLContent) =>
 {
     const dispatch = useAppDispatch();
 
@@ -34,4 +34,4 @@ const Contents = ({ title, content, isLocked }: IContents) =>
     return parse(content);
 }
 
-export default Contents;
+export default ParseHTMLContent;

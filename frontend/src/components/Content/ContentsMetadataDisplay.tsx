@@ -9,7 +9,7 @@ import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory
 import Error from "../Error";
 import SearchBar from "./SearchBar";
 
-const ContentsDisplay = () =>
+const ContentsMetadataDisplay = () =>
 {
     const dispatch = useAppDispatch();
     const { selectedCategory } = useCategories();
@@ -76,4 +76,4 @@ const ContentsDisplay = () =>
     );
 }
 
-export default ContentsDisplay;
+export default ContentsMetadataDisplay;
