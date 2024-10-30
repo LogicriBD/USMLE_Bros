@@ -148,7 +148,6 @@ class ContentRepository {
       );
 
       await Promise.all(deletePromises);
-
     } catch (err: any) {
       logger.error(err);
       throw new ApiError(400, err.message);
@@ -159,14 +158,14 @@ class ContentRepository {
     try {
       const q = all
         ? query(
-          collection(firestore, "content"),
-          where("metadataId", "==", metadataId)
-        )
+            collection(firestore, "content"),
+            where("metadataId", "==", metadataId)
+          )
         : query(
-          collection(firestore, "content"),
-          where("metadataId", "==", metadataId),
-          where("isLocked", "==", false)
-        );
+            collection(firestore, "content"),
+            where("metadataId", "==", metadataId),
+            where("isLocked", "==", false)
+          );
 
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {

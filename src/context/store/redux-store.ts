@@ -17,6 +17,11 @@ const appReducer = combineReducers({
 
 export const appStore = configureStore({
   reducer: appReducer,
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware({
+      serializableCheck: false,
+    });
+  },
 });
 
 export type AppStore = ReturnType<typeof appReducer>;
