@@ -6,7 +6,7 @@ import { ModalName } from "@/utils/enums/ModalEnum";
 import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const SidebarElement = ({ section }: { section: ISection }) =>
+const SidebarElement = ({ section, onClick }: { section: ISection, onClick: (id: string) => void }) =>
 {
 
   const dispatch = useAppDispatch();
@@ -17,12 +17,16 @@ const SidebarElement = ({ section }: { section: ISection }) =>
     {
       dispatch(modalActions.updateModalType(ModalName.Login));
     }
+    else
+    {
+      onClick(section.id!);
+    }
   }
 
   return (
     <div
-      className={`${section.locked ? "text-yellow-600 cursor-pointer" : "text-white"
-        } text-lg flex mx-2 my-2 px-2 py-2`}
+      className={`w-screen cursor-pointer ${section.locked ? "text-yellow-600" : "text-white"
+        } text-lg flex py-2 my-2`}
       onClick={() => openModal()}
     >
       <div

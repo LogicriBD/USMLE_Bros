@@ -6,7 +6,7 @@ import { extractFirstH1 } from "@/utils/helpers/ContentParser";
 import { ContentDataWithTitle } from "@/types/Content";
 import ParseHTMLContent from "@/src/components/Content/ParseHTMLContent";
 import { LoreumIpsum } from "@/utils/constants/LoremIpsum";
-import { ServerAuthContext } from "@/utils/ServerAuthContext";
+import { ServerAuthContext } from "@/src/context/ServerAuthContext";
 export const dynamic = 'force-dynamic';
 
 
@@ -43,7 +43,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
                         id: "",
                         title: section,
                         isLocked: true,
-                        content: `<p>${LoreumIpsum}</p>`,
+                        content: "",
                         serialNumber: index
                     }
                 }
@@ -60,7 +60,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     if (!fetchedContents)
     {
         return (
-            <div className="w-3/4 h-screen bg-sky-900 flex flex-col flex-grow px-4 py-2">
+            <div className="h-screen bg-sky-900 flex flex-col flex-grow px-4 py-2">
                 <Error error="Could Not Fetch Sections" />
             </div>
         )
@@ -68,9 +68,9 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     const contents = fetchedContents;
 
     return (
-        <div className="w-3/4 overflow-scroll px-4 py-2 mx-4 my-2">
+        <div className="w-full overflow-scroll px-4 py-2 mx-4 my-2">
             {contents.map((content, index) => (
-                <ParseHTMLContent key={index} content={content.content} isLocked={content.isLocked} title={content.title} />
+                <ParseHTMLContent id={content.id} key={index} content={content.content} isLocked={content.isLocked} title={content.title} />
             ))}
         </div>
     );

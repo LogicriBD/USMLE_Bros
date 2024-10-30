@@ -1,11 +1,10 @@
 import { auth, firestore } from "@/database/config/adminApp";
 import { logger } from "@/utils/Logger";
-import { ServerAuthContext } from "@/utils/ServerAuthContext";
+import { ServerAuthContext } from "@/src/context/ServerAuthContext";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    logger.log(process.env.NEXT_FIREBASE_PRIVATE_KEY);
     const formData = await request.formData();
     const accessToken = formData.get("accessToken") as string;
     if (accessToken === "undefined") {

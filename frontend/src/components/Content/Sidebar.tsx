@@ -3,9 +3,9 @@ import { ContentFetchMetadataById } from "@/actions/content/ContentFetchMetadata
 import { ISection } from "@/types/Content";
 import { extractFirstH1 } from "@/utils/helpers/ContentParser";
 import { logger } from "@/utils/Logger";
-import SidebarElement from "./SidebarElement";
-import Error from "../Error";
-import { ServerAuthContext } from "@/utils/ServerAuthContext";
+import { ServerAuthContext } from "@/src/context/ServerAuthContext";
+import { MobileSideBarContent, MobileSidebarError } from "./MobileSidebar";
+import { DesktopSideBarContent, DesktopSideBarError } from "./DesktopSidebar";
 export const dynamic = 'force-dynamic';
 
 
@@ -25,11 +25,13 @@ const Sidebar = async ({ id }: { id: string }) =>
             const titles = contents.map(content => extractFirstH1(content.content)).filter(title => title !== undefined) as string[];
             const contentMetadata = await contentFetchMetadataById.execute();
             const sections = contentMetadata?.sections ? contentMetadata.sections : [];
+            let baseIndex = 0;
             const modifiedSections = sections.map((section) =>
             {
                 if (titles.includes(section))
                 {
                     return {
+                        id: contents[baseIndex++].id,
                         section,
                         locked: false
                     }
@@ -37,6 +39,7 @@ const Sidebar = async ({ id }: { id: string }) =>
                 else
                 {
                     return {
+                        id: "",
                         section,
                         locked: true
                     }
@@ -54,19 +57,19 @@ const Sidebar = async ({ id }: { id: string }) =>
     if (!fetchedSections)
     {
         return (
-            <div className="w-1/4 h-screen bg-sky-900 flex flex-col flex-grow px-4 py-2">
-                <Error error="Could Not Fetch Sections" />
-            </div>
+            <>
+                <MobileSidebarError error="Could Not Fetch Sections" />
+                <DesktopSideBarError error="Could Not Fetch Sections" />
+            </>
         )
     }
     const sections = fetchedSections as ISection[];
 
     return (
-        <div className="w-1/4 h-screen bg-sky-900 flex flex-col flex-grow px-4 py-2">
-            {sections.map((section, index) => (
-                <SidebarElement section={section} key={index} />
-            ))}
-        </div>
+        <>
+            <DesktopSideBarContent sections={sections} />
+            <MobileSideBarContent sections={sections} />
+        </>
     );
 }
 

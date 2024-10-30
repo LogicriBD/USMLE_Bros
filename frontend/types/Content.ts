@@ -5,6 +5,7 @@ export interface ContentDataWithTitle extends ContentData {
 }
 
 export interface ISection {
+  id?: string;
   section: string;
   locked: boolean;
   sections?: ISection[];
