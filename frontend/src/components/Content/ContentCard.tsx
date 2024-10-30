@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@/src/hooks/useNavigate";
 import { Image } from "react-bootstrap";
 
 type Props = {
@@ -11,13 +11,7 @@ type Props = {
 const ContentCard = (props: Props) =>
 {
 
-  const router = useRouter();
-
-  const navigate = (url: string) =>
-  {
-    router.refresh();
-    router.push(url);
-  }
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-sm bg-inherit overflow-hidden border-b-2 border-gray-300 cursor-pointer" onClick={() => navigate(`/content/${props.id}`)}>

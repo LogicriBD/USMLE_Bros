@@ -8,7 +8,7 @@ import { authActions } from "../../context/store/slices/auth-slice";
 import { UserFetchByEmailAction } from "@/actions/user/UserFetchByEmailAction";
 import { appStore } from "../../context/store/redux-store";
 import { logger } from "@/utils/Logger";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "../useNavigate";
 
 /**
  *
@@ -29,7 +29,7 @@ export const useLogin = () => {
   const [error, setError] = useState<string | undefined>("");
 
   const [submitted, setSubmitted] = useState(false);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
@@ -78,8 +78,7 @@ export const useLogin = () => {
           email: appStore.getState().user.email,
         });
         await userAction.execute();
-        router.refresh();
-        router.push("/");
+        navigate("/");
         dispatch(modalActions.updateModalType(ModalName.SuccessModal));
       } else {
         setSubmitted(false);

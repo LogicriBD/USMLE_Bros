@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { authActions } from "@/src/context/store/slices/auth-slice";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
+import { useNavigate } from "@/src/hooks/useNavigate";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { Roles } from "@/utils/enums/Roles";
 
@@ -76,7 +77,7 @@ const NavbarItems = () =>
 {
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const dispatch = useAppDispatch();
-    const router = useRouter();
+    const navigate = useNavigate();
     const role = useAppSelector((state) => state.user.role);
     const isAdminRole = role === Roles.Admin;
 
@@ -85,8 +86,7 @@ const NavbarItems = () =>
         dispatch(loaderActions.turnOn());
         const userLogoutAction = new UserLogoutAction();
         await userLogoutAction.execute();
-        router.refresh();
-        router.push("/");
+        navigate("/");
         dispatch(authActions.logout());
         dispatch(loaderActions.turnOff());
     }
