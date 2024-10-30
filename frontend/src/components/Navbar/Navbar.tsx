@@ -6,9 +6,11 @@ import { useAppSelector } from "@/src/context/store/hooks";
 import { Roles } from "@/utils/enums/Roles";
 import { usePathname, useRouter } from "next/navigation";
 import SpinLoading from "../Spinner";
+import Active from "../Active";
 const Navbar = () =>
 {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const user = useAppSelector((state) => state.user);
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const isAuthLoading = useAppSelector((state) => state.loader.authLoading);
     const role = useAppSelector((state) => state.user.role);
@@ -25,21 +27,25 @@ const Navbar = () =>
 
     return (
         <nav className="bg-white p-3 sticky top-0 z-40 shadow-md">
-            <div className="container mx-auto flex justify-between items-center">
-                <div className="md:max-w-72 max-w-40 w-[50px] cursor-pointer" onClick={() => router.push("/")}>
+            <div className="w-full mx-auto flex justify-between items-center">
+                <div className="md:max-w-72 max-w-40 w-full cursor-pointer flex" onClick={() => router.push("/")}>
                     <Image
                         src="/logos/icon.png"
                         alt="Logo"
                         width={50}
                         height={50}
                     />
+                    {
+                        isLoggedIn && isAdminPortal && (
+                            <div className="ms-4 text-black text-2xl font-bold py-2">Admin Portal</div>
+                        )
+                    }
                 </div>
-                {
-                    isLoggedIn && isAdminPortal && (
-                        <div className="text-black text-2xl font-bold">Admin Portal</div>
-                    )
-                }
-                <div className="hidden md:flex space-x-6 flex justify-center items-center">
+                <div className="hidden md:flex space-x-3 flex justify-center items-center">
+                    {user.name && (<Active />)}
+                    <div className="flex">
+                        {user.name}
+                    </div>
                     {
                         <NavbarItems />
                     }
