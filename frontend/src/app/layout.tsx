@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Roboto_Slab } from "next/font/google";
-import metadataProperties from "@/metadata.json";
 import Navbar from "@/src/components/Navbar/Navbar";
 import Footer from "@/src/components/Footer/Footer";
 import { config } from '@fortawesome/fontawesome-svg-core'
@@ -20,7 +19,25 @@ const roboto = Roboto_Slab({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-export const metadata: Metadata = metadataProperties;
+export const metadata: Metadata = {
+  title: "USMLE Bros",
+  description: "USMLE Bros is a platform for medical students to share and learn from each other.",
+  authors: [{
+    name: "USMLE Bros",
+    url: "https://usmle-bros.vercel.app/",
+  }, {
+    name: "RobustTech BD",
+    url: "https://robustechbd.com/"
+  }],
+  icons: [
+    {
+      href: "/logos/icon.png",
+      sizes: "192x192",
+      type: "image/png",
+      url: "/logos/icon.png",
+    },
+  ]
+};
 
 export default function RootLayout({
   children,
