@@ -60,7 +60,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     if (!fetchedContents)
     {
         return (
-            <div className="w-1/4 h-screen bg-sky-900 flex flex-col flex-grow px-4 py-2">
+            <div className="w-3/4 h-screen bg-sky-900 flex flex-col flex-grow px-4 py-2">
                 <Error error="Could Not Fetch Sections" />
             </div>
         )
@@ -68,7 +68,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     const contents = fetchedContents;
 
     return (
-        <div className="w-full overflow-scroll px-4 py-2 mx-4 my-2">
+        <div className="w-3/4 overflow-scroll px-4 py-2 mx-4 my-2">
             {contents.map((content, index) => (
                 <ParseHTMLContent key={index} content={content.content} isLocked={content.isLocked} title={content.title} />
             ))}
