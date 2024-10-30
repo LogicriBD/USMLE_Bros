@@ -19,10 +19,6 @@ import { logger } from "@/utils/Logger";
 import { UserLogoutAction } from "@/actions/user/UserLogoutAction";
 
 const auth = getAuth(app);
-const CookieSafety = {
-  secure: true,
-  httpOnly: true,
-};
 
 type Action = (
   auth: Auth,
@@ -108,14 +104,7 @@ export const validateUserSession = () => {
 };
 
 const setAccessTokenInCookie = (idToken: string) => {
-  if (process.env.NODE_ENV === "production") {
-    Cookies.set("access", idToken, {
-      ...CookieSafety,
-      expires: new Date(new Date().getTime() + 55 * 60 * 1000),
-    });
-  } else {
-    Cookies.set("access", idToken, {
-      expires: new Date(new Date().getTime() + 55 * 60 * 1000),
-    });
-  }
+  Cookies.set("access", idToken, {
+    expires: new Date(new Date().getTime() + 55 * 60 * 1000),
+  });
 };
