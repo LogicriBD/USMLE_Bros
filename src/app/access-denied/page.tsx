@@ -1,5 +1,19 @@
+"use client";
+
+import { useAppDispatch } from "@/src/context/store/hooks";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { useEffect } from "react";
+
 const AccessDeniedPage = () =>
 {
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() =>
+    {
+        dispatch(loaderActions.turnOff());
+    }, [])
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
             <div className="text-center">
