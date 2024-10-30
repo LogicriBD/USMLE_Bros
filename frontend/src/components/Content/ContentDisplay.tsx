@@ -5,7 +5,6 @@ import { ContentsFetchById } from "@/actions/content/ContentFetchById";
 import { extractFirstH1 } from "@/utils/helpers/ContentParser";
 import { ContentDataWithTitle } from "@/types/Content";
 import ParseHTMLContent from "@/src/components/Content/ParseHTMLContent";
-import { LoreumIpsum } from "@/utils/constants/LoremIpsum";
 import { ServerAuthContext } from "@/src/context/ServerAuthContext";
 export const dynamic = 'force-dynamic';
 

@@ -1,7 +1,6 @@
 "use client";
 import { useAppDispatch } from '@/src/context/store/hooks';
 import { modalActions } from '@/src/context/store/slices/modal-slice';
-import { LoreumIpsum } from '@/utils/constants/LoremIpsum';
 import { ModalName } from '@/utils/enums/ModalEnum';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

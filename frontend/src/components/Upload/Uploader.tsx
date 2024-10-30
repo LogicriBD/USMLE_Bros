@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 import { ContentDeleteById } from "@/actions/content/ContentDeleteById";
 import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory";
