@@ -81,12 +81,9 @@ const CreateContent = () =>
                 {
                     metadata.imageUrl = images[0];
                 }
-                if (filterNullSections.length > 0)
-                {
-                    metadata.sections = filterNullSections
+                if (filterNullSections.length > 0) {
+                    metadata.sections = filterNullSections.filter(section => section !== null) as string[];
                 }
-
-
 
                 const contentdata: ContentData[] = contentSections.map((section) => ({
                     content: section,

@@ -9,6 +9,7 @@ import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 import { logger } from "@/utils/Logger";
 import { faEdit, faEye, faLock, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 
@@ -68,7 +69,9 @@ const Uploader = () => {
                                 <div className="flex md:justify-between flex-col md:flex-row">
                                     <h3 className="text-sm font-normal">Author: {item.userName}</h3>
                                     <div className="md:pt-2 flex justify-end space-x-4">
-                                        <FontAwesomeIcon icon={faEye} className="pr-2 cursor-pointer" title="View" />
+                                        <Link target="_blank" href={`/content/${item.id}`} passHref>
+                                            <FontAwesomeIcon icon={faEye} className="pr-2 cursor-pointer" title="View" />
+                                        </Link>
                                         <FontAwesomeIcon icon={faEdit} className="pr-2 cursor-pointer" title="Edit" />
                                         <FontAwesomeIcon icon={faTrash} className="pr-2 cursor-pointer" title="Delete" />
 
