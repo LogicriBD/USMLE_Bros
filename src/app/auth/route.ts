@@ -7,13 +7,11 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const accessToken = formData.get("accessToken") as string;
-    logger.log(accessToken);
     if (accessToken === "undefined") {
       ServerAuthContext.setLoggedIn(false);
       return NextResponse.json({ error: "No token provided" }, { status: 401 });
     }
     const decodedToken = await auth.verifyIdToken(accessToken);
-    logger.log(decodedToken);
     ServerAuthContext.setLoggedIn(true);
     const email = decodedToken.email;
     const user = firestore.collection("users").where("email", "==", email);

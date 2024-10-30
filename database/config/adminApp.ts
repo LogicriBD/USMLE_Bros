@@ -10,18 +10,16 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 
 const serviceAccount = {
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  clientEmail: process.env.NEXT_PUBLIC_FIREBASE_SERVICE_ACCOUNT,
-  privateKey: JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_PRIVATE_KEY!)[
-    "private_key"
-  ],
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  clientEmail: process.env.FIREBASE_SERVICE_ACCOUNT,
+  privateKey: JSON.parse(process.env.FIREBASE_PRIVATE_KEY!)["private_key"],
 } as ServiceAccount;
 
 export const adminApp = !getApps().length
   ? initializeApp(
       {
         credential: cert(serviceAccount),
-        storageBucket: "gs://usmle-bros-test.appspot.com",
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
       },
       "usmle-bros-test"
     )
@@ -30,7 +28,7 @@ export const adminApp = !getApps().length
 export const firestore = getFirestore(adminApp);
 
 export const bucket = getStorage(adminApp).bucket(
-  "gs://usmle-bros-test.appspot.com"
+  process.env.FIREBASE_STORAGE_BUCKET
 );
 
 export const auth = getAuth(adminApp);
