@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -131,18 +132,41 @@ class ContentRepository {
     }
   }
 
+  async deleteContentAndMetadataById(metadataId: string) {
+    try {
+      const metadataRef = doc(firestore, "contentmetadata", metadataId);
+      await deleteDoc(metadataRef);
+
+      const contentQuery = query(
+        collection(firestore, "content"),
+        where("metadataId", "==", metadataId)
+      );
+      const querySnapshot = await getDocs(contentQuery);
+
+      const deletePromises = querySnapshot.docs.map((contentDoc) =>
+        deleteDoc(contentDoc.ref)
+      );
+
+      await Promise.all(deletePromises);
+
+    } catch (err: any) {
+      logger.error(err);
+      throw new ApiError(400, err.message);
+    }
+  }
+
   async fetchContentsById(metadataId: string, all: boolean = false) {
     try {
       const q = all
         ? query(
-            collection(firestore, "content"),
-            where("metadataId", "==", metadataId)
-          )
+          collection(firestore, "content"),
+          where("metadataId", "==", metadataId)
+        )
         : query(
-            collection(firestore, "content"),
-            where("metadataId", "==", metadataId),
-            where("isLocked", "==", false)
-          );
+          collection(firestore, "content"),
+          where("metadataId", "==", metadataId),
+          where("isLocked", "==", false)
+        );
 
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {

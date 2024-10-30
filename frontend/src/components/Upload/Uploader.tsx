@@ -1,9 +1,11 @@
 "use client"
+import { ContentDeleteById } from "@/actions/content/ContentDeleteById";
 import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory";
 import { ContentMetaData } from "@/database/repository/Content";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
+import { submitActions } from "@/src/context/store/slices/submit-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 import { logger } from "@/utils/Logger";
@@ -29,6 +31,20 @@ const Uploader = () => {
                 const contents = await contentAction.execute();
                 setContentMetadata(contents);
             }
+        } catch (error) {
+            logger.error(error);
+        }
+        finally {
+            dispatch(loaderActions.turnOff());
+        }
+    }
+
+    const handleDelete = async (id: string) => {
+        try {
+            dispatch(loaderActions.turnOn());
+            const contentAction = new ContentDeleteById({ id });
+            await contentAction.execute();
+            dispatch(submitActions.toggleSubmit());
         } catch (error) {
             logger.error(error);
         }
@@ -69,12 +85,16 @@ const Uploader = () => {
                                 <div className="flex md:justify-between flex-col md:flex-row">
                                     <h3 className="text-sm font-normal">Author: {item.userName}</h3>
                                     <div className="md:pt-2 flex justify-end space-x-4">
-                                        <Link target="_blank" href={`/content/${item.id}`} passHref>
-                                            <FontAwesomeIcon icon={faEye} className="pr-2 cursor-pointer" title="View" />
+                                        <Link className="pr-2 pt-0" target="_blank" href={`/content/${item.id}`} passHref>
+                                            <FontAwesomeIcon icon={faEye} className="cursor-pointer" title="View" />
                                         </Link>
                                         <FontAwesomeIcon icon={faEdit} className="pr-2 cursor-pointer" title="Edit" />
-                                        <FontAwesomeIcon icon={faTrash} className="pr-2 cursor-pointer" title="Delete" />
-
+                                        <FontAwesomeIcon 
+                                            onClick={() => handleDelete(item.id??"")}
+                                            icon={faTrash} 
+                                            className="pr-2 cursor-pointer" 
+                                            title="Delete" 
+                                        />
                                     </div>
                                 </div>
                             </div>
