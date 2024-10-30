@@ -24,7 +24,7 @@ const ContentLock = () =>
         try
         {
             dispatch(loaderActions.turnOn());
-            const contentAction = new ContentsFetchById({ metadataId: data });
+            const contentAction = new ContentsFetchById({ metadataId: data, all:true });
             const contents = await contentAction.execute();
             setContents(contents);
         } catch (error: any)
