@@ -92,17 +92,23 @@ const Uploader = () => {
                     {searchedContents.length > 0 ? (
                         searchedContents.map((item, index) => (
                             <div key={index} className="my-2 flex flex-col bg-gray-200 text-sky-800 border-1 border-gray-600 rounded-lg px-3 py-2 shadow-md">
-                                <div className="flex md:justify-between flex-col md:flex-row ">
-                                    <h3 className="md:text-lg text-sm font-semibold mb-2">{item.title}</h3>
-                                    <span 
-                                        onClick={() => { dispatch(modalActions.addModal({
-                                            type:ModalName.ContentLock, 
-                                            data:item.id
-                                        }))}}
-                                        className="p-2 text-gray-200 bg-gray-700 rounded-md text-sm font-semibold mb-2 md:mb-0 hover:bg-gray-500 transition duration-300 cursor-pointer">
-                                        Lock this content <FontAwesomeIcon icon={faLock} className="pl-2" />
-                                    </span>
-                                    <p className="text-sm font-semibold">{formatFirebaseDate(item.createdAt)}</p>
+                                <div className="flex flex-col md:flex-row">
+                                    <div className="md:w-1/3 w-full flex justify-start">
+                                        <h3 className="md:text-lg text-sm font-semibold mb-2">{item.title}</h3>
+                                    </div>
+                                    <div className="md:w-1/3 w-full flex md:justify-center jusify-start">
+                                        <span 
+                                            onClick={() => { dispatch(modalActions.addModal({
+                                                type:ModalName.ContentLock, 
+                                                data:item.id
+                                            }))}}
+                                            className="p-2 text-gray-200 bg-gray-700 rounded-md text-sm font-semibold mb-2 md:mb-0 hover:bg-gray-500 transition duration-300 cursor-pointer">
+                                            Lock this content <FontAwesomeIcon icon={faLock} className="pl-2" />
+                                        </span>
+                                    </div>
+                                    <div className="md:w-1/3 w-full flex md:justify-end justify-start">
+                                        <p className="text-sm font-semibold">{formatFirebaseDate(item.createdAt)}</p>
+                                    </div>
                                 </div>
                                 <div className="flex md:justify-between flex-col md:flex-row">
                                     <h3 className="text-sm font-normal">Author: {item.userName}</h3>
