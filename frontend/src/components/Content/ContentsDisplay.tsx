@@ -43,6 +43,7 @@ const ContentsDisplay = () =>
 
     useEffect(() =>
     {
+        dispatch(loaderActions.turnOn());
         fetchContents();
     }, [selectedCategory])
 
