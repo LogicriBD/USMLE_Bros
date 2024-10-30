@@ -20,7 +20,6 @@ import { UserLogoutAction } from "@/actions/user/UserLogoutAction";
 
 const auth = getAuth(app);
 const CookieSafety = {
-  sameSite: "strict" as Cookies.CookieAttributes["sameSite"],
   secure: true,
   httpOnly: true,
 };
