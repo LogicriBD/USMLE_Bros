@@ -10,7 +10,6 @@ import { IoMdLogOut } from "react-icons/io";
 
 import { usePathname } from "next/navigation";
 import NavItem, { InactiveNavItem } from "./NavItem";
-import { userActions } from "@/src/context/store/slices/user-slice";
 
 const AdminItems = () =>
 {
@@ -42,7 +41,6 @@ const NavbarItems = () =>
 
     const handleLogout = async () =>
     {
-        dispatch(userActions.clearData());
         dispatch(loaderActions.turnOn());
         const userLogoutAction = new UserLogoutAction();
         await userLogoutAction.execute();

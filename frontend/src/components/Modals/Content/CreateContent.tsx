@@ -1,7 +1,7 @@
 "use client"
 import { Modal } from "react-bootstrap";
 import Editor from "../../Upload/Editor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { closeModal } from "@/utils/Modal";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { Content, ContentData, ContentMetaData } from "@/database/repository/Content";
@@ -10,17 +10,42 @@ import { logger } from "@/utils/Logger";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
 import { extractFirstH1, splitContentByH1Sections } from "@/utils/helpers/ContentParser";
+import SpinLoading from "../../Spinner";
+import { ContentsFetchById } from "@/actions/content/ContentFetchById";
+import { ContentDeleteById } from "@/actions/content/ContentDeleteById";
+
+
+const LoadableEditor = ({ loading, content, handleContentChange }: {
+    loading: boolean;
+    content: string;
+    handleContentChange: (newContent: string, imageUrl?: string) => void;
+}) =>
+{
+
+    if (loading)
+    {
+        return (
+            <SpinLoading />
+        )
+    }
+
+    return (
+        <Editor value={content} onChange={handleContentChange} />
+    )
+}
 
 const CreateContent = () =>
 {
 
     const dispatch = useAppDispatch();
-
+    const modalData = useAppSelector((state) => state.modal.data);
     const [content, setContent] = useState<string>("");
     const [showModal, setShowModal] = useState<boolean>(true);
     const [title, setTitle] = useState<string>("");
     const [error, setError] = useState<string | undefined>("");
     const [images, setImages] = useState<string[]>([]);
+    const [contentHeader, setContentHeader] = useState<string>("");
+    const [loading, setLoading] = useState(false);
 
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
     const user = useAppSelector((state) => state.user);
@@ -39,6 +64,28 @@ const CreateContent = () =>
         setContent("");
         closeModal();
     };
+
+    const fetchContent = async (metadataId: string) =>
+    {
+        try
+        {
+            const contentByMetadataIdAction = new ContentsFetchById({ metadataId: metadataId, all: true });
+            const contents = await contentByMetadataIdAction.execute();
+            const sortedContents = contents.sort((a, b) => a.serialNumber - b.serialNumber);
+            const content = sortedContents.map((content) => content.content).join("\n");
+            setContent(content);
+            setLoading(false);
+        }
+        catch (err: any)
+        {
+            logger.error(err);
+            setError(err.message);
+        }
+        finally
+        {
+            setLoading(false);
+        }
+    }
 
     const handleSubmit = async () =>
     {
@@ -81,7 +128,8 @@ const CreateContent = () =>
                 {
                     metadata.imageUrl = images[0];
                 }
-                if (filterNullSections.length > 0) {
+                if (filterNullSections.length > 0)
+                {
                     metadata.sections = filterNullSections.filter(section => section !== null) as string[];
                 }
 
@@ -91,12 +139,18 @@ const CreateContent = () =>
                     serialNumber: contentSections.indexOf(section),
                 }));
 
-                const C: Content = {
+                const formattedContent: Content = {
                     metadata: metadata,
                     content: contentdata
                 }
 
-                const contentAction = new ContentCreate({ content: C });
+                if (!!modalData)
+                {
+                    const contentDeleteAction = new ContentDeleteById({ id: modalData.id });
+                    await contentDeleteAction.execute();
+                }
+
+                const contentAction = new ContentCreate({ content: formattedContent });
                 await contentAction.execute();
                 dispatch(submitActions.toggleSubmit());
             }
@@ -110,6 +164,22 @@ const CreateContent = () =>
         }
     }
 
+    useEffect(() =>
+    {
+        console.log(modalData);
+        if (!!modalData)
+        {
+            setContentHeader(modalData.title);
+            setTitle(modalData.title);
+            setLoading(true);
+            fetchContent(modalData.id);
+        }
+        else
+        {
+            setContentHeader(`New Content ${selectedCategory && (`for ${selectedCategory.name}`)}`)
+        }
+    }, [modalData, selectedCategory])
+
     return (
         <Modal
             show={showModal}
@@ -121,7 +191,7 @@ const CreateContent = () =>
             keyboard={false}
         >
             <Modal.Header closeButton>
-                <Modal.Title className="text-black bg-inherit">New Content {selectedCategory && (`for ${selectedCategory.name}`)}</Modal.Title>
+                <Modal.Title className="text-black bg-inherit">{contentHeader}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="w-full py-2">
@@ -134,9 +204,7 @@ const CreateContent = () =>
                     {error && (<div className="text-red-500 font-normal text-sm px-2">{error}</div>)}
                 </div>
                 <div className="w-full">
-                    {showModal && (
-                        <Editor value={content} onChange={handleContentChange} />
-                    )}
+                    <LoadableEditor loading={loading} content={content} handleContentChange={handleContentChange} />
                 </div>
             </Modal.Body>
             <Modal.Footer

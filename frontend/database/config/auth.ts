@@ -16,6 +16,7 @@ import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { UserFetchByEmailAction } from "@/actions/user/UserFetchByEmailAction";
 import Cookies from "js-cookie";
 import { logger } from "@/utils/Logger";
+import { UserLogoutAction } from "@/actions/user/UserLogoutAction";
 
 const auth = getAuth(app);
 
@@ -87,16 +88,16 @@ export const validateUserSession = () => {
         Cookies.set("access", idToken);
         await userFetchByEmailAction.execute();
       } else {
-        appStore.dispatch(authActions.setSessionStatus(false));
-        appStore.dispatch(authActions.logout());
+        const logoutAction = new UserLogoutAction();
+        await logoutAction.execute();
       }
       appStore.dispatch(loaderActions.authTurnOff());
       return user;
     },
-    (error) => {
+    async (error) => {
       logger.error(error);
-      appStore.dispatch(authActions.setSessionStatus(false));
-      appStore.dispatch(authActions.logout());
+      const logoutAction = new UserLogoutAction();
+      await logoutAction.execute();
       appStore.dispatch(loaderActions.authTurnOff());
     }
   );

@@ -16,7 +16,8 @@ import { useEffect, useState } from "react";
 import SearchBar from "../Content/SearchBar";
 
 
-const Uploader = () => {
+const Uploader = () =>
+{
 
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
     const isSubmit = useAppSelector((state) => state.submit.toggle);
@@ -26,19 +27,24 @@ const Uploader = () => {
     const [searchedContents, setSearchedContents] = useState<ContentMetaData[]>([]);
     const [searchText, setSearchText] = useState<string>('');
 
-    const fetchContents = async () => {
-        try {
-            if (selectedCategory) {
+    const fetchContents = async () =>
+    {
+        try
+        {
+            if (selectedCategory)
+            {
                 dispatch(loaderActions.turnOn());
                 const contentAction = new ContentFetchByCategory({ categoryId: selectedCategory.id });
                 const contents = await contentAction.execute();
                 setContentMetadata(contents);
                 setSearchedContents(contents);
             }
-        } catch (error) {
+        } catch (error)
+        {
             logger.error(error);
         }
-        finally {
+        finally
+        {
             dispatch(loaderActions.turnOff());
         }
     }
@@ -58,23 +64,40 @@ const Uploader = () => {
         setSearchText(searchText);
     }
 
-    const handleDelete = async (id: string) => {
-        try {
+    const handleDelete = async (id: string) =>
+    {
+        try
+        {
             dispatch(loaderActions.turnOn());
             const contentAction = new ContentDeleteById({ id });
             await contentAction.execute();
             dispatch(submitActions.toggleSubmit());
-        } catch (error) {
+        } catch (error)
+        {
             logger.error(error);
         }
-        finally {
+        finally
+        {
             dispatch(loaderActions.turnOff());
         }
     }
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         fetchContents();
     }, [selectedCategory, isSubmit]);
+
+    const openEditOption = (metadata: ContentMetaData) =>
+    {
+        dispatch(modalActions.updateModalType(ModalName.CreateContent));
+        dispatch(modalActions.updateModalData(metadata));
+    }
+
+    const openCreateOption = () =>
+    {
+        dispatch(modalActions.updateModalData(null));
+        dispatch(modalActions.updateModalType(ModalName.CreateContent));
+    }
 
     return selectedCategory ? (
         <div className="w-full bg-inherit px-2">
@@ -84,7 +107,7 @@ const Uploader = () => {
                     <SearchBar searchText={searchText} setSearchText={handleSearch} />
                 </div>
                 <div
-                    onClick={() => { dispatch(modalActions.updateModalType(ModalName.CreateContent)) }}
+                    onClick={openCreateOption}
                     className="w-full rounded-md flex justify-between items-center bg-gray-800 text-white p-3 cursor-pointer hover:bg-gray-600">
                     Add a New Content  <FontAwesomeIcon icon={faPlusCircle} className="ml-2 text-lg" />
                 </div>
@@ -97,11 +120,14 @@ const Uploader = () => {
                                         <h3 className="md:text-lg text-sm font-semibold mb-2">{item.title}</h3>
                                     </div>
                                     <div className="md:w-1/3 w-full flex md:justify-center jusify-start">
-                                        <span 
-                                            onClick={() => { dispatch(modalActions.addModal({
-                                                type:ModalName.ContentLock, 
-                                                data:item.id
-                                            }))}}
+                                        <span
+                                            onClick={() =>
+                                            {
+                                                dispatch(modalActions.addModal({
+                                                    type: ModalName.ContentLock,
+                                                    data: item.id
+                                                }))
+                                            }}
                                             className="p-2 text-gray-200 bg-gray-700 rounded-md text-sm font-semibold mb-2 md:mb-0 hover:bg-gray-500 transition duration-300 cursor-pointer">
                                             Lock this content <FontAwesomeIcon icon={faLock} className="pl-2" />
                                         </span>
@@ -113,15 +139,15 @@ const Uploader = () => {
                                 <div className="flex md:justify-between flex-col md:flex-row">
                                     <h3 className="text-sm font-normal">Author: {item.userName}</h3>
                                     <div className="md:pt-2 flex justify-end space-x-4">
-                                        <Link className="pr-2 pt-0" target="_blank" href={`/content/${item.id}`} passHref>
-                                            <FontAwesomeIcon icon={faEye} className="cursor-pointer" title="View" />
+                                        <Link className="" target="_blank" href={`/content/${item.id}`} passHref>
+                                            <FontAwesomeIcon icon={faEye} className="pr-2 pb-0.5 cursor-pointer" title="View" />
                                         </Link>
-                                        <FontAwesomeIcon icon={faEdit} className="pr-2 cursor-pointer" title="Edit" />
-                                        <FontAwesomeIcon 
-                                            onClick={() => handleDelete(item.id??"")}
-                                            icon={faTrash} 
-                                            className="pr-2 cursor-pointer" 
-                                            title="Delete" 
+                                        <FontAwesomeIcon icon={faEdit} className="pr-2 cursor-pointer" title="Edit" onClick={() => { openEditOption(item) }} />
+                                        <FontAwesomeIcon
+                                            onClick={() => handleDelete(item.id ?? "")}
+                                            icon={faTrash}
+                                            className="pr-2 cursor-pointer"
+                                            title="Delete"
                                         />
                                     </div>
                                 </div>
