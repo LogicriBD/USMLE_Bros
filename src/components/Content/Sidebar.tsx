@@ -13,7 +13,6 @@ export const dynamic = 'force-dynamic';
 
 const Sidebar = async ({ id }: { id: string }) =>
 {
-
     const fetchSections = async () =>
     {
         try
@@ -22,26 +21,36 @@ const Sidebar = async ({ id }: { id: string }) =>
             const loggedIn = ServerAuthContext.isLoggedIn();
             const contentFetchById = new ContentsFetchById({ metadataId: id as string, all: loggedIn });
             const contents = await contentFetchById.execute();
-            const titles = contents.map(content => extractFirstH1(content.content)).filter(title => title !== undefined) as string[];
+            const extractedContents = contents.map(content =>
+            ({
+                title: extractFirstH1(content.content),
+                isLocked: content.isLocked,
+                serialNumber: content.serialNumber,
+                id: content.id,
+                content: content.content
+            })).filter(title => title.title !== undefined);
+            let contentsWithTitle = extractedContents.sort((a, b) => a.serialNumber - b.serialNumber);
             const contentMetadata = await contentFetchMetadataById.execute();
             const sections = contentMetadata?.sections ? contentMetadata.sections : [];
-            let baseIndex = 0;
             const modifiedSections = sections.map((section) =>
             {
-                if (titles.includes(section))
+                const baseIndex = contentsWithTitle.findIndex(title => title.title === section);
+                const currentContent = contentsWithTitle[baseIndex];
+                contentsWithTitle = contentsWithTitle.filter((_, index) => index !== baseIndex);
+                if (baseIndex !== -1)
                 {
                     return {
-                        id: contents[baseIndex++].id,
-                        section,
-                        locked: false
+                        id: currentContent.id,
+                        section: currentContent.title ? currentContent.title : undefined,
+                        locked: false,
                     }
                 }
                 else
                 {
                     return {
                         id: "",
-                        section,
-                        locked: true
+                        section: section,
+                        locked: true,
                     }
                 }
             })

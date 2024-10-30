@@ -15,24 +15,33 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     {
         try
         {
-            const contentFetchMetadataById = new ContentFetchMetadataById(id as string);
+            const contentFetchMetadataById = new ContentFetchMetadataById(id);
             const loggedIn = ServerAuthContext.isLoggedIn();
-            const contentFetchById = new ContentsFetchById({ metadataId: id as string, all: loggedIn });
+            const contentFetchById = new ContentsFetchById({ metadataId: id, all: loggedIn });
             const contents = await contentFetchById.execute();
-            const sortedContents = contents.sort((a, b) => a.serialNumber - b.serialNumber);
-            const titles = contents.map(content => extractFirstH1(content.content)).filter(title => title !== undefined) as string[];
+            const extractedContents = contents.map(content =>
+            ({
+                title: extractFirstH1(content.content),
+                isLocked: content.isLocked,
+                serialNumber: content.serialNumber,
+                id: content.id,
+                content: content.content
+            })).filter(title => title.title !== undefined);
+            let contentsWithTitle = extractedContents.sort((a, b) => a.serialNumber - b.serialNumber);
             const contentMetadata = await contentFetchMetadataById.execute();
             const sections = contentMetadata?.sections ? contentMetadata.sections : [];
-            let baseIndex = 0;
             const modifiedContents = sections.map((section, index) =>
             {
-                if (titles.includes(section))
+                const baseIndex = contentsWithTitle.findIndex(title => title.title === section);
+                const currentContent = contentsWithTitle[baseIndex];
+                contentsWithTitle = contentsWithTitle.filter((_, index) => index !== baseIndex);
+                if (baseIndex !== -1)
                 {
                     return {
-                        id: sortedContents[baseIndex].id,
-                        title: section,
+                        id: currentContent.id,
+                        title: currentContent.title ? currentContent.title : undefined,
                         isLocked: false,
-                        content: sortedContents[baseIndex++].content,
+                        content: currentContent.content,
                         serialNumber: index
                     }
                 }
@@ -69,7 +78,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     return (
         <div className="w-full overflow-scroll px-4 py-2 mx-4 my-2">
             {contents.map((content, index) => (
-                <ParseHTMLContent id={content.id} key={index} content={content.content} isLocked={content.isLocked} title={content.title} />
+                <ParseHTMLContent id={content.id} key={index} content={content.content ? content.content : ""} isLocked={content.isLocked} title={content.title} />
             ))}
         </div>
     );
