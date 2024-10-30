@@ -47,7 +47,11 @@ export const register = async (email: string, password: string) => {
     createUserWithEmailAndPassword
   );
   const idToken = await userCredential.user.getIdToken(true);
-  Cookies.set("access", idToken);
+  Cookies.set(
+    "access",
+    idToken,
+    JSON.parse(process.env.NEXT_PUBLIC_COOKIE_SAFETY!)
+  );
   return userCredential;
 };
 
@@ -58,7 +62,11 @@ export const login = async (email: string, password: string) => {
     signInWithEmailAndPassword
   );
   const idToken = await userCredential.user.getIdToken(true);
-  Cookies.set("access", idToken);
+  Cookies.set(
+    "access",
+    idToken,
+    JSON.parse(process.env.NEXT_PUBLIC_COOKIE_SAFETY!)
+  );
   return userCredential;
 };
 
@@ -85,7 +93,11 @@ export const validateUserSession = () => {
           email: user.email!,
         });
         const idToken = await user.getIdToken(true);
-        Cookies.set("access", idToken);
+        Cookies.set(
+          "access",
+          idToken,
+          JSON.parse(process.env.NEXT_PUBLIC_COOKIE_SAFETY!)
+        );
         await userFetchByEmailAction.execute();
       } else {
         const logoutAction = new UserLogoutAction();
