@@ -103,7 +103,7 @@ export const validateUserSession = () => {
   );
 };
 
-const setAccessTokenInCookie = (idToken: string) => {
+export const setAccessTokenInCookie = (idToken: string) => {
   Cookies.set("access", idToken, {
     expires: new Date(new Date().getTime() + 55 * 60 * 1000),
   });
