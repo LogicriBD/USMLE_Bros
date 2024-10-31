@@ -18,9 +18,6 @@ const HomeSideBar = () => {
                 <div className='flex justify-end'>
                     <Filter />
                 </div>
-                <div className='flex justify-end'>
-                    <RecentPosts />
-                </div>
             </div>
             <div className="md:hidden block w-full bg-gray-800 h-full flex flex-col z-20">
                 {isOpen ? (

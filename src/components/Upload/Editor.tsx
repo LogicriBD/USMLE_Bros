@@ -29,7 +29,7 @@ const modifiedEditorConfiguration = (value: string, onChange: (newContent: strin
                 '#5B0F00', '#660000', '#783F04', '#7F6000', '#274E13', '#0C343D', '#1C4587', '#073763', '#20124D', '#4C1130'
             ]
         },
-        removeButtons: process.env.NODE_ENV === 'development' ? ['source'] : [],
+        removeButtons: process.env.NODE_ENV === 'development' ? [] : ['source'],
         disablePlugins: [],
         extraButtons: [],
         buttons: [
@@ -60,7 +60,6 @@ const modifiedEditorConfiguration = (value: string, onChange: (newContent: strin
             "indent",
             "|",
             'fullsize',
-            'print',
             "|",
             "undo",
             "redo",
