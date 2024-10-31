@@ -9,7 +9,7 @@ const Loader = () =>
 
     return isLoading ? (
         <div
-            style={{ zIndex: "1100" }}
+            style={{ zIndex: "1600" }}
             className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
             <Image
                 src="/logos/icon.png"

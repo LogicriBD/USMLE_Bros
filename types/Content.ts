@@ -10,3 +10,9 @@ export interface ISection {
   locked: boolean;
   sections?: ISection[];
 }
+export interface ContentAllData {
+  metadataTitle: string;
+  username: string;
+  createdAt: Date | null;
+  contentDataWithTitle: ContentDataWithTitle[];
+}

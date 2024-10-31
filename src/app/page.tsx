@@ -1,13 +1,16 @@
-import Filter from "@/src/components/Content/Filter";
 import ContentsMetadataDisplay from "../components/Content/ContentsMetadataDisplay";
+import HomeSideBar from "../components/Content/HomeSideBar";
 
-export default function Home()
-{
+export default function Home() {
 
   return (
-    <div className="flex flex-col w-full p-4">
-      <Filter />
-      <ContentsMetadataDisplay />
+    <div className="flex flex-row w-full h-screen bg-gray-200">
+      <div className="md:w-1/3 w-1/6 h-screen flex flex-col md:justify-end justify-start">
+        <HomeSideBar />
+      </div>
+      <div className="flex md:p-4 p-2 md:w-5/6 w-11/12 h-full">
+        <ContentsMetadataDisplay />
+      </div>
     </div>
   );
 }

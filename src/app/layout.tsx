@@ -20,7 +20,7 @@ const roboto = Roboto_Slab({
 });
 
 export const metadata: Metadata = {
-  title: "USMLE Bros",
+  title: "USMLE Bros | Get your USMLE study materials",
   description: "USMLE Bros is a platform for medical students to share and learn from each other.",
   authors: [{
     name: "USMLE Bros",
@@ -58,7 +58,7 @@ export default function RootLayout({
           <AuthStateManager>
             <Loader />
             <Navbar />
-            <main className="min-h-screen bg-gray-100">
+            <main className="min-h-screen bg-gray-200">
               {children}
             </main>
             <Suspense fallback={<Loader />}>

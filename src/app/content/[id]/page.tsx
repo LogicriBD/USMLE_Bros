@@ -6,8 +6,8 @@ import { Suspense } from "react";
 const SidebarLoading = () =>
 {
     return (
-        <div className="w-1/4 h-screen bg-sky-900 flex flex-col flex-grow px-4 py-2">
-            <SpinLoading invert />
+        <div className="w-1/4 h-screen bg-gray-200 flex flex-col flex-grow px-4 py-2">
+            <SpinLoading />
         </div>
     )
 }
@@ -24,7 +24,7 @@ const ContentLoading = () =>
 const ContentPage = ({ params }: { params: { id: string } }) =>
 {
     return (
-        <div className="w-full flex flex-row h-screen">
+        <div className="w-full flex flex-row h-screen max-w-screen">
             <Suspense fallback={<SidebarLoading />}>
                 <Sidebar id={params.id} />
             </Suspense>

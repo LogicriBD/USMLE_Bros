@@ -11,13 +11,13 @@ const SearchBar = ({ searchText, setSearchText }: ISearchBar) =>
 {
 
     return (
-        <div className="w-full flex items-center justify-center">
-            <div className="relative md:w-1/2 w-3/4">
+        <div className="w-full px-4 flex items-center">
+            <div className="relative md:w-1/2 w-4/5">
                 <input
                     type="text"
                     value={searchText}
                     onChange={setSearchText}
-                    className="w-full p-2 px-4 border-2 border-gray-400 bg-stone-200 hover:bg-stone-200 transition duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent pr-10"
+                    className="w-full p-2 px-4 shadow-md bg-gray-50 hover:bg-gray-100 transition duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent pr-10"
                     placeholder="Search"
                 />
                 <FontAwesomeIcon
