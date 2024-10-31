@@ -21,6 +21,7 @@ export const useCategories = (
   const selectedCategory = useAppSelector(
     (state) => state.category.selectedCategory
   );
+  
   const [categories, setCategories] = useState<CategoryData[]>([]);
   const [loading, setLoading] = useState(false);
 

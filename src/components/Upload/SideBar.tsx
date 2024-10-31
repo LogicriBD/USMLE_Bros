@@ -2,7 +2,7 @@
 import { faCaretDown, faCaretUp, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { useAppDispatch } from "@/src/context/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { categoryActions } from "@/src/context/store/slices/category-slice";
@@ -14,11 +14,12 @@ const SideBar = () =>
     const [isOpen, setIsOpen] = useState(false);
 
     const dispatch = useAppDispatch();
+    const isSubmit = useAppSelector((state) => state.submit.toggle);
     const callback = () =>
     {
         dispatch(categoryActions.setSelectedCategory(null));
     }
-    const { categories, selectedCategory, loading } = useCategories([], callback);
+    const { categories, selectedCategory, loading } = useCategories([isSubmit], callback);
 
     if (loading)
     {
