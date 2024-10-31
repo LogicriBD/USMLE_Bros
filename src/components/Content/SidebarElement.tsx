@@ -30,12 +30,11 @@ const SidebarElement = ({ section, onClick }: { section: ISection, onClick: (id:
       onClick={() => openModal()}
     >
       <div
-        className={`me-2 border-2 ${section.locked ? "border-yellow-600" : "border-white"
-          } rounded-full px-1`}
+        className={`me-2 text-gray-600 text-md px-1`}
       >
         <FontAwesomeIcon icon={section.locked ? faLock : faUnlock} />
       </div>
-      <div>{section.section}</div>
+      <div className="text-gray-600">{section.section}</div>
     </div>
   );
 }

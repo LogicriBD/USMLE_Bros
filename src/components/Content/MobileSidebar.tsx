@@ -34,8 +34,8 @@ export const MobileSideBarContent = ({ sections }: { sections: ISection[] }) =>
     }
 
     return (
-        <div className={`lg:hidden ${!show ? "sm:w-[100px] w-[50px]" : "w-screen z-5"} block h-screen bg-sky-900 flex flex-col justify-start items-start px-2 sm:px-4 py-2`}>
-            <button onClick={() => setShow(!show)} className="mb-6 text-white px-2 py-1 hover:bg-sky-600 border border-white rounded-full sm:text-md text-sm"><FontAwesomeIcon icon={faBars} /></button>
+        <div className={`lg:hidden ${!show ? "sm:w-[100px] w-[50px]" : "w-screen z-5"} block h-screen bg-gray-200 flex flex-col justify-start items-start px-2 sm:px-4 py-2`}>
+            <button onClick={() => setShow(!show)} className="mb-6 text-gray-700 px-2 py-1 hover:bg-gray-200 sm:text-md text-sm"><FontAwesomeIcon icon={faBars} /></button>
             {show && sections.map((section, index) => (
                 <SidebarElement section={section} key={index} onClick={onClick} />
             ))}
