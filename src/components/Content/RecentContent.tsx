@@ -39,7 +39,7 @@ const RecentPosts = () => {
     }
 
     return (
-        <div className="flex tablet:w-96 md:w-82 w-72 h-auto max-h-96 overflow-y-auto scroll-smooth rounded-lg bg-white shadow-md z-20">
+        <div className="flex tablet:w-96 md:w-82 w-72 h-auto max-h-96 scroll-smooth rounded-lg bg-white shadow-md z-20">
             <div className="flex w-full flex-col items-start divide-y-2 divide-gray-300 divide-solid">
                 <div className="text-lg font-bold text-black text-start flex w-full px-4 py-3 bg-gray-100">
                     Recently Posted
