@@ -26,7 +26,7 @@ const Navbar = () =>
     }
 
     return (
-        <nav className="bg-white p-3 sticky top-0 z-40 shadow-md">
+        <nav className="bg-white p-3 sticky top-0 shadow-md" style={{zIndex: "1500"}}>
             <div className="w-full mx-auto flex justify-between items-center">
                 <div className="md:max-w-72 max-w-40 w-full cursor-pointer flex" onClick={() => router.push("/")}>
                     <Image

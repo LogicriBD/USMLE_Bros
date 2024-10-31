@@ -5,6 +5,8 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -95,6 +97,25 @@ class ContentRepository {
     }
   }
 
+  async fetchRecentMetadata() {
+    try {
+      const q = query(
+        collection(firestore, "contentmetadata"),
+        orderBy("createdAt", "desc"),
+        limit(5)
+      );
+  
+      const querySnapshot = await getDocs(q);
+      const recentMetadata: ContentMetaData[] = [];
+      querySnapshot.forEach((doc) => {
+        recentMetadata.push({ id: doc.id, ...doc.data() } as ContentMetaData);
+      });
+      return recentMetadata;
+    } catch (error: any) {
+      throw new ApiError(400, error.message);
+    }
+  }
+  
   async lockContentById(contentId: string) {
     try {
       const contentRef = doc(firestore, "content", contentId);
