@@ -11,9 +11,12 @@ import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 export const dynamic = 'force-dynamic';
 
 
-const ContentDisplay = async ({ id }: { id: string }) => {
-    const fetchContents = async (): Promise<ContentAllData | undefined> => {
-        try {
+const ContentDisplay = async ({ id }: { id: string }) =>
+{
+    const fetchContents = async (): Promise<ContentAllData | undefined> =>
+    {
+        try
+        {
             const contentFetchMetadataById = new ContentFetchMetadataById(id);
             const loggedIn = ServerAuthContext.isLoggedIn();
             const contentFetchById = new ContentsFetchById({ metadataId: id, all: loggedIn });
@@ -29,11 +32,13 @@ const ContentDisplay = async ({ id }: { id: string }) => {
             let contentsWithTitle = extractedContents.sort((a, b) => a.serialNumber - b.serialNumber);
             const contentMetadata: ContentMetaData | undefined = await contentFetchMetadataById.execute();
             const sections = contentMetadata?.sections ? contentMetadata.sections : [];
-            const modifiedContents = sections.map((section, index) => {
+            const modifiedContents = sections.map((section, index) =>
+            {
                 const baseIndex = contentsWithTitle.findIndex(title => title.title === section);
                 const currentContent = contentsWithTitle[baseIndex];
                 contentsWithTitle = contentsWithTitle.filter((_, index) => index !== baseIndex);
-                if (baseIndex !== -1) {
+                if (baseIndex !== -1)
+                {
                     return {
                         id: currentContent.id,
                         title: currentContent.title ? currentContent.title : undefined,
@@ -42,7 +47,8 @@ const ContentDisplay = async ({ id }: { id: string }) => {
                         serialNumber: index
                     }
                 }
-                else {
+                else
+                {
                     return {
                         id: "",
                         title: section,
@@ -59,13 +65,15 @@ const ContentDisplay = async ({ id }: { id: string }) => {
                 contentDataWithTitle: modifiedContents
             };
         }
-        catch (err: any) {
+        catch (err: any)
+        {
             logger.error(err);
         }
     }
 
     const fetchedContents = await fetchContents();
-    if (!fetchedContents?.contentDataWithTitle) {
+    if (!fetchedContents?.contentDataWithTitle)
+    {
         return (
             <div className="h-screen bg-gray-50 flex flex-col flex-grow px-4 py-2">
                 <Error error="Could Not Fetch Sections" />
@@ -83,7 +91,7 @@ const ContentDisplay = async ({ id }: { id: string }) => {
                 </div>}
             </div>
             {contents.contentDataWithTitle.map((content, index) => (
-                <div 
+                <div
                     key={index}
                     className="py-2">
                     <ParseHTMLContent id={content.id} key={index} content={content.content ? content.content : ""} isLocked={content.isLocked} title={content.title} />
