@@ -3,7 +3,7 @@ import Error from "../Error";
 import { ContentFetchMetadataById } from "@/actions/content/ContentFetchMetadataById";
 import { ContentsFetchById } from "@/actions/content/ContentFetchById";
 import { extractFirstH1 } from "@/utils/helpers/ContentParser";
-import { ContentAllData, ContentDataWithTitle } from "@/types/Content";
+import { ContentAllData } from "@/types/Content";
 import ParseHTMLContent from "@/src/components/Content/ParseHTMLContent";
 import { ServerAuthContext } from "@/src/context/ServerAuthContext";
 import { ContentMetaData } from "@/database/repository/Content";
@@ -83,7 +83,9 @@ const ContentDisplay = async ({ id }: { id: string }) => {
                 </div>}
             </div>
             {contents.contentDataWithTitle.map((content, index) => (
-                <div className="py-2">
+                <div 
+                    key={index}
+                    className="py-2">
                     <ParseHTMLContent id={content.id} key={index} content={content.content ? content.content : ""} isLocked={content.isLocked} title={content.title} />
                 </div>
             ))}
