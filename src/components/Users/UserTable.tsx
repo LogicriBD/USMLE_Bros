@@ -41,7 +41,7 @@ const UserTable = () =>
     }, [isSubmit]);
 
     return (
-        <div className="md:w-full w-80 h-full md:p-10 p-2 flex justify-center items-center overflow-x-auto">
+        <div className="md:w-full max-w-screen h-full md:p-10 p-2 flex justify-center items-center overflow-x-auto">
             <Table
                 striped
                 bordered

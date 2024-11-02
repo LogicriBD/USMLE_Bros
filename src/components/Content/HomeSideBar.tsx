@@ -37,9 +37,6 @@ const HomeSideBar = () => {
                             <div className="flex justify-end">
                                 <Filter />
                             </div>
-                            <div className="flex justify-end">
-                                <RecentPosts />
-                            </div>
                         </div>
                     </div>
                 ) : (

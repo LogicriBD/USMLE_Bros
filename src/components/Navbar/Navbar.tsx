@@ -28,16 +28,17 @@ const Navbar = () =>
     return (
         <nav className="bg-white p-3 sticky top-0 shadow-md" style={{zIndex: "1021"}}>
             <div className="w-full mx-auto flex justify-between items-center">
-                <div className="md:max-w-72 max-w-40 w-full cursor-pointer flex" onClick={() => router.push("/")}>
+                <div className="md:max-w-72 max-w-40 w-full cursor-pointer flex" >
                     <Image
                         src="/logos/icon.png"
                         alt="Logo"
                         width={50}
                         height={50}
+                        onClick={() => router.push("/")}
                     />
                     {
                         isLoggedIn && isAdminPortal && (
-                            <div className="ms-4 text-black text-2xl font-bold py-2">Admin Portal</div>
+                            <div className="ms-4 text-black md:text-2xl text-md font-bold py-2">Admin Portal</div>
                         )
                     }
                 </div>
