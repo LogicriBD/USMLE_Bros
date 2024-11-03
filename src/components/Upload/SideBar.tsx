@@ -24,14 +24,14 @@ const SideBar = () =>
     if (loading)
     {
         return (
-            <div className="md:w-64 w-full bg-gray-800 text-white md:min-h-screen min-h-0">
+            <div className="w-full bg-gray-800 text-white md:min-h-screen min-h-0">
                 <SpinLoading invert />
             </div>
         )
     }
 
     return (
-        <div className="md:w-64 w-full bg-gray-800 text-white md:min-h-screen min-h-0">
+        <div className="w-full bg-gray-800 text-white md:min-h-screen min-h-0">
             <div className="px-6 py-3 font-bold text-xl border-b border-gray-700 flex justify-between">
                 Categories
 

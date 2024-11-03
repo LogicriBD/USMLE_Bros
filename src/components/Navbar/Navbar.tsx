@@ -7,8 +7,7 @@ import { Roles } from "@/utils/enums/Roles";
 import { usePathname, useRouter } from "next/navigation";
 import SpinLoading from "../Spinner";
 import Active from "../Active";
-const Navbar = () =>
-{
+const Navbar = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user);
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
@@ -18,15 +17,14 @@ const Navbar = () =>
     const router = useRouter();
     const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
 
-    if (isAuthLoading)
-    {
+    if (isAuthLoading) {
         return (
             <SpinLoading />
         )
     }
 
     return (
-        <nav className="bg-white p-3 sticky top-0 shadow-md" style={{zIndex: "1021"}}>
+        <nav className="bg-white p-3 sticky top-0 shadow-md" style={{ zIndex: "1021" }}>
             <div className="w-full mx-auto flex justify-between items-center">
                 <div className="md:max-w-72 max-w-40 w-full cursor-pointer flex" >
                     <Image
@@ -70,13 +68,11 @@ const Navbar = () =>
                     </button>
                 </div>
             </div>
-            {isOpen && (
-                <div className="md:hidden mt-2 pb-2 space-y-2">
-                    {
-                        <NavbarItems />
-                    }
-                </div>
-            )}
+            <div className={`md:hidden overflow-hidden
+                                ${isOpen ? " mt-2 pb-2 space-y-2 opacity-100 h-auto" : "opacity-0 h-0"} 
+                                transform transition-[height,opacity] duration-500 ease-in-out`}>
+                {isOpen && <NavbarItems />}
+            </div>
         </nav>
     );
 }

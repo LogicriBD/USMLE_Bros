@@ -5,7 +5,7 @@ const UploadPage = () =>
 {
     return (
         <div className="flex flex-col md:flex-row">
-            <div className="w-full">
+            <div className="md:w-64 w-full">
                 <SideBar />
             </div>
             <div className="flex-1">
