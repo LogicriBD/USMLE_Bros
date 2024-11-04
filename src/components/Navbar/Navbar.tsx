@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import SpinLoading from "../Spinner";
 import Active from "../Active";
 import { IoMdMenu } from "react-icons/io";
+import NavbarButtons from "./NavbarButtons";
 
 
 const Navbar = () =>
@@ -32,25 +33,31 @@ const Navbar = () =>
     return (
         <nav className="sm:bg-marrow bg-marrow-dark p-3 sticky top-0 shadow-sm sm:shadow-none" style={{ zIndex: "1021" }}>
             <div className="w-full mx-auto flex justify-between items-center">
-                <div className="md: w-1/2 w-full sm:max-w-72 max-w-40 w-full cursor-pointer flex" >
+                <div className="w-full cursor-pointer flex" >
                     <Image
                         src="/logos/icon.png"
                         alt="Logo"
                         width={50}
                         height={50}
+                        className="cursor-pointer"
                         onClick={() => router.push("/")}
                     />
                     {
                         displayComponent
                     }
+                    <div className="hidden sm:flex space-x-3 text-white flex justify-center items-center">
+                        {
+                            <NavbarItems />
+                        }
+                    </div>
                 </div>
-                <div className="hidden sm:flex space-x-3 text-white flex justify-center items-center">
+                <div className="hidden sm:flex gap-6 text-white flex justify-center items-center">
                     {user.name && (<Active />)}
                     <div className="flex">
                         {user.name}
                     </div>
                     {
-                        <NavbarItems />
+                        <NavbarButtons />
                     }
                 </div>
                 <div className="sm:hidden">
