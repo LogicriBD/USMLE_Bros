@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Filter from './Filter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import FilterMobile from './FilterMobile';
 
 const HomeSideBar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -41,10 +42,8 @@ const HomeSideBar = () => {
                                 className="text-center text-white cursor-pointer text-xl"
                             />
                         </div>
-                        <div className="flex flex-col space-y-4">
-                            <div className="flex justify-end">
-                                <Filter />
-                            </div>
+                        <div className="flex flex-col">
+                            <FilterMobile />
                         </div>
                     </div>
                 </div>
