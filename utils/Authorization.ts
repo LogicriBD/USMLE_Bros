@@ -6,6 +6,7 @@ import { routes } from "@/src/api/Routes";
 
 type AuthorizationRequest = {
   accessToken?: string;
+  type: "role" | "verification";
 };
 
 export class Authorization {
@@ -25,6 +26,7 @@ export class Authorization {
       const fetchHandler = new FetchHandler<AuthorizationRequest>();
       const response = await fetchHandler.postRequest(routes.auth.verify, {
         accessToken: token,
+        type: this.isAdminRoute ? "role" : "verification",
       });
       if (!this.isAdminRoute) {
         return NextResponse.next();
