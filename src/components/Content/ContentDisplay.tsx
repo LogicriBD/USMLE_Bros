@@ -57,7 +57,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     else
     {
         return (
-            <div className="w-full h-screen flex flex-col flex-grow overflow-y-scroll">
+            <div className="w-full h-screen flex flex-col flex-grow overflow-auto">
                 <div className="w-full overflow-x-hidden bg-white px-4 py-2">
                     <div
                         className="py-2 w-full">
