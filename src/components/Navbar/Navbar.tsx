@@ -16,7 +16,6 @@ import { appStore } from "@/src/context/store/redux-store";
 
 const Navbar = () =>
 {
-    const dispatch = useAppDispatch();
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn) || appStore.getState().auth.isLoggedIn;
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user);
@@ -25,7 +24,7 @@ const Navbar = () =>
     const pathname = usePathname();
     const router = useRouter();
     const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
-    const displayComponent = (<div className="ms-4 text-cyan-300 md:text-2xl text-md font-bold py-2">{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
+    const displayComponent = (<div className="ms-4 text-cyan-300 md:text-2xl text-md font-bold py-2" onClick={() => router.push("/")}>{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
 
     if (isAuthLoading)
     {
