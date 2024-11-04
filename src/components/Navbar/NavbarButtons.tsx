@@ -39,8 +39,8 @@ const NavbarButtons = () =>
         {
             return (
                 <div className="flex md:flex-row flex-col mt-2 md:mt-0 gap-3 mx-2 px-2">
-                    <NavItem isButton url={"authentication/login"}>Login</NavItem>
-                    <NavItem isButton url={"authentication/register"}>Register</NavItem>
+                    <NavItem isButton url={"/authentication/login"}>Login</NavItem>
+                    <NavItem isButton url={"/authentication/register"}>Register</NavItem>
                 </div>
             )
         }
