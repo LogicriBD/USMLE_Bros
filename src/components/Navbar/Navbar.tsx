@@ -61,9 +61,9 @@ const Navbar = () =>
                         }
                     </div>
                 </div>
-                <div className="hidden md:flex gap-6 text-white flex justify-center items-center">
+                <div className="hidden w-1/4 md:flex md:flex-grow gap-6 text-white justify-center items-center">
                     {user.name && (<Active />)}
-                    <div className="flex text-lg font-bold">
+                    <div className="flex w-fit flex-grow text-lg font-bold">
                         {user.name}
                     </div>
                     {
