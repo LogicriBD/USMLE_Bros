@@ -1,7 +1,7 @@
 const Active = () =>
 {
     return (
-        <div className="border-4 border-green-600 rounded-full">
+        <div className="border-8 border-green-600 rounded-full">
 
         </div>
     );

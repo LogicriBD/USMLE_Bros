@@ -21,7 +21,7 @@ const Navbar = () =>
     const pathname = usePathname();
     const router = useRouter();
     const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
-    const displayComponent = (<div className="ms-4 text-cyan-300 sm:text-2xl text-sm font-bold py-2">{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
+    const displayComponent = (<div className="ms-4 text-cyan-300 md:text-2xl text-md font-bold py-2">{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
 
     if (isAuthLoading)
     {
@@ -31,7 +31,7 @@ const Navbar = () =>
     }
 
     return (
-        <nav className="sm:bg-marrow bg-marrow-dark p-3 sticky top-0 shadow-sm sm:shadow-none" style={{ zIndex: "1021" }}>
+        <nav className="md:bg-marrow bg-marrow-dark p-3 sticky top-0 shadow-md md:shadow-none" style={{ zIndex: "1021" }}>
             <div className="w-full mx-auto flex justify-between items-center">
                 <div className="w-full cursor-pointer flex" >
                     <Image
@@ -45,28 +45,28 @@ const Navbar = () =>
                     {
                         displayComponent
                     }
-                    <div className="hidden sm:flex space-x-3 text-white flex justify-center items-center">
+                    <div className="hidden md:flex space-x-3 text-white flex justify-center items-center">
                         {
                             <NavbarItems />
                         }
                     </div>
                 </div>
-                <div className="hidden sm:flex gap-6 text-white flex justify-center items-center">
+                <div className="hidden md:flex gap-6 text-white flex justify-center items-center">
                     {user.name && (<Active />)}
-                    <div className="flex">
+                    <div className="flex text-lg font-bold">
                         {user.name}
                     </div>
                     {
                         <NavbarButtons />
                     }
                 </div>
-                <div className="sm:hidden">
+                <div className="md:hidden">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-black focus:outline-none">
                         <IoMdMenu className="text-cyan-400 text-2xl" />
                     </button>
                 </div>
             </div>
-            <div className={`sm:hidden overflow-hidden
+            <div className={`md:hidden overflow-hidden
                                 ${isOpen ? " mt-2 pb-2 space-y-2 opacity-100 h-auto" : "opacity-0 h-0"} 
                                 transform transition-[height,opacity] duration-500 ease-in-out`}>
                 {isOpen && <NavbarItems />}

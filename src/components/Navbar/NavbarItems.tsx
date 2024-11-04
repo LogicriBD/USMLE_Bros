@@ -30,7 +30,7 @@ const NavbarItems = () =>
     const isAdminRole = role === Roles.Admin;
     const pathname = usePathname();
 
-    if (!isLoggedIn)
+    if (isLoggedIn)
     {
         return (
             <div className="flex md:flex-row flex-col gap-3 mx-2 px-2">
