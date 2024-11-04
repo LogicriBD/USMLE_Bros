@@ -7,7 +7,11 @@ import { Roles } from "@/utils/enums/Roles";
 import { usePathname, useRouter } from "next/navigation";
 import SpinLoading from "../Spinner";
 import Active from "../Active";
-const Navbar = () => {
+import { IoMdMenu } from "react-icons/io";
+
+
+const Navbar = () =>
+{
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user);
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
@@ -16,17 +20,19 @@ const Navbar = () => {
     const pathname = usePathname();
     const router = useRouter();
     const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
+    const displayComponent = (<div className="ms-4 text-cyan-300 sm:text-2xl text-sm font-bold py-2">{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
 
-    if (isAuthLoading) {
+    if (isAuthLoading)
+    {
         return (
             <SpinLoading />
         )
     }
 
     return (
-        <nav className="bg-white p-3 sticky top-0 shadow-md" style={{ zIndex: "1021" }}>
+        <nav className="sm:bg-marrow bg-marrow-dark p-3 sticky top-0 shadow-sm sm:shadow-none" style={{ zIndex: "1021" }}>
             <div className="w-full mx-auto flex justify-between items-center">
-                <div className="md:max-w-72 max-w-40 w-full cursor-pointer flex" >
+                <div className="md: w-1/2 w-full sm:max-w-72 max-w-40 w-full cursor-pointer flex" >
                     <Image
                         src="/logos/icon.png"
                         alt="Logo"
@@ -35,12 +41,10 @@ const Navbar = () => {
                         onClick={() => router.push("/")}
                     />
                     {
-                        isLoggedIn && isAdminPortal && (
-                            <div className="ms-4 text-black md:text-2xl text-md font-bold py-2">Admin Portal</div>
-                        )
+                        displayComponent
                     }
                 </div>
-                <div className="hidden md:flex space-x-3 flex justify-center items-center">
+                <div className="hidden sm:flex space-x-3 text-white flex justify-center items-center">
                     {user.name && (<Active />)}
                     <div className="flex">
                         {user.name}
@@ -49,26 +53,13 @@ const Navbar = () => {
                         <NavbarItems />
                     }
                 </div>
-                <div className="md:hidden">
+                <div className="sm:hidden">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-black focus:outline-none">
-                        <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="3"
-                                d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
-                            />
-                        </svg>
+                        <IoMdMenu className="text-cyan-400 text-2xl" />
                     </button>
                 </div>
             </div>
-            <div className={`md:hidden overflow-hidden
+            <div className={`sm:hidden overflow-hidden
                                 ${isOpen ? " mt-2 pb-2 space-y-2 opacity-100 h-auto" : "opacity-0 h-0"} 
                                 transform transition-[height,opacity] duration-500 ease-in-out`}>
                 {isOpen && <NavbarItems />}

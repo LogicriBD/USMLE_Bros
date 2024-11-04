@@ -1,6 +1,6 @@
 import { LoginValidator } from "@/validation/authentication/login";
 import { UserLoginAction } from "@/actions/user/UserLoginAction";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { useAppDispatch } from "../../context/store/hooks";
@@ -9,6 +9,7 @@ import { UserFetchByEmailAction } from "@/actions/user/UserFetchByEmailAction";
 import { appStore } from "../../context/store/redux-store";
 import { logger } from "@/utils/Logger";
 import { useNavigate } from "../useNavigate";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
 
 /**
  *
@@ -78,10 +79,8 @@ export const useLogin = () => {
           email: appStore.getState().user.email,
         });
         await userAction.execute();
-        navigate("/");
         dispatch(modalActions.updateModalType(ModalName.SuccessModal));
       } else {
-        setSubmitted(false);
         setErrors({
           email: validator.errors.email,
           password: validator.errors.password,
@@ -89,14 +88,19 @@ export const useLogin = () => {
       }
     } catch (error: any) {
       logger.error(error);
+    } finally {
       setSubmitted(false);
     }
   };
 
   const goToRegister = () => {
     if (submitted) return;
-    dispatch(modalActions.updateModalType(ModalName.SignUp));
+    navigate("/authentication/register");
   };
+
+  useEffect(() => {
+    dispatch(loaderActions.turnOff());
+  }, []);
 
   return {
     formValues,

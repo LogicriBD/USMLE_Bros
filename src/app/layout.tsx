@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Roboto_Slab } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import Navbar from "@/src/components/Navbar/Navbar";
 import Footer from "@/src/components/Footer/Footer";
 import { config } from '@fortawesome/fontawesome-svg-core'
@@ -14,9 +14,10 @@ import AuthStateManager from "../context/AuthStateManager";
 import Loader from "../components/Loader/Loader";
 import { appStore } from "../context/store/redux-store";
 import { loaderActions } from "../context/store/slices/loader-slice";
-const roboto = Roboto_Slab({
+
+const openSans = Open_Sans({
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -52,13 +53,13 @@ export default function RootLayout({
         <link rel="icon" href="logos/icon.png" />
       </head>
       <body
-        className={`${roboto.className} antialiased`}
+        className={`${openSans.className} antialiased`}
       >
         <StoreProvider>
           <AuthStateManager>
             <Loader />
             <Navbar />
-            <main className="min-h-screen bg-gray-200">
+            <main className="md:min-h-screen">
               {children}
             </main>
             <Suspense fallback={<Loader />}>

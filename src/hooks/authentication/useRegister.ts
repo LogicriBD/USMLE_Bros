@@ -1,11 +1,13 @@
 import { UserSignUpAction } from "@/actions/user/UserSignUpAction";
 import { RegisterValidator } from "@/validation/authentication/signup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { modalActions } from "../../context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { useAppDispatch } from "../../context/store/hooks";
 import { authActions } from "../../context/store/slices/auth-slice";
 import { useNavigate } from "../useNavigate";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { logger } from "@/utils/Logger";
 
 /**
  *
@@ -67,27 +69,37 @@ export const useRegister = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    const validator = RegisterValidator(formValues);
-    if (validator.valid) {
-      const userCreateAction = new UserSignUpAction(formValues);
-      const registerResponse = await userCreateAction.execute();
-      if (!registerResponse.success) {
-        setError(registerResponse.message);
-        setSubmitted(false);
-        return;
+    try {
+      const validator = RegisterValidator(formValues);
+      if (validator.valid) {
+        const userCreateAction = new UserSignUpAction(formValues);
+        const registerResponse = await userCreateAction.execute();
+        if (!registerResponse.success) {
+          setError(registerResponse.message);
+          setSubmitted(false);
+          return;
+        }
+        dispatch(authActions.setSessionStatus(true));
+        dispatch(modalActions.updateModalType(ModalName.SuccessModal));
+      } else {
+        setErrors(validator.errors);
       }
-      dispatch(authActions.setSessionStatus(true));
-      navigate("/");
-      dispatch(modalActions.updateModalType(ModalName.SuccessModal));
-    } else {
-      setErrors(validator.errors);
+    } catch (error: any) {
+      setError("Could not register user, something went wrong");
+      logger.error(error.message);
+    } finally {
+      setSubmitted(false);
     }
   };
 
   const goToLogin = () => {
     if (submitted) return;
-    dispatch(modalActions.updateModalType(ModalName.Login));
+    navigate("/authentication/login");
   };
+
+  useEffect(() => {
+    dispatch(loaderActions.turnOff());
+  }, []);
 
   return {
     formValues,

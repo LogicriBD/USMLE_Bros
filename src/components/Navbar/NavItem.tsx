@@ -1,24 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
-import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { useNavigate } from "@/src/hooks/useNavigate";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export const ActiveNavItem = "text-sky-900 bg-gray-200 cursor-not-allowed font-bold text-md rounded-xl px-4 py-2 transition duration-300";
-export const InactiveNavItem = "text-gray-100 bg-sky-900 hover:bg-sky-700 hover:scale-105 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300";
+export const ActiveNavItem = "font-bold underline cursor-not-allowed";
+export const InactiveNavItem = "font-bold cursor-pointer hover:underline";
 
-const NavbarItem = ({ url, children, opensModal, modalType, cached }: { url?: string, children: React.ReactNode, opensModal?: boolean, modalType?: ModalName, cached?: boolean }) =>
+export const ActiveModalItem = "text-sky-400 bg-gray-200 cursor-not-allowed font-bold text-md rounded-xl px-4 py-2 transition duration-300";
+export const InactiveModalItem = "text-gray-100 bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300";
+
+const NavbarItem = ({ url, children, cached, isButton }: { url?: string, children: React.ReactNode, opensModal?: boolean, modalType?: ModalName, cached?: boolean, isButton?: boolean }) =>
 {
     const dispatch = useAppDispatch();
     const currentModal = useAppSelector((state) => state.modal.type);
     const pathname = usePathname();
+    console.log(pathname)
     const navigate = useNavigate();
     const router = useRouter();
     const [active, setActive] = useState(false);
+    const [className, setClassName] = useState<string>("");
 
     const onClick = () =>
     {
@@ -26,39 +30,28 @@ const NavbarItem = ({ url, children, opensModal, modalType, cached }: { url?: st
         {
             return;
         }
-        if (opensModal)
+        dispatch(loaderActions.turnOn());
+        if (cached)
         {
-            dispatch(modalActions.updateModalType(modalType!));
+            router.push(url!);
         }
         else
         {
-            dispatch(loaderActions.turnOn());
-            if (cached)
-            {
-                router.push(url!);
-            }
-            else
-            {
-                navigate(url!);
-            }
+            navigate(url!);
         }
     }
 
     useEffect(() =>
     {
-        if (opensModal)
+        if (pathname === url)
         {
-            if (currentModal === modalType)
-            {
-                setActive(true);
-            }
+            setClassName(isButton ? ActiveModalItem : ActiveNavItem);
+            setActive(true);
         }
         else
         {
-            if (pathname === url)
-            {
-                setActive(true);
-            }
+            setClassName(isButton ? InactiveModalItem : InactiveNavItem);
+            setActive(false);
         }
 
         return () =>
@@ -70,7 +63,7 @@ const NavbarItem = ({ url, children, opensModal, modalType, cached }: { url?: st
     return (
         <div
             onClick={onClick}
-            className={active ? ActiveNavItem : InactiveNavItem}
+            className={className}
         >
             {children}
         </div>

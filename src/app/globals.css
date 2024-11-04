@@ -3,16 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
   --foreground: #171717;
+  --background-start-rgb: #156a7d;
+  --background-end-rgb: #f6f6f6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 html,
 body {
   height: 100%;
@@ -21,7 +16,8 @@ body {
   padding: 0;
   overflow-x: hidden; /* Prevent horizontal scroll */
   color: var(--foreground);
-  background: var(--background);
+  background: linear-gradient(transparent, var(--background-end-rgb) 45%)
+    var(--background-start-rgb) 55% !important;
   font-family: Arial, Helvetica, sans-serif;
 }
 

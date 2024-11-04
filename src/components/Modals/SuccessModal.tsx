@@ -1,3 +1,4 @@
+import { useNavigate } from "@/src/hooks/useNavigate";
 import { closeModal } from "@/utils/Modal";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -5,6 +6,12 @@ import { Modal } from "react-bootstrap";
 
 const SuccessModal = () =>
 {
+    const navigate = useNavigate();
+    const onClose = () =>
+    {
+        closeModal();
+        navigate("/");
+    }
 
     return (
         <Modal
@@ -13,7 +20,7 @@ const SuccessModal = () =>
             centered
             animation
             keyboard
-            onHide={() => { closeModal() }}
+            onHide={onClose}
         >
             <Modal.Header closeButton />
             <Modal.Body className="px-4 py-2 mb-4">
