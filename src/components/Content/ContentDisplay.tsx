@@ -82,7 +82,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     }
     const contents = fetchedContents;
     return (
-        <div className="w-full overflow-y-scroll bg-white px-4 py-2">
+        <div className="w-full overflow-x-hidden overflow-y-scroll bg-white px-4 py-2">
             <div className="flex items-center justify-center flex-col border-b border-gray-400 py-2">
                 <div className="py-2 text-2xl md:text-4xl font-bold text-gray-800 w-full flex justify-center">{contents.metadataTitle}</div>
                 <div className="pt-1 flex justify-center text-sm text-gray-500 font-normal">Author: {contents.username}</div>
@@ -93,7 +93,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
             {contents.contentDataWithTitle.map((content, index) => (
                 <div
                     key={index}
-                    className="py-2">
+                    className="py-2 w-full">
                     <ParseHTMLContent id={content.id} key={index} content={content.content ? content.content : ""} isLocked={content.isLocked} title={content.title} />
                 </div>
             ))}
