@@ -26,11 +26,15 @@ export class Authorization {
       const response = await fetchHandler.postRequest(routes.auth.verify, {
         accessToken: token,
       });
-      const role = response.role;
-      if (this.isAdminRoute && role !== "Admin") {
-        return NextResponse.redirect(
-          new URL("/access-denied", this.request.url).toString()
-        );
+      if (!this.isAdminRoute) {
+        return NextResponse.next();
+      } else {
+        const role = response.role;
+        if (this.isAdminRoute && role !== "Admin") {
+          return NextResponse.redirect(
+            new URL("/access-denied", this.request.url).toString()
+          );
+        }
       }
       return NextResponse.next();
     } catch (error) {
