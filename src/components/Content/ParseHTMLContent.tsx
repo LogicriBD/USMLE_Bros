@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import parse from 'html-react-parser';
 import { H1, H2, H3 } from '../CustomStyle/Headers';

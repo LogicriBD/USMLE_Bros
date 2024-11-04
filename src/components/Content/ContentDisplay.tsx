@@ -6,7 +6,6 @@ import { ServerAuthContext } from "@/src/context/ServerAuthContext";
 import { ContentData } from "@/database/repository/Content";
 import { IoIosLock } from "react-icons/io";
 import Link from "next/link";
-import Image from "next/image";
 export const dynamic = 'force-dynamic';
 
 

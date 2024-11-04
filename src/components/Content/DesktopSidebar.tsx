@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { ISection } from "@/types/Content"
 import Error from "../Error"

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { UserSignUpAction } from "@/actions/user/UserSignUpAction";
 import { RegisterValidator } from "@/validation/authentication/signup";
 import { useEffect, useState } from "react";

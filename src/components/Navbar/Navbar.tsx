@@ -25,6 +25,12 @@ const Navbar = () =>
     const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
     const displayComponent = (<div className="mx-4 cursor-pointer text-cyan-300 md:text-2xl text-md font-bold py-2" onClick={() => router.push("/")}>{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
 
+    useEffect(() =>
+    {
+        validateUserSession();
+        setIsOpen(false);
+    }, [pathname])
+
     if (isAuthLoading)
     {
         return (
@@ -32,11 +38,7 @@ const Navbar = () =>
         )
     }
 
-    useEffect(() =>
-    {
-        validateUserSession();
-        setIsOpen(false);
-    }, [pathname])
+
 
     return (
         <nav className="md:bg-marrow bg-marrow-dark p-3 sticky top-0 shadow-md md:shadow-none" style={{ zIndex: "1021" }}>

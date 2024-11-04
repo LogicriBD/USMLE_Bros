@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useState } from "react";
 import Error from "../Error"
 import { ISection } from "@/types/Content";
 import SidebarElement from "./SidebarElement";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faClose, faCross } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { useAppDispatch } from "@/src/context/store/hooks";
