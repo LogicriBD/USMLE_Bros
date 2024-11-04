@@ -31,7 +31,7 @@ const SideBar = () =>
     }
 
     return (
-        <div className="w-full bg-gray-800 text-white md:min-h-screen min-h-0">
+        <div className="w-full bg-marrow text-white md:min-h-screen min-h-0">
             <div className="px-6 py-3 font-bold text-xl border-b border-gray-700 flex justify-between">
                 Categories
 
@@ -79,7 +79,7 @@ const SideBar = () =>
                                     dispatch(categoryActions.setSelectedCategory(item));
                                     setIsOpen(false);
                                 }}
-                                className={`${selectedCategory?.id === item.id ? `bg-gray-600` : `bg-inherit`} w-full text-left px-6 py-3 hover:bg-gray-600 transition duration-300`}
+                                className={`${selectedCategory?.id === item.id ? `bg-marrow-dark` : `bg-inherit`} w-full text-left px-6 py-3 hover:bg-gray-600 transition duration-300`}
                             >
                                 {item.name}
                             </button>

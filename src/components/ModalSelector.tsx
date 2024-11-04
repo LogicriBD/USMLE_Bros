@@ -9,7 +9,6 @@ import CreateCategory from "./Modals/Content/CreateCategory";
 import CreateContent from "./Modals/Content/CreateContent";
 import ErrorModal from "./Modals/ErrorModal";
 import SuccessModal from "./Modals/SuccessModal";
-import ContentLock from "./Modals/Content/ContentLock";
 
 const ModalSelector = () =>
 {
@@ -26,7 +25,6 @@ const ModalSelector = () =>
                 {currentSelectedModal === ModalName.CreateContent && <CreateContent />}
                 {currentSelectedModal === ModalName.ErrorModal && <ErrorModal />}
                 {currentSelectedModal === ModalName.SuccessModal && <SuccessModal />}
-                {currentSelectedModal === ModalName.ContentLock && <ContentLock />}
             </React.Fragment>
         </>
     )

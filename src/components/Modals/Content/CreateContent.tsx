@@ -45,7 +45,6 @@ const CreateContent = () =>
     const [error, setError] = useState<string | undefined>("");
     const [images, setImages] = useState<string[]>([]);
     const [contentHeader, setContentHeader] = useState<string>("");
-    const [previousContent, setPreviousContent] = useState<ContentData[]>([]);
     const [loading, setLoading] = useState(false);
 
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
@@ -73,7 +72,6 @@ const CreateContent = () =>
             const contentByMetadataIdAction = new ContentsFetchById({ metadataId: metadataId, all: true });
             const contents = await contentByMetadataIdAction.execute();
             const sortedContents = contents.sort((a, b) => a.serialNumber - b.serialNumber);
-            setPreviousContent(sortedContents);
             const content = sortedContents.map((content) => content.content).join("\n");
             setContent(content);
             setLoading(false);
@@ -135,25 +133,13 @@ const CreateContent = () =>
                     metadata.sections = filterNullSections.filter(section => section !== null) as string[];
                 }
 
-                const contentdata: ContentData[] = contentSections.map((section, index) =>
-                {
-                    if (index < previousContent.length)
+                const contentdata: ContentData[] = contentSections.map((section, index) => (
                     {
-                        return {
-                            content: section,
-                            isLocked: previousContent[index].isLocked,
-                            serialNumber: index,
-                        }
+                        content: section,
+                        isLocked: index === 0 ? false : true,
+                        serialNumber: index
                     }
-                    else
-                    {
-                        return {
-                            content: section,
-                            isLocked: false,
-                            serialNumber: index
-                        }
-                    }
-                });
+                ));
 
                 const formattedContent: Content = {
                     metadata: metadata,

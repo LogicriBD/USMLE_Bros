@@ -102,20 +102,20 @@ const Uploader = () =>
 
     return selectedCategory ? (
         <div className="w-full bg-inherit px-2">
-            <div className="w-full p-2 flex justify-center items-center text-black md:text-4xl text-2xl font-bold border-b border-gray-400">{selectedCategory?.name}</div>
+            <div className="w-full p-2 flex justify-center items-center text-cyan-300 md:text-4xl text-2xl font-bold border-b border-gray-400">{selectedCategory?.name}</div>
             <div className="h-full p-2 flex flex-col">
-                <div className="w-full py-2">
+                <div className="w-full py-2 mb-4">
                     <SearchBar searchText={searchText} setSearchText={handleSearch} />
                 </div>
                 <div
                     onClick={openCreateOption}
-                    className="w-full rounded-md flex justify-between items-center bg-gray-800 text-white p-3 cursor-pointer hover:bg-gray-600">
+                    className="w-full rounded-md flex justify-between items-center bg-marrow font-bold text-white p-3 cursor-pointer hover:bg-marrow-dark">
                     Add a New Content  <FontAwesomeIcon icon={faPlusCircle} className="ml-2 text-lg" />
                 </div>
                 <div className="w-full">
                     {searchedContents.length > 0 ? (
                         searchedContents.map((item, index) => (
-                            <div key={index} className="my-2 flex flex-col bg-gray-200 text-sky-800 border-1 border-gray-600 rounded-lg px-3 py-2 shadow-md">
+                            <div key={index} className="my-2 flex flex-col bg-gray-200 text-marrow-dark border-1 border-gray-600 rounded-lg px-3 py-2 shadow-md">
                                 <div className="flex flex-col md:flex-row">
                                     <div className="md:w-1/3 w-full flex justify-start">
                                         <h3 className="md:text-lg text-sm font-semibold mb-2">{item.title}</h3>
@@ -130,7 +130,7 @@ const Uploader = () =>
                                     <h3 className="text-sm font-normal">Author: {item.userName}</h3>
                                     <div className="md:pt-2 flex justify-end space-x-4">
                                         <Link className="" target="_blank" href={`/content/${item.id}`} passHref>
-                                            <FontAwesomeIcon icon={faEye} className="pr-2 pb-0.5 cursor-pointer" title="View" />
+                                            <FontAwesomeIcon icon={faEye} className="pr-2 pb-0.5 cursor-pointer text-marrow-dark" title="View" />
                                         </Link>
                                         <FontAwesomeIcon icon={faEdit} className="pr-2 cursor-pointer" title="Edit" onClick={() => { openEditOption(item) }} />
                                         <FontAwesomeIcon

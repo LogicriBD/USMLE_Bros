@@ -50,14 +50,15 @@ class ContentRepository {
       );
 
       const metadataId = metadataRef.id;
-
+      let index = 0;
       for (const c of content.content) {
         await addDoc(collection(firestore, "content"), {
           metadataId: metadataId,
           content: c.content,
-          isLocked: c.isLocked,
+          isLocked: index === 0 ? false : c.isLocked,
           serialNumber: c.serialNumber,
         });
+        index++;
       }
     } catch (error: any) {
       throw new ApiError(400, error.message);
@@ -104,7 +105,7 @@ class ContentRepository {
         orderBy("createdAt", "desc"),
         limit(5)
       );
-  
+
       const querySnapshot = await getDocs(q);
       const recentMetadata: ContentMetaData[] = [];
       querySnapshot.forEach((doc) => {
@@ -115,7 +116,7 @@ class ContentRepository {
       throw new ApiError(400, error.message);
     }
   }
-  
+
   async lockContentById(contentId: string) {
     try {
       const contentRef = doc(firestore, "content", contentId);
