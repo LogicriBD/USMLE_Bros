@@ -23,16 +23,17 @@ const SidebarElement = ({ section, onClick }: { section: ISection, onClick: (id:
 
   return (
     <div
-      className={`w-screen cursor-pointer ${section.locked ? "text-yellow-600" : "text-white"
+      className={`w-screen cursor-pointer ${section.locked ? "text-sky-300" : "text-white"
         } text-lg flex py-2 my-2`}
       onClick={() => goToLogin()}
     >
       <div
-        className={`me-2 text-gray-600 text-md px-1`}
+        className={`me-2 text-gray-600 text-md ${section.locked ? "text-sky-300" : "text-white"
+          } px-1`}
       >
         <FontAwesomeIcon icon={section.locked ? faLock : faUnlock} />
       </div>
-      <div className="text-gray-600">{section.section}</div>
+      <div>{section.section}</div>
     </div>
   );
 }

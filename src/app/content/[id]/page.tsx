@@ -24,7 +24,7 @@ const ContentLoading = () =>
 const ContentPage = ({ params }: { params: { id: string } }) =>
 {
     return (
-        <div className="w-full flex flex-row h-screen max-w-screen">
+        <div className="w-full flex flex-row h-screen min-h-screen max-w-screen">
             <Suspense fallback={<SidebarLoading />}>
                 <Sidebar id={params.id} />
             </Suspense>

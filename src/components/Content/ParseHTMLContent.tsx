@@ -1,45 +1,15 @@
 "use client";
-import { modalActions } from '@/src/context/store/slices/modal-slice';
-import { ModalName } from '@/utils/enums/ModalEnum';
-import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import parse from 'html-react-parser';
 import { H1, H2, H3 } from '../CustomStyle/Headers';
-import { useNavigate } from '@/src/hooks/useNavigate';
 
 interface IParseHTMLContent
 {
     id?: string;
-    title?: string;
     content: string;
-    isLocked: boolean;
 }
 
-const ParseHTMLContent = ({ id, title, content, isLocked }: IParseHTMLContent) =>
+const ParseHTMLContent = ({ id, content }: IParseHTMLContent) =>
 {
-
-    const navigate = useNavigate();
-    const openLoginModal = () =>
-    {
-        navigate('/authentication/login');
-    }
-
-    if (isLocked)
-    {
-        return (
-            <div className='w-full py-1 cursor-pointer' onClick={openLoginModal}>
-                <h1 className='text-xl text-gray-700 font-semibold'>{title}</h1>
-                <div className="w-full h-[400px] bg-white flex flex-col justify-center items-center rounded-lg border-2 border-sky-900 relative overflow-hidden">
-                    <div className="z-10 flex flex-col justify-center items-center text-sky-900">
-                        <FontAwesomeIcon icon={faLock} className="lg:text-6xl md:text-4xl sm:text-2xl text-xl border-2 border-sky-900 rounded-full px-2 py-1 md:px-8 md:py-6" />
-                        <p className="w-full lg:text-2xl md:text-xl sm:text-lg text-md my-4">
-                            Sign In to View Content
-                        </p>
-                    </div>
-                </div>
-            </div>
-        )
-    }
 
     const getTextFromChildren = (children) =>
     {

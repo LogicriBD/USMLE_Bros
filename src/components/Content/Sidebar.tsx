@@ -18,43 +18,55 @@ const Sidebar = async ({ id }: { id: string }) =>
         try
         {
             const contentFetchMetadataById = new ContentFetchMetadataById(id as string);
+            const metadata = await contentFetchMetadataById.execute();
+            if (!metadata)
+            {
+                throw new Error("Could not fetch sections");
+            }
+            const sections = metadata.sections;
             const loggedIn = ServerAuthContext.isLoggedIn();
             const contentFetchById = new ContentsFetchById({ metadataId: id as string, all: loggedIn });
             const contents = await contentFetchById.execute();
-            const extractedContents = contents.map(content =>
+            const extractedSections = contents.map(content =>
             ({
-                title: extractFirstH1(content.content),
-                isLocked: content.isLocked,
+                section: extractFirstH1(content.content),
+                locked: content.isLocked,
                 serialNumber: content.serialNumber,
                 id: content.id,
-                content: content.content
-            })).filter(title => title.title !== undefined);
-            let contentsWithTitle = extractedContents.sort((a, b) => a.serialNumber - b.serialNumber);
-            const contentMetadata = await contentFetchMetadataById.execute();
-            const sections = contentMetadata?.sections ? contentMetadata.sections : [];
-            const modifiedSections = sections.map((section) =>
+            })).filter(content => content.section !== undefined).sort((a, b) => a.serialNumber - b.serialNumber);
+            if (!sections)
             {
-                const baseIndex = contentsWithTitle.findIndex(title => title.title === section);
-                const currentContent = contentsWithTitle[baseIndex];
-                contentsWithTitle = contentsWithTitle.filter((_, index) => index !== baseIndex);
-                if (baseIndex !== -1)
+                throw new Error("Could not fetch sections");
+            }
+            if (!loggedIn)
+            {
+                return sections.map((section, index) =>
                 {
-                    return {
-                        id: currentContent.id,
-                        section: currentContent.title ? currentContent.title : undefined,
-                        locked: false,
+                    if (index === 0)
+                    {
+                        return {
+                            section: section,
+                            locked: false,
+                            id: extractedSections[0].id,
+                        }
                     }
-                }
-                else
-                {
                     return {
-                        id: "",
                         section: section,
                         locked: true,
                     }
-                }
-            })
-            return modifiedSections;
+                })
+            }
+            else
+            {
+                return sections.map((section, index) =>
+                {
+                    return {
+                        id: extractedSections[index].id,
+                        section: section,
+                        locked: false,
+                    }
+                })
+            }
         }
         catch (err: any)
         {
