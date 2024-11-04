@@ -1,6 +1,9 @@
 "use client";
 import parse from 'html-react-parser';
 import { H1, H2, H3 } from '../CustomStyle/Headers';
+import { useEffect } from 'react';
+import { useAppDispatch } from '@/src/context/store/hooks';
+import { loaderActions } from '@/src/context/store/slices/loader-slice';
 
 interface IParseHTMLContent
 {
@@ -10,6 +13,12 @@ interface IParseHTMLContent
 
 const ParseHTMLContent = ({ id, content }: IParseHTMLContent) =>
 {
+
+    const dispatch = useAppDispatch();
+    useEffect(() =>
+    {
+        dispatch(loaderActions.turnOff());
+    }, [])
 
     const getTextFromChildren = (children) =>
     {

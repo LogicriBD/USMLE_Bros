@@ -23,7 +23,7 @@ const Navbar = () =>
     const pathname = usePathname();
     const router = useRouter();
     const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
-    const displayComponent = (<div className="mx-4 text-cyan-300 md:text-2xl text-md font-bold py-2" onClick={() => router.push("/")}>{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
+    const displayComponent = (<div className="mx-4 cursor-pointer text-cyan-300 md:text-2xl text-md font-bold py-2" onClick={() => router.push("/")}>{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
 
     if (isAuthLoading)
     {

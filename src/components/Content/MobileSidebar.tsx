@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Error from "../Error"
 import { ISection } from "@/types/Content";
 import SidebarElement from "./SidebarElement";
@@ -7,10 +7,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faClose, faCross } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
+import { useAppDispatch } from "@/src/context/store/hooks";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
 
 export const MobileSidebarError = ({ error }: { error: string }) =>
 {
     const [show, setShow] = useState(false);
+    const dispatch = useAppDispatch();
+    useEffect(() =>
+    {
+        dispatch(loaderActions.turnOff());
+    }, [])
 
     return (
         <div className={`lg:hidden ${!show ? "sm:w-[100px] w-[50px]" : "w-screen z-5"} bg-sky-900 block  h-screen min-h-screen flex flex-col justify-start items-start px-4 py-2`}>
@@ -26,6 +33,12 @@ export const MobileSideBarContent = ({ sections }: { sections: ISection[] }) =>
     const [show, setShow] = useState(false);
     const router = useRouter();
     const metadataId = useParams().id as string;
+
+    const dispatch = useAppDispatch();
+    useEffect(() =>
+    {
+        dispatch(loaderActions.turnOff());
+    }, [])
 
     const onClick = (id: string) =>
     {
