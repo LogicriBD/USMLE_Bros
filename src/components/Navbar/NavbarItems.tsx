@@ -45,7 +45,7 @@ const NavbarItems = () =>
     }
     else
     {
-        return null;
+        return (<></>);
     }
 }
 

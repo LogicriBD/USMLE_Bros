@@ -1,11 +1,11 @@
 "use client";
-import { useAppDispatch } from '@/src/context/store/hooks';
 import { modalActions } from '@/src/context/store/slices/modal-slice';
 import { ModalName } from '@/utils/enums/ModalEnum';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import parse from 'html-react-parser';
 import { H1, H2, H3 } from '../CustomStyle/Headers';
+import { useNavigate } from '@/src/hooks/useNavigate';
 
 interface IParseHTMLContent
 {
@@ -17,11 +17,11 @@ interface IParseHTMLContent
 
 const ParseHTMLContent = ({ id, title, content, isLocked }: IParseHTMLContent) =>
 {
-    const dispatch = useAppDispatch();
 
+    const navigate = useNavigate();
     const openLoginModal = () =>
     {
-        dispatch(modalActions.updateModalType(ModalName.Login))
+        navigate('/authentication/login');
     }
 
     if (isLocked)
@@ -41,39 +41,48 @@ const ParseHTMLContent = ({ id, title, content, isLocked }: IParseHTMLContent) =
         )
     }
 
-    const getTextFromChildren = (children) => {
+    const getTextFromChildren = (children) =>
+    {
         if (!children) return '';
 
-        if (Array.isArray(children)) {
-            return children.map(child => {
-                if (typeof child === 'string') {
-                    return child; 
-                } else if (child && child.type === 'text') {
-                    return child.data; 
+        if (Array.isArray(children))
+        {
+            return children.map(child =>
+            {
+                if (typeof child === 'string')
+                {
+                    return child;
+                } else if (child && child.type === 'text')
+                {
+                    return child.data;
                 }
-                return null; 
-            }).join(''); 
+                return null;
+            }).join('');
         }
 
         return '';
     };
 
     const options = {
-        replace: (domNode) => {
+        replace: (domNode) =>
+        {
             const textContent = getTextFromChildren(domNode.children);
-            if (domNode.name === 'h1') {
+            if (domNode.name === 'h1')
+            {
                 return <H1>{textContent}</H1>;
             }
-            if (domNode.name === 'h2') {
+            if (domNode.name === 'h2')
+            {
                 return <H2>{textContent}</H2>;
             }
-            if (domNode.name === 'h3') {
+            if (domNode.name === 'h3')
+            {
                 return <H3>{textContent}</H3>;
             }
             return null;
         },
     };
-    
+
     return (
         <div id={id} className='w-full'>
             {parse(content, options)}

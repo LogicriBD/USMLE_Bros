@@ -17,9 +17,10 @@ export default function Error({
     }, [error])
 
     return (
-        <div>
+        <div className='min-h-screen flex flex-col items-center justify-center bg-marrow'>
             <h2>Something went wrong!</h2>
             <button
+                className='bg-marrow-dark hover:bg-cyan-900 text-white px-4 py-2 rounded-lg mt-4'
                 onClick={
                     () => reset()
                 }

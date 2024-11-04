@@ -10,7 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import StoreProvider from "../context/StoreProvider";
 import { Suspense } from "react";
 import ModalSelector from "@/src/components/ModalSelector";
-import AuthStateManager from "../context/AuthStateManager";
 import Loader from "../components/Loader/Loader";
 import { appStore } from "../context/store/redux-store";
 import { loaderActions } from "../context/store/slices/loader-slice";
@@ -56,16 +55,14 @@ export default function RootLayout({
         className={`${openSans.className} antialiased`}
       >
         <StoreProvider>
-          <AuthStateManager>
-            <Loader />
-            <Navbar />
-            <main className="md:min-h-screen">
-              {children}
-            </main>
-            <Suspense fallback={<Loader />}>
-              <ModalSelector />
-            </Suspense>
-          </AuthStateManager>
+          <Loader />
+          <Navbar />
+          <main className="md:min-h-screen">
+            {children}
+          </main>
+          <Suspense fallback={<Loader />}>
+            <ModalSelector />
+          </Suspense>
         </StoreProvider>
         <Footer />
       </body>

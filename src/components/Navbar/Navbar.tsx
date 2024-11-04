@@ -2,20 +2,24 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import NavbarItems from "./NavbarItems";
-import { useAppSelector } from "@/src/context/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { Roles } from "@/utils/enums/Roles";
 import { usePathname, useRouter } from "next/navigation";
 import SpinLoading from "../Spinner";
 import Active from "../Active";
 import { IoMdMenu } from "react-icons/io";
 import NavbarButtons from "./NavbarButtons";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { validateUserSession } from "@/database/config/auth";
+import { appStore } from "@/src/context/store/redux-store";
 
 
 const Navbar = () =>
 {
+    const dispatch = useAppDispatch();
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn) || appStore.getState().auth.isLoggedIn;
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user);
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const isAuthLoading = useAppSelector((state) => state.loader.authLoading);
     const role = useAppSelector((state) => state.user.role);
     const pathname = usePathname();
@@ -32,6 +36,7 @@ const Navbar = () =>
 
     useEffect(() =>
     {
+        validateUserSession();
         setIsOpen(false);
     }, [pathname])
 

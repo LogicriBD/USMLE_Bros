@@ -10,7 +10,8 @@ type Props = {
   description?: string;
 };
 
-const ContentCard = (props: Props) => {
+const ContentCard = (props: Props) =>
+{
 
   const navigate = useNavigate();
 
