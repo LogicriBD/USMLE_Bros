@@ -151,7 +151,7 @@ const Uploader = () =>
         </div>
     ) : (
         <div className="w-full bg-inherit">
-            <div className="w-full p-3 flex justify-center items-center text-black md:text-4xl text-2xl font-bold">Select a Category</div>
+            <div className="w-full p-3 flex justify-center items-center text-cyan-300 md:text-4xl text-2xl font-bold">Select a Category</div>
         </div>
     );
 }

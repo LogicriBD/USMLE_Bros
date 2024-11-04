@@ -24,7 +24,7 @@ const SideBar = () =>
     if (loading)
     {
         return (
-            <div className="w-full bg-gray-800 text-white md:min-h-screen min-h-0">
+            <div className="w-full bg-marrow text-white md:min-h-screen min-h-0">
                 <SpinLoading invert />
             </div>
         )
@@ -63,7 +63,7 @@ const SideBar = () =>
                             dispatch(modalActions.updateModalType(ModalName.CreateCategory));
                             setIsOpen(false);
                         }}
-                        className="p-2 w-full flex items-center bg-gray-200 text-sky-800 text-md font-semibold hover:bg-gray-700 hover:text-sky-200 transition duration-300">
+                        className="p-2 w-full flex items-center bg-marrow text-cyan-300 text-md font-semibold hover:bg-marrow-dark hover:text-cyan-500 transition duration-300">
                         <span>Create New Category</span>
                         <span>
                             <FontAwesomeIcon icon={faPlusCircle} className="ml-2 text-lg" />
@@ -72,21 +72,21 @@ const SideBar = () =>
                 </li>
                 {categories.length > 0 ? (
                     categories.map((item, index) => (
-                        <li key={index} className="border-b border-gray-700">
+                        <li key={index} className="border-b border-cyan-900">
                             <button
                                 onClick={() =>
                                 {
                                     dispatch(categoryActions.setSelectedCategory(item));
                                     setIsOpen(false);
                                 }}
-                                className={`${selectedCategory?.id === item.id ? `bg-marrow-dark` : `bg-inherit`} w-full text-left px-6 py-3 hover:bg-gray-600 transition duration-300`}
+                                className={`${selectedCategory?.id === item.id ? `bg-marrow-dark` : `bg-inherit`} w-full text-left px-6 py-3 hover:bg-marrow-dark transition duration-300`}
                             >
                                 {item.name}
                             </button>
                         </li>
                     ))
                 ) : (
-                    <div className="p-2 text-center text-gray-200">No Categories Found</div>
+                    <div className="p-2 text-center text-cyan-200">No Categories Found</div>
                 )}
             </ul>
 

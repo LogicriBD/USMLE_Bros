@@ -30,7 +30,7 @@ const CategoriesModalContent = ({ categories, selectCategory, selectedCategory, 
             <div className="w-1/4 min-h-full bg-indigo-900"></div>
             <div className="w-3/4 min-h-full bg-gray-100 flex flex-col">
                 <div className="w-full flex items-center justify-center py-6">
-                    <h1 className="text-black font-semibold text-2xl">Select a category</h1>
+                    <h1 className="text-cyan-300 font-semibold text-2xl">Select a category</h1>
                 </div>
                 <div className="w-full flex md:p-4 p-2 justify-center">
                     <div className="grid md:grid-cols-3 md:gap-6 grid-cols-2 gap-2 justify-center mx-auto">

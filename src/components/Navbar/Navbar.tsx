@@ -82,6 +82,14 @@ const Navbar = () =>
                 {isOpen && (
                     <div className="flex flex-col p-2 m-2 gap-6">
                         <NavbarItems />
+                        <div className="w-full flex flex-row gap-3">
+                            <div className="rounded-full">
+                                {user.name && (<Active />)}
+                            </div>
+                            <div className="flex text-lg font-bold text-white pb-2">
+                                {user.name}
+                            </div>
+                        </div>
                         <NavbarButtons />
                     </div>
                 )}
