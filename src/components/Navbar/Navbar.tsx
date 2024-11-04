@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavbarItems from "./NavbarItems";
 import { useAppSelector } from "@/src/context/store/hooks";
 import { Roles } from "@/utils/enums/Roles";
@@ -29,6 +29,11 @@ const Navbar = () =>
             <SpinLoading />
         )
     }
+
+    useEffect(() =>
+    {
+        setIsOpen(false);
+    }, [pathname])
 
     return (
         <nav className="md:bg-marrow bg-marrow-dark p-3 sticky top-0 shadow-md md:shadow-none" style={{ zIndex: "1021" }}>
@@ -67,9 +72,14 @@ const Navbar = () =>
                 </div>
             </div>
             <div className={`md:hidden overflow-hidden
-                                ${isOpen ? " mt-2 pb-2 space-y-2 opacity-100 h-auto" : "opacity-0 h-0"} 
+                                ${isOpen ? " mt-2 p-2 space-y-2 opacity-100 h-auto fixed left-0 w-screen bg-marrow-dark flex justify-center flex-col" : "opacity-0 h-0"} 
                                 transform transition-[height,opacity] duration-500 ease-in-out`}>
-                {isOpen && <NavbarItems />}
+                {isOpen && (
+                    <div className="flex flex-col p-2 m-2 gap-6">
+                        <NavbarItems />
+                        <NavbarButtons />
+                    </div>
+                )}
             </div>
         </nav>
     );

@@ -27,24 +27,38 @@ const NavbarButtons = () =>
 
     if (!isLoggedIn)
     {
-        return (
-            <div className="flex md:flex-row flex-col gap-3 mx-2 px-2">
-                {isAuthenticationPath && (<NavItem isButton url={"/"}>Home</NavItem>)}
-                {!isAuthenticationPath && (<NavItem isButton url={"authentication/login"}>Login</NavItem>)}
-                {!isAuthenticationPath && (<NavItem isButton url={"authentication/register"}>Register</NavItem>)}
-            </div>
-        )
+        if (isAuthenticationPath)
+        {
+            return (
+                <div className="flex md:flex-row flex-col mt-2 md:mt-0 gap-3 mx-2 px-2">
+                    <NavItem isButton url={"/"}>Home</NavItem>
+                </div>
+            )
+        }
+        else
+        {
+            return (
+                <div className="flex md:flex-row flex-col mt-2 md:mt-0 gap-3 mx-2 px-2">
+                    <NavItem isButton url={"authentication/login"}>Login</NavItem>
+                    <NavItem isButton url={"authentication/register"}>Register</NavItem>
+                </div>
+            )
+        }
     }
     else
     {
-        return (<div
-            onClick={handleLogout}
-            className={`${InactiveModalItem} flex`}>
-            <div className="px-2 py-1">
-                <IoMdLogOut />
+        return (
+            <div className="flex md:flex-row flex-col mt-2 md:mt-0 gap-3 mx-2 px-2">
+                <div
+                    onClick={handleLogout}
+                    className={`${InactiveModalItem} flex`}>
+                    <div className="px-2 py-1">
+                        <IoMdLogOut />
+                    </div>
+                    Logout
+                </div>
             </div>
-            Logout
-        </div>)
+        )
     }
 }
 
