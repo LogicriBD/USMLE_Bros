@@ -10,7 +10,7 @@ import { submitActions } from "@/src/context/store/slices/submit-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 import { logger } from "@/utils/Logger";
-import { faEdit, faEye, faLock, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -121,17 +121,6 @@ const Uploader = () =>
                                         <h3 className="md:text-lg text-sm font-semibold mb-2">{item.title}</h3>
                                     </div>
                                     <div className="md:w-1/3 w-full flex md:justify-center jusify-start">
-                                        <span
-                                            onClick={() =>
-                                            {
-                                                dispatch(modalActions.addModal({
-                                                    type: ModalName.ContentLock,
-                                                    data: item.id
-                                                }))
-                                            }}
-                                            className="p-2 text-gray-200 bg-gray-700 rounded-md text-sm font-semibold mb-2 md:mb-0 hover:bg-gray-500 transition duration-300 cursor-pointer">
-                                            Lock this content <FontAwesomeIcon icon={faLock} className="pl-2" />
-                                        </span>
                                     </div>
                                     <div className="md:w-1/3 w-full flex md:justify-end justify-start">
                                         <p className="text-sm font-semibold">{formatFirebaseDate(item.createdAt)}</p>
