@@ -57,6 +57,7 @@ const NavbarItem = ({ url, children, cached, isButton }: { url?: string, childre
         return () =>
         {
             setActive(false);
+            dispatch(loaderActions.turnOff())
         }
     }, [pathname, currentModal]);
 

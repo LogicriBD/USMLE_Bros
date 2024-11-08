@@ -43,8 +43,7 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>)
-{
+}>) {
   appStore.dispatch(loaderActions.authTurnOn());
   return (
     <html lang="en">
@@ -56,15 +55,17 @@ export default function RootLayout({
       >
         <StoreProvider>
           <Loader />
-          <Navbar />
-          <main className="md:min-h-screen">
-            {children}
+          <main className="h-screen flex flex-col">
+            <Navbar />
+            <div className="flex-grow">
+              {children}
+            </div>
+            <Footer />
           </main>
           <Suspense fallback={<Loader />}>
             <ModalSelector />
           </Suspense>
         </StoreProvider>
-        <Footer />
       </body>
     </html>
   );
