@@ -34,13 +34,7 @@ const NavbarItems = () =>
     {
         return (
             <div className="flex md:flex-row flex-col gap-3 mx-2 px-2">
-                {/* {isAdminRole && (
-                    <>
-                        <NavItem url={"/"}>{isAdminRole && pathname.includes("admin") ? "View" : "Home"}</NavItem>
-                        <AdminItems />
-                    </>
-                )} */}
-                {isAdminRole && (<NavItem url={"/"}>{isAdminRole && pathname.includes("admin") ? "View" : "Home"}</NavItem>)}
+                <NavItem url={"/"}>{isAdminRole && pathname.includes("admin") ? "View" : "Home"}</NavItem>
                 {!pathname.includes("chat") && (<NavItem url="/chat">Chat</NavItem>)}
                 {isAdminRole && (<AdminItems />)}
             </div>
