@@ -12,8 +12,8 @@ const UserCard = (props: Props) => {
     const user = useAppSelector((state) => state.user);
 
     return (
-        <div className={`w-full h-min bg-stone-200 rounded-lg flex flex-col space-y-2`}>
-            <div className="text-black flex items-center gap-2 font-semibold text-md px-4 py-2">
+        <div className={`w-full h-min bg-stone-200 rounded-lg flex flex-col space-y-2 py-2`}>
+            <div className="text-black flex items-center gap-2 font-semibold text-md px-4 ">
                 {props.user.name} 
                 <span className="text-xs">
                     {user.id === props.user.id && "(You)"} 

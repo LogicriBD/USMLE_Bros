@@ -39,7 +39,7 @@ const UserTable = () =>
     }, [isSubmit]);
 
     return (
-        <table className="w-full min-w-screen md:min-w-3/4 md:w-3/4 md:mt-12 bg-white md:text-xl text-xs sm:text-md text-black shadow-xl md:shadow-none rounded-lg px-4 py-2 overflow-x-scroll">
+        <table className="w-full min-w-screen md:min-w-3/4 md:w-3/4 md:h-3/4 h-full bg-white md:text-xl text-xs sm:text-md text-black shadow-xl md:shadow-none rounded-lg px-4 py-2 overflow-x-scroll">
             <thead className="font-bold md:text-xl text-marrow-dark sm:text-md">
                 <tr>
                     <th className="p-4 hidden md:table-cell">SL</th>

@@ -55,9 +55,9 @@ export default function RootLayout({
       >
         <StoreProvider>
           <Loader />
-          <main className="h-screen flex flex-col">
+          <main className="h-screen max-h-screen flex flex-col">
             <Navbar />
-            <div className="flex-grow">
+            <div className="flex-grow flex items-center justify-center overflow-y-auto">
               {children}
             </div>
             <Footer />

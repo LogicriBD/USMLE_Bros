@@ -4,7 +4,7 @@ import Uploader from "@/src/components/Upload/Uploader";
 const UploadPage = () =>
 {
     return (
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col w-full h-full md:flex-row">
             <div className="md:w-64 w-full">
                 <SideBar />
             </div>

@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { browserLocalPersistence, initializeAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import { getDatabase } from "firebase/database";
+
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -24,4 +24,3 @@ export const auth = initializeAuth(app, {
 
 export const firestore = getFirestore(app);
 export const storage = getStorage(app);
-export const realtimeDatabase = getDatabase(app);

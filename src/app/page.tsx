@@ -5,7 +5,7 @@ export default function Home()
 {
 
   return (
-    <div className="flex flex-row w-full max-h-full min-h-screen">
+    <div className="flex flex-row w-full h-full">
       <div className="md:w-1/3 w-1/6 min-h-screen max-h-full flex flex-col md:justify-end justify-start">
         <HomeSideBar />
       </div>

@@ -23,7 +23,7 @@ const Navbar = () =>
     const pathname = usePathname();
     const router = useRouter();
     const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
-    const displayComponent = (<div className="mx-4 cursor-pointer text-cyan-300 md:text-2xl text-md font-bold py-2" onClick={() => router.push("/")}>{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
+    const displayComponent = (<div className="mx-4 cursor-pointer text-cyan-300 tablet:text-2xl text-md font-bold py-2" onClick={() => router.push("/")}>{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
 
     useEffect(() =>
     {
@@ -63,7 +63,7 @@ const Navbar = () =>
                 </div>
                 <div className="hidden w-1/4 md:flex md:flex-grow gap-6 text-white justify-center items-center">
                     {user.name && (<Active />)}
-                    <div className="flex w-fit flex-grow text-lg font-bold">
+                    <div className="flex w-fit flex-grow tablet:text-lg text-sm font-bold">
                         {user.name}
                     </div>
                     {

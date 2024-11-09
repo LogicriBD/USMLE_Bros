@@ -19,7 +19,7 @@ export const DesktopSideBarError = ({ error }: { error: string }) =>
     }, [])
 
     return (
-        <div className="w-1/3 xl:w-1/4 2xl:w-1/5 hidden lg:block h-screen  min-h-screen bg-gray-100 flex flex-col px-4 py-2">
+        <div className="w-1/3 xl:w-1/4 2xl:w-1/5 hidden lg:block h-full bg-gray-100 flex flex-col px-4 py-2">
             <Error error={error} />
         </div>
     )
@@ -43,7 +43,7 @@ export const DesktopSideBarContent = ({ sections }: { sections: ISection[] }) =>
     }, [])
 
     return (
-        <div className="h-screen min-h-screen w-1/3 xl:w-1/4 2xl:w-1/5 hidden lg:block bg-marrow-dark flex flex-col px-4 py-2 border-r border-gray-300">
+        <div className="h-full w-1/3 xl:w-1/4 2xl:w-1/5 hidden lg:block bg-marrow-dark flex flex-col px-4 py-2 border-r border-gray-300">
             {sections.map((section, index) => (
                 <SidebarElement section={section} key={index} onClick={onClick} />
             ))}

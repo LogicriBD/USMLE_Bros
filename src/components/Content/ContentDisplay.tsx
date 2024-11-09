@@ -33,7 +33,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     if (!fetchedContents)
     {
         return (
-            <div className="h-screen bg-gray-50 flex flex-col flex-grow px-4 py-2">
+            <div className="h-full bg-gray-50 flex flex-col flex-grow px-4 py-2">
                 <Error error="Could Not Fetch Sections" />
             </div>
         )
