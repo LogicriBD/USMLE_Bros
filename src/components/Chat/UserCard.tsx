@@ -13,11 +13,11 @@ const UserCard = (props: Props) => {
 
     return (
         <div className={`w-full h-min bg-stone-200 rounded-lg flex flex-col space-y-2`}>
-            <div className="text-black flex items-center gap-2 font-semibold text-md px-4 py-1">
+            <div className="text-black flex items-center gap-2 font-semibold text-md px-4 py-2">
                 {props.user.name} 
                 <span className="text-xs">
                     {user.id === props.user.id && "(You)"} 
-                    <span className="text-sky-600">{user.role === Roles.Admin && " (Admin)"}</span>
+                    <span className="text-sky-600">{props.user.role === Roles.Admin && " (Admin)"}</span>
                 </span>
                 {props.isActive && (
                     <span className="flex items-center">

@@ -2,6 +2,7 @@ import ChatSideBar from "@/src/components/Chat/ChatSideBar";
 import ChatView from "@/src/components/Chat/chatView";
 
 const ChatPage = () => {
+
     return (
         <div className="w-full h-full flex flex-col">
             <div className="flex-grow flex flex-row w-full">
