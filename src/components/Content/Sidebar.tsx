@@ -6,8 +6,6 @@ import { logger } from "@/utils/Logger";
 import { ServerAuthContext } from "@/src/context/ServerAuthContext";
 import { MobileSideBarContent, MobileSidebarError } from "./MobileSidebar";
 import { DesktopSideBarContent, DesktopSideBarError } from "./DesktopSidebar";
-import { cookies } from "next/headers";
-import { firestore } from "@/database/config/adminApp";
 export const dynamic = 'force-dynamic';
 
 
@@ -19,27 +17,6 @@ const Sidebar = async ({ id }: { id: string }) =>
     {
         try
         {
-            const cookieStore = await cookies();
-            const cookie = cookieStore.get("access");
-            if (!cookie)
-            {
-                ServerAuthContext.setLoggedIn(false);
-            }
-            else
-            {
-                const session = await firestore.collection("sessions").where("accessToken", "==", cookie.value);
-                const sessionSnapshot = await session.get();
-                if (sessionSnapshot.empty)
-                {
-                    ServerAuthContext.setLoggedIn(false);
-                }
-                else
-                {
-                    const sessionData = await sessionSnapshot.docs[0].data();
-                    const isActive = sessionData.active === true;
-                    ServerAuthContext.setLoggedIn(isActive);
-                }
-            }
             const contentFetchMetadataById = new ContentFetchMetadataById(id as string);
             const metadata = await contentFetchMetadataById.execute();
             if (!metadata)
