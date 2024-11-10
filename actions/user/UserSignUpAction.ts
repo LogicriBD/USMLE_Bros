@@ -38,6 +38,8 @@ export class UserSignUpAction implements Action<FormResponse> {
             email: user.email,
             name: user.name,
             role: user.role,
+            isBanned: user.isBanned,
+            banExpiry: user.banExpiry ?? null,
           })
         );
         return {

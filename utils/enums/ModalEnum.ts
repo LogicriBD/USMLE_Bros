@@ -6,4 +6,5 @@ export enum ModalName {
   CreateContent = "CreateContent",
   ErrorModal = "ErrorModal",
   SuccessModal = "SuccessModal",
+  BanModal = "BanModal",
 }

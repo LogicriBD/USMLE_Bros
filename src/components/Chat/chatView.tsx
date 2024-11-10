@@ -6,7 +6,6 @@ import { useAppSelector } from "@/src/context/store/hooks";
 import { ReceiveMessage } from "@/types/Message";
 import { logger } from "@/utils/Logger";
 import { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import MessageUI from "./Message";
 
 const ChatView = () => {
@@ -49,28 +48,43 @@ const ChatView = () => {
                 Chat
             </div>
 
-            <div className="flex-grow flex flex-col-reverse overflow-y-auto px-4 py-2 bg-gray-100 bg-opacity-50 rounded-lg">
-                {messages.map((message, index) => (
-                    <MessageUI key={index} message={message} user={user} />
-                ))}
-            </div>
+            {user.banExpiry && user.banExpiry.toDate() > new Date() ? (
+                <>
+                    <div className="flex-grow flex items-center justify-center text-red-500 font-bold text-2xl">
+                        You are banned from the chat
+                        
+                            {user.banExpiry.toDate() > new Date() && (new Date().getTime() - user.banExpiry.toDate().getTime() >= 24 * 60 * 60 * 1000)
+                                ? " for 24 hours or more"
+                                : " for less than 24 hours"}
+                    
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className="flex-grow flex flex-col-reverse overflow-y-auto px-4 py-2 bg-gray-100 bg-opacity-50 rounded-lg">
+                        {messages.map((message, index) => (
+                            <MessageUI key={index} message={message} user={user} />
+                        ))}
+                    </div>
 
-            <div className="flex items-center p-4 border-t bg-marrow-dark">
-                <input
-                    type="text"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="Type a message..."
-                    className="flex-grow p-2 border rounded-md"
-                />
-                <button
-                    onClick={handleSendMessage}
-                    disabled={loading}
-                    className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300"
-                >
-                    {loading ? "Sending..." : "Send"}
-                </button>
-            </div>
+                    <div className="flex items-center p-4 border-t bg-marrow-dark">
+                        <input
+                            type="text"
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            placeholder="Type a message..."
+                            className="flex-grow p-2 border rounded-md"
+                        />
+                        <button
+                            onClick={handleSendMessage}
+                            disabled={loading}
+                            className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300"
+                        >
+                            {loading ? "Sending..." : "Send"}
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 };

@@ -7,6 +7,8 @@ const initState: UserData = {
   email: "",
   name: "",
   role: Roles.User,
+  isBanned: false,
+  banExpiry: null,
 };
 
 export const userSlice = createSlice({
@@ -24,12 +26,18 @@ export const userSlice = createSlice({
       state.email = action.payload.email;
       state.name = action.payload.name;
       state.role = action.payload.role;
+      state.isBanned = action.payload.isBanned;
+      if(action.payload.banExpiry){
+        state.banExpiry = action.payload.banExpiry;
+      }
     },
     clearData: (state: UserData) => {
       state.id = "";
       state.email = "";
       state.name = "";
       state.role = Roles.User;
+      state.isBanned = false;
+      state.banExpiry = null;
     },
   },
 });

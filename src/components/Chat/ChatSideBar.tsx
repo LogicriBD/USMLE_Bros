@@ -35,7 +35,7 @@ const ChatSideBar = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [users, setUsers] = useState<UserData[]>([]);
-
+    const isSubmit = useAppSelector((state) => state.submit.toggle);
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
@@ -55,7 +55,7 @@ const ChatSideBar = () => {
 
     useEffect(() => {
         fetchUsers();
-    }, [])
+    }, [isSubmit])
 
     return (
         <>

@@ -15,6 +15,8 @@ export class UserFetchByEmailAction implements Action<UserData | undefined> {
           email: user.email,
           name: user.name,
           role: user.role,
+          isBanned: user.isBanned,
+          banExpiry: user.banExpiry ?? null
         })
       );
       return user;
