@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
+    ServerAuthContext.setLoggedIn(true);
     const formData = await request.formData();
     const accessToken = formData.get("accessToken") as string;
     const type = formData.get("type") as string;
@@ -13,7 +14,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No token provided" }, { status: 401 });
     }
     const decodedToken = await auth.verifyIdToken(accessToken);
-    ServerAuthContext.setLoggedIn(true);
     if (type === "verification") {
       return NextResponse.json({
         success: true,
@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
     const user = firestore.collection("users").where("email", "==", email);
     const userSnapshot = await user.get();
     if (userSnapshot.empty) {
+      ServerAuthContext.setLoggedIn(false);
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
     const userDoc = userSnapshot.docs[0];
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     logger.error(error);
+    ServerAuthContext.setLoggedIn(false);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
