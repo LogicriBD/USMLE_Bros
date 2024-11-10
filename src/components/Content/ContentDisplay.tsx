@@ -6,18 +6,39 @@ import { ServerAuthContext } from "@/src/context/ServerAuthContext";
 import { ContentData } from "@/database/repository/Content";
 import { IoIosLock } from "react-icons/io";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { firestore } from "@/database/config/adminApp";
 export const dynamic = 'force-dynamic';
 
 
 const ContentDisplay = async ({ id }: { id: string }) =>
 {
 
-    const isLoggedIn = ServerAuthContext.isLoggedIn();
-
     const fetchContents = async (): Promise<ContentData[] | undefined> =>
     {
         try
         {
+            const cookieStore = await cookies();
+            const cookie = cookieStore.get("access");
+            if (!cookie)
+            {
+                ServerAuthContext.setLoggedIn(false);
+            }
+            else
+            {
+                const session = await firestore.collection("sessions").where("accessToken", "==", cookie.value);
+                const sessionSnapshot = await session.get();
+                if (sessionSnapshot.empty)
+                {
+                    ServerAuthContext.setLoggedIn(false);
+                }
+                else
+                {
+                    const sessionData = await sessionSnapshot.docs[0].data();
+                    const isActive = sessionData.active === true;
+                    ServerAuthContext.setLoggedIn(isActive);
+                }
+            }
             const loggedIn = ServerAuthContext.isLoggedIn();
             const contentFetchById = new ContentsFetchById({ metadataId: id, all: loggedIn });
             const contents = await contentFetchById.execute();
@@ -39,7 +60,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
         )
     }
     const contents = fetchedContents;
-    if (isLoggedIn)
+    if (ServerAuthContext.isLoggedIn())
     {
         return (
             <div className="w-full overflow-x-hidden overflow-y-scroll bg-white px-4 py-2">
