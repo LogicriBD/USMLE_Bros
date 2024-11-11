@@ -66,11 +66,12 @@ const ChatSideBar = () => {
                     <SideBarContents users={users} />
                 )}
             </div>
-            <div className="lg:hidden bg-marrow-dark block w-full h-full flex flex-col z-30 relative">
+            <div 
+                onClick={toggleSidebar}
+                className="lg:hidden bg-marrow-dark block w-full h-full flex flex-col z-30 relative">
                 <div className="flex justify-end p-4">
                     <FontAwesomeIcon
                         icon={faBars}
-                        onClick={toggleSidebar}
                         className="text-white cursor-pointer"
                     />
                 </div>

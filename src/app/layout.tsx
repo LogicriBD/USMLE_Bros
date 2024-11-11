@@ -55,12 +55,13 @@ export default function RootLayout({
       >
         <StoreProvider>
           <Loader />
-          <main className="h-screen max-h-screen flex flex-col">
-            <Navbar />
-            <div className="flex-grow flex items-center justify-center overflow-y-auto">
+          <main className="h-screen flex flex-col">
+            <div className="h-auto">
+              <Navbar />
+            </div>
+            <div className="h-full items-center justify-center overflow-y-auto">
               {children}
             </div>
-            <Footer />
           </main>
           <Suspense fallback={<Loader />}>
             <ModalSelector />

@@ -54,7 +54,7 @@ const ContentsMetadataDisplay = () => {
     }
 
     return (
-        <div className="w-full flex flex-col mt-4">
+        <div className="w-full h-max flex flex-col mt-4">
             <div className="flex justify-start w-full">
                 <SearchBar searchText={searchText} setSearchText={handleSearch} />
             </div>

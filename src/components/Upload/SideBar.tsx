@@ -31,7 +31,7 @@ const SideBar = () =>
     }
 
     return (
-        <div className="w-full bg-marrow text-white md:min-h-screen min-h-0">
+        <div className="w-full bg-marrow text-white md:min-h-full min-h-0">
             <div className="px-6 py-3 font-bold text-xl border-b border-gray-700 flex justify-between">
                 Categories
 

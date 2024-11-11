@@ -44,17 +44,13 @@ const ChatView = () => {
 
     return (
         <div className="flex flex-col w-full h-full max-h-full">
-            <div className="w-full p-2 flex justify-center items-center text-cyan-300 md:text-4xl text-2xl font-bold">
-                Chat
-            </div>
-
             {user.banExpiry && user.banExpiry.toDate() > new Date() ? (
                 <>
                     <div className="flex-grow flex items-center justify-center text-red-500 font-bold text-2xl">
                         You are banned from the chat
                         
                             {user.banExpiry.toDate() > new Date() && (new Date().getTime() - user.banExpiry.toDate().getTime() >= 24 * 60 * 60 * 1000)
-                                ? " for 24 hours or more"
+                                ? null
                                 : " for less than 24 hours"}
                     
                     </div>
@@ -67,7 +63,8 @@ const ChatView = () => {
                         ))}
                     </div>
 
-                    <div className="flex items-center p-4 border-t bg-marrow-dark">
+                    {/* desktop version */}
+                    <div className="md:flex hidden items-center p-4 border-t bg-marrow-dark">
                         <input
                             type="text"
                             value={text}
@@ -79,6 +76,24 @@ const ChatView = () => {
                             onClick={handleSendMessage}
                             disabled={loading}
                             className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300"
+                        >
+                            {loading ? "Sending..." : "Send"}
+                        </button>
+                    </div>
+
+                    {/* mobile version */}
+                    <div className="flex md:hidden items-center p-2 border-t bg-marrow-dark">
+                        <input
+                            type="text"
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            placeholder="Type a message..."
+                            className="flex-grow p-2 border rounded-full"
+                        />
+                        <button
+                            onClick={handleSendMessage}
+                            disabled={loading}
+                            className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold md:text-md text-sm rounded-xl px-2 py-2 transition duration-300"
                         >
                             {loading ? "Sending..." : "Send"}
                         </button>
