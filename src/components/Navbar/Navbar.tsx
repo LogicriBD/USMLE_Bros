@@ -3,27 +3,24 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import NavbarItems from "./NavbarItems";
 import { useAppSelector } from "@/src/context/store/hooks";
-import { Roles } from "@/utils/enums/Roles";
 import { usePathname, useRouter } from "next/navigation";
 import SpinLoading from "../Spinner";
 import Active from "../Active";
 import { IoMdMenu } from "react-icons/io";
 import NavbarButtons from "./NavbarButtons";
 import { validateUserSession } from "@/database/config/auth";
-import { appStore } from "@/src/context/store/redux-store";
 
 
 const Navbar = () =>
 {
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn) || appStore.getState().auth.isLoggedIn;
+    // const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn) || appStore.getState().auth.isLoggedIn;
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user);
     const isAuthLoading = useAppSelector((state) => state.loader.authLoading);
-    const role = useAppSelector((state) => state.user.role);
+    // const role = useAppSelector((state) => state.user.role);
     const pathname = usePathname();
     const router = useRouter();
-    const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
-    const displayComponent = (<div className="mx-4 cursor-pointer text-cyan-300 tablet:text-2xl text-md font-bold py-2" onClick={() => router.push("/")}>{isLoggedIn && isAdminPortal ? "USMLE Bros ADMIN" : "USMLE Bros"}</div>);
+    // const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
 
     useEffect(() =>
     {

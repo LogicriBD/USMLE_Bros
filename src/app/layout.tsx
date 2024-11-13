@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Open_Sans } from "next/font/google";
 import Navbar from "@/src/components/Navbar/Navbar";
-import Footer from "@/src/components/Footer/Footer";
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = true
