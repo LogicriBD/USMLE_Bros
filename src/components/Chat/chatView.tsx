@@ -74,6 +74,12 @@ const ChatView = () => {
                             type="text"
                             value={text}
                             onChange={(e) => setText(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleSendMessage();
+                                }
+                            }}
                             placeholder="Type a message..."
                             className="flex-grow p-2 border rounded-md"
                         />
