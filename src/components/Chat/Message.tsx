@@ -1,6 +1,8 @@
 import { UserData } from "@/database/repository/User";
+import parse, { domToReact } from 'html-react-parser';
 import { ReceiveMessage } from "@/types/Message";
 import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
+import { A } from "../CustomStyle/Links";
 
 type Props = {
     message: ReceiveMessage;
@@ -10,6 +12,19 @@ type Props = {
 const MessageUI = (props: Props) => {
     const isUserMessage = props.message.userId === props.user.id;
 
+    const options = {
+        replace: (node) => {
+            if (node.name === 'a') {
+                const { href, children } = node.attribs;
+                return (
+                    <A href={href}>
+                        {domToReact(node.children)}
+                    </A>
+                );
+            }
+        },
+    }
+    
     return (
         <div className={`flex w-full ${isUserMessage ? "justify-end" : "justify-start"} py-2 `}>
             <div className="flex flex-col space-y-1 ">
@@ -23,7 +38,7 @@ const MessageUI = (props: Props) => {
                     </div>
 
                     <div className="text-sm break-words tablet:max-w-2xl md:max-w-xl max-w-full">
-                        {props.message.text}
+                        {parse(props.message.text, options)}
                     </div>
                 </div>
             </div>

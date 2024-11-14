@@ -7,6 +7,8 @@ import { ReceiveMessage } from "@/types/Message";
 import { logger } from "@/utils/Logger";
 import { useEffect, useState } from "react";
 import MessageUI from "./Message";
+import LinkMessage from "@/utils/helpers/LinkParser";
+import { Roles } from "@/utils/enums/Roles";
 
 const ChatView = () => {
     const user = useAppSelector((state) => state.user);
@@ -19,9 +21,12 @@ const ChatView = () => {
         try {
             if (text !== "") {
                 setLoading(true);
+
+                const messageContent = user.role === Roles.Admin ? LinkMessage(text) : text;
+
                 const sendAction = new sendMessage({
                     message: {
-                        text: text,
+                        text: messageContent,
                         userId: user.id,
                         userName: user.name,
                         time: new Date().toISOString()
