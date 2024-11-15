@@ -34,22 +34,22 @@ const MessageUI = (props: Props) => {
     }
 
     const deleteMessage = () => {
-        try{
+        try {
             setLoading(true);
-            const deleteAction = new DeleteMessage({messageId: props.message.id});
+            const deleteAction = new DeleteMessage({ messageId: props.message.id });
             deleteAction.execute();
-        }catch(error: any){
+        } catch (error: any) {
             console.error(error);
-        }finally{
+        } finally {
             setLoading(false);
         }
     }
-    
+
     return (
         <div className={`flex w-full ${isUserMessage ? "justify-end" : "justify-start"} py-2 `}>
-            {loading ?(
+            {loading ? (
                 <>
-                    <Spinner animation="border" variant="primary"/>
+                    <Spinner animation="border" variant="primary" />
                 </>
             ) : (
                 <div className="flex flex-col space-y-1 ">
@@ -60,11 +60,13 @@ const MessageUI = (props: Props) => {
                     >
                         <div className="flex items-center justify-between text-xs">
                             <div className="font-bold">{isUserMessage ? "You" : props.message.userName}</div>
-                            <FontAwesomeIcon
-                                icon={faTrash}
-                                className="cursor-pointer text-xl hover:scale-125 duration-300 transition"
-                                onClick={deleteMessage}
-                            />
+                            {isUserMessage && (
+                                <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className="cursor-pointer text-xl hover:scale-125 duration-300 transition"
+                                    onClick={deleteMessage}
+                                />
+                            )}
                         </div>
 
                         <div className="text-sm break-words tablet:max-w-2xl md:max-w-xl max-w-full">
