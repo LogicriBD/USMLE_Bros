@@ -10,7 +10,27 @@ import { UserData } from "@/database/repository/User";
 type Props ={
     users: UserData[];
 }
-const SideBarContents = (props:Props) => {
+const MobileSideBarContents = (props:Props) => {
+    const currentUser = useAppSelector((state) => state.user);
+    return (
+        <>
+            <div className="w-full p-2 items-center text-white md:text-xl text-lg font-bold">
+                People
+            </div>
+            <div className="w-full h-full px-2 pt-2 pb-24 flex flex-col space-y-2 overflow-y-auto">
+                <UserCard user={currentUser} isActive={false} />
+                {props.users.map((user) => {
+                    if (user.id !== currentUser.id) {
+                        return <UserCard key={user.id} user={user} isActive={false} />;
+                    }
+                    return null;
+                })}
+            </div>
+        </>
+    )
+}
+
+const DesktopSideBarContents = (props:Props) => {
     const currentUser = useAppSelector((state) => state.user);
     return (
         <>
@@ -29,6 +49,7 @@ const SideBarContents = (props:Props) => {
         </>
     )
 }
+
 
 const ChatSideBar = () => {
 
@@ -63,7 +84,7 @@ const ChatSideBar = () => {
                 {loading ? (
                     <Spinner invert={false} />
                 ) : (
-                    <SideBarContents users={users} />
+                    <DesktopSideBarContents users={users} />
                 )}
             </div>
             <div 
@@ -91,7 +112,7 @@ const ChatSideBar = () => {
                             {loading ? (
                                 <Spinner invert={false} />
                             ) : (
-                                <SideBarContents users={users} />
+                                <MobileSideBarContents users={users} />
                             )}
                         </div>
                     </div>

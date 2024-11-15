@@ -104,7 +104,7 @@ const ChatView = () => {
                         <button
                             onClick={handleSendMessage}
                             disabled={loading}
-                            className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold md:text-md text-sm rounded-xl px-2 py-2 transition duration-300"
+                            className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold md:text-md text-sm rounded-md px-2 py-2 transition duration-300"
                         >
                             {loading ? "Sending..." : "Send"}
                         </button>

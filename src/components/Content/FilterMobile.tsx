@@ -14,7 +14,7 @@ const FilterMobile = () => {
     }
 
     return (
-        <div className="w-full bg-inherit flex flex-col z-20 relative divide-y-2 divide-gray-600 divide-solid max-h-screen overflow-y-auto">
+        <div className="w-full pb-36 bg-inherit flex flex-col z-20 relative divide-y-2 divide-gray-600 divide-solid max-h-screen overflow-y-auto">
             <div className="text-lg font-bold text-white justify-start text-start flex w-full px-2 py-3">Categories</div>
             {categories.length > 0 && categories.map((category, index) => (
                 <div

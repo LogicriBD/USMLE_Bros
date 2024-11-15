@@ -20,7 +20,7 @@ const HomeSideBar = () => {
                 </div>
             </div>
 
-            <div className="md:hidden block w-full bg-gray-800 h-full flex flex-col z-30 relative">
+            <div className="md:hidden w-full bg-gray-800 h-full flex flex-col z-30 relative">
                 <div className="flex justify-end p-4">
                     <FontAwesomeIcon
                         icon={faBars}
