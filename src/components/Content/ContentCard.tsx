@@ -25,7 +25,7 @@ const ContentCard = (props: Props) =>
   }
 
   return (
-    <div className="max-w-xs 2xl:max-w-md bg-gray-50 shadow-md rounded-md overflow-hidden cursor-pointer" onClick={() => handleNavigate(props.id)}>
+    <div className="max-w-xs h-max 2xl:max-w-md bg-gray-50 shadow-md rounded-md overflow-hidden cursor-pointer" onClick={() => handleNavigate(props.id)}>
       <div className="w-full h-56 overflow-hidden bg-white">
         <Image
           src={props.image}

@@ -62,7 +62,7 @@ const ChatView = () => {
                 </>
             ) : (
                 <>
-                    <div className="flex-grow flex flex-col-reverse overflow-y-auto px-4 py-2 bg-gray-100 bg-opacity-50 rounded-lg">
+                    <div className="flex-grow flex flex-col-reverse overflow-y-auto scrollbar-thin px-4 py-2 bg-gray-100 bg-opacity-50 rounded-lg">
                         {messages.map((message, index) => (
                             <MessageUI key={index} message={message} user={user} />
                         ))}

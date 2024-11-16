@@ -58,7 +58,7 @@ export default function RootLayout({
             <div className="h-auto">
               <Navbar />
             </div>
-            <div className="h-full items-center justify-center overflow-y-auto">
+            <div className="h-full items-center justify-center overflow-y-auto scrollbar-thin">
               {children}
             </div>
           </main>
