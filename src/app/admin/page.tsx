@@ -4,7 +4,7 @@ const AdminPage = () =>
 {
 
     return (
-        <div className="w-full h-full p-10 p-2  flex justify-center items-center overflow-x-auto">
+        <div className="w-full h-full p-2 flex justify-center items-center overflow-x-auto">
             <UserTable />
         </div>
     )
