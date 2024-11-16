@@ -2,7 +2,7 @@
 import { useAppSelector } from "@/src/context/store/hooks";
 import UserCard from "./UserCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import Spinner from "../Spinner";
 import { UserFetchAll } from "@/actions/user/UserFetchAll";
@@ -12,14 +12,35 @@ type Props ={
 }
 const MobileSideBarContents = (props:Props) => {
     const currentUser = useAppSelector((state) => state.user);
+
+    const [searchText, setSearchText] = useState<string>('');
+    const [searchedUsers, setSearchedUsers] = useState<UserData[]>(props.users);
+
+    const handleSearch = (e: any) => {
+        const searchText = e.target.value;
+        if (searchText === '') {
+            setSearchedUsers(props.users);
+        }
+        else {
+            const searched = props.users.filter(user => user.name.toLowerCase().includes(searchText.toLowerCase()));
+            setSearchedUsers(searched);
+        }
+        setSearchText(searchText);
+    }
+
     return (
         <>
             <div className="w-full p-2 items-center text-white md:text-xl text-lg font-bold">
-                People
+                <div className="flex justify-start w-full">
+                    People
+                </div>
+                <div className="w-full py-1 mt-2">
+                    <ChatSearchBar searchText={searchText} setSearchText={handleSearch} />
+                </div>
             </div>
             <div className="w-full h-full px-2 pt-2 pb-24 flex flex-col space-y-2 overflow-y-auto">
                 <UserCard user={currentUser} isActive={false} />
-                {props.users.map((user) => {
+                {searchedUsers.map((user) => {
                     if (user.id !== currentUser.id) {
                         return <UserCard key={user.id} user={user} isActive={false} />;
                     }
@@ -32,14 +53,35 @@ const MobileSideBarContents = (props:Props) => {
 
 const DesktopSideBarContents = (props:Props) => {
     const currentUser = useAppSelector((state) => state.user);
+
+    const [searchText, setSearchText] = useState<string>('');
+    const [searchedUsers, setSearchedUsers] = useState<UserData[]>(props.users);
+
+    const handleSearch = (e: any) => {
+        const searchText = e.target.value;
+        if (searchText === '') {
+            setSearchedUsers(props.users);
+        }
+        else {
+            const searched = props.users.filter(user => user.name.toLowerCase().includes(searchText.toLowerCase()));
+            setSearchedUsers(searched);
+        }
+        setSearchText(searchText);
+    }
+
     return (
         <>
-            <div className="w-full p-2 items-center text-white md:text-xl text-lg font-bold">
-                People
+            <div className="w-full p-2 items-center text-white md:text-xl text-lg font-bold flex flex-col">
+                <div className="flex justify-start w-full">
+                    People
+                </div>
+                <div className="w-full py-1 mt-2">
+                    <ChatSearchBar searchText={searchText} setSearchText={handleSearch} />
+                </div>
             </div>
             <div className="w-full h-full p-2 flex flex-col space-y-2 overflow-y-auto">
                 <UserCard user={currentUser} isActive={false} />
-                {props.users.map((user) => {
+                {searchedUsers.map((user) => {
                     if (user.id !== currentUser.id) {
                         return <UserCard key={user.id} user={user} isActive={false} />;
                     }
@@ -49,7 +91,29 @@ const DesktopSideBarContents = (props:Props) => {
         </>
     )
 }
-
+type SearchProps = {
+    searchText: string;
+    setSearchText: (e: any) => void;
+}
+const ChatSearchBar = (props: SearchProps) => {
+    return(
+        <div className="w-full  flex items-center">
+            <div className="relative w-full">
+                <input
+                    type="text"
+                    value={props.searchText}
+                    onChange={props.setSearchText}
+                    className="w-full py-2 px-4 shadow-md text-md text-gray-800 bg-stone-200 rounded-lg hover:bg-stone-100 transition duration-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                    placeholder="Search"
+                />
+                <FontAwesomeIcon
+                    icon={faSearch}
+                    className="absolute right-3 top-3 text-gray-900 cursor-pointer"
+                />
+            </div>
+        </div >
+    )
+}
 
 const ChatSideBar = () => {
 
@@ -108,7 +172,9 @@ const ChatSideBar = () => {
                                 className="text-center text-white cursor-pointer text-xl"
                             />
                         </div>
-                        <div className="w-full h-full flex flex-col">
+                        <div 
+                            onClick={(e:any) => e.stopPropagation()}
+                            className="w-full h-full flex flex-col">
                             {loading ? (
                                 <Spinner invert={false} />
                             ) : (

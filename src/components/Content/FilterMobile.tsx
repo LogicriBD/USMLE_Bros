@@ -19,7 +19,7 @@ const FilterMobile = () => {
             {categories.length > 0 && categories.map((category, index) => (
                 <div
                     key={index}
-                    className={`${selectedCategory?.id === category.id ? `bg-gray-700` : `bg-gray-800`} flex w-full hover:bg-gray-700 text-gray-200 transition duration-500 font-semibold cursor-pointer font-normal text-sm px-4 py-3`}
+                    className={`${selectedCategory?.id === category.id ? `bg-gray-700` : `bg-gray-800`} flex w-full hover:bg-gray-700 text-gray-200 transition duration-500 font-semibold cursor-pointer text-sm px-4 py-3`}
                     onClick={() => selectCategory(category)}
                 >
                     {category.name}
