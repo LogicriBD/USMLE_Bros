@@ -24,6 +24,7 @@
     "bootstrap": "^5.3.3",
     "firebase": "^10.14.1",
     "firebase-admin": "^12.7.0",
+    "froala-editor": "^4.3.0",
     "html-react-parser": "^5.1.18",
     "http-status-codes": "^2.3.0",
     "ionicons": "^7.4.0",

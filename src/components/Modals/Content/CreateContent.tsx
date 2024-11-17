@@ -1,6 +1,6 @@
 "use client"
 import { Modal } from "react-bootstrap";
-import Editor from "../../Upload/FroalaEditor";
+import Editor from "../../Upload/Editor";
 import { useEffect, useState } from "react";
 import { closeModal } from "@/utils/Modal";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
