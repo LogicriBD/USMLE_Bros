@@ -50,7 +50,7 @@ class ChatRepository {
         }
     }
 
-    fetchNewMessages(callback: (messages: ReceiveMessage[]) => void) {
+    fetchNewMessages(callback) {
         const messageCollectionRef = collection(firestore, "messages");
         const messageQuery = query(
             messageCollectionRef,
@@ -69,7 +69,9 @@ class ChatRepository {
                     };
                 });
 
-                callback(newMessages);
+                callback(newMessages, snapshot.docs[snapshot.docs.length - 1]);
+            }else{
+                callback([], null);
             }
         });
         return unsubscribe;         

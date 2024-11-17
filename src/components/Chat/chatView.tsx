@@ -49,11 +49,14 @@ const ChatView = () => {
     }
 
     const fetchOlderMessages = useCallback(() => {
+        console.log("fetching older messages");
+
         if (!hasMore) return;
         Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) => {
             if (olderMessages.length === 0) {
                 setHasMore(false);
             } else {
+                setHasMore(true);
                 setMessages((prevMessages) => [
                     ...prevMessages,
                     ...olderMessages.filter((msg) => !prevMessages.some((m) => m.id === msg.id)),
@@ -67,23 +70,24 @@ const ChatView = () => {
         setMessages((prevMessages) => [
             ...newMessages.filter((msg) => !prevMessages.some((m) => m.id === msg.id)),
             ...prevMessages,
-        ]);
-        
+        ]); 
     });
 
     useEffect(() => {
-        const unsubscribe = Chat.fetchNewMessages((newMessages: ReceiveMessage[]) => {
+        const unsubscribe = Chat.fetchNewMessages((newMessages: ReceiveMessage[], newLastVisible) => {
+            console.log("fetching new messages");
             handleNewMessages(newMessages);
+            setLastVisible(newLastVisible);
         });
 
         return () => unsubscribe();
-    }, [handleNewMessages]);
+    }, []);
 
     useEffect(() => {
-        if (inView) {
+        if (inView && hasMore) {
             fetchOlderMessages();
         }
-    }, [inView, fetchOlderMessages]); 
+    }, [inView, hasMore, fetchOlderMessages]); 
 
     return (
         <div className="flex flex-col w-full h-full max-h-full">
