@@ -9,7 +9,8 @@ import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory
 import Error from "../Error";
 import SearchBar from "./SearchBar";
 
-const ContentsMetadataDisplay = () => {
+const ContentsMetadataDisplay = () =>
+{
     const dispatch = useAppDispatch();
     const { selectedCategory } = useCategories();
     const [searchedContents, setSearchedContents] = useState<any[]>([]);
@@ -17,36 +18,46 @@ const ContentsMetadataDisplay = () => {
     const [error, setError] = useState<string | undefined>();
     const [searchText, setSearchText] = useState<string>('');
 
-    const fetchContents = async () => {
-        try {
-            if (selectedCategory) {
+    const fetchContents = async () =>
+    {
+        dispatch(loaderActions.turnOn());
+        try
+        {
+            if (selectedCategory)
+            {
                 const contentFetchByCategoryId = new ContentFetchByCategory({
                     categoryId: selectedCategory.id
                 });
                 const fetchedContents = await contentFetchByCategoryId.execute();
                 setContents(fetchedContents);
                 setSearchedContents(fetchedContents);
-                dispatch(loaderActions.turnOff())
             }
         }
-        catch (err: any) {
+        catch (err: any)
+        {
             setError(err.message);
+        }
+        finally
+        {
             dispatch(loaderActions.turnOff());
         }
 
     }
 
-    useEffect(() => {
-        dispatch(loaderActions.turnOn());
+    useEffect(() =>
+    {
         fetchContents();
     }, [selectedCategory])
 
-    const handleSearch = (e: any) => {
+    const handleSearch = (e: any) =>
+    {
         const searchText = e.target.value;
-        if (searchText === '') {
+        if (searchText === '')
+        {
             setSearchedContents(contents);
         }
-        else {
+        else
+        {
             const searched = contents.filter(content => content.title.toLowerCase().includes(searchText.toLowerCase()));
             setSearchedContents(searched);
         }
