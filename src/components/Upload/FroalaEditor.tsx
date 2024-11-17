@@ -9,9 +9,38 @@ const FroalaEditor = dynamic(() => import('react-froala-wysiwyg'), { ssr: false 
 const modifiedEditorConfiguration = (value: string, onChange: (newContent: string, imageUrl?: string) => void) => {
     return {
         toolbarButtons: [
-            "bold", "italic", "underline", "fontSize", "fontFamily", "formatOL", "formatUL", "paragraphFormat", "align", "insertLink", "insertImage",
+            "bold", "italic", "underline", "|", "insertSections", "|",
+            "fontSize", "fontFamily", "formatOL", "formatUL", "paragraphFormat", "align", "insertLink", "insertImage",
             "insertTable", "|", "undo", "redo", "fullscreen", "html"
         ],
+        toolbarButtonsXS: ["insertSections"],
+        pluginsEnabled: ['customButtons'],
+        customButtons: {
+            insertSections: {
+                title: 'Insert Sections',
+                type: 'dropdown',
+                icon: 'fa fa-heading', 
+                options: {
+                    heading1: 'Section',
+                    heading2: 'Subsection',
+                    heading3: 'Subsubsection'
+                },
+                callback: function (cmd, val) {
+                    const editor = this as any;
+                    switch (val) {
+                        case 'heading1':
+                            editor.html.insert('<h1>Section</h1>');
+                            break;
+                        case 'heading2':
+                            editor.html.insert('<h2>Subsection</h2>');
+                            break;
+                        case 'heading3':
+                            editor.html.insert('<h3>Subsubsection</h3>');
+                            break;
+                    }
+                }
+            }
+        },
         heightMin: 300,
         heightMax: 650,
         placeholderText: "Start writing here...",
@@ -39,15 +68,10 @@ const modifiedEditorConfiguration = (value: string, onChange: (newContent: strin
             logger.error("Image upload error:", error);
         },
         charCounterCount: true,
-        charCounterMax: 5000,
+        charCounterMax: -1,
         colorsText: ['#000000', '#434343', '#666666', '#999999', '#B7B7B7', '#CCCCCC', '#D9D9D9', '#EFEFEF', '#F3F3F3', '#FFFFFF'],
         colorsBackground: ['#980000', '#FF0000', '#FF9900', '#FFFF00', '#00F0F0', '#00FFFF', '#4A86E8', '#0000FF'],
-        fontFamily: ['Arial', 'Georgia', 'Courier'],
-        fontSize: [12, 14, 16, 18, 20],
-        linkList: [
-            { text: 'Froala', href: 'https://froala.com' },
-            { text: 'Next.js', href: 'https://nextjs.org' }
-        ],
+        fontSize: [10, 12, 14, 16, 18, 20],
     };
 };
 
