@@ -1,16 +1,25 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Filter from './Filter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import FilterMobile from './FilterMobile';
+import { appStore } from '@/src/context/store/redux-store';
+import { loaderActions } from '@/src/context/store/slices/loader-slice';
 
-const HomeSideBar = () => {
+const HomeSideBar = () =>
+{
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggleSidebar = () => {
+    const toggleSidebar = () =>
+    {
         setIsOpen(!isOpen);
     };
+
+    useEffect(() =>
+    {
+        appStore.dispatch(loaderActions.turnOff())
+    }, [])
 
     return (
         <div className="w-full h-full flex flex-col">
