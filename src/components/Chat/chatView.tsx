@@ -5,17 +5,23 @@ import { Chat } from "@/database/repository/Chat";
 import { useAppSelector } from "@/src/context/store/hooks";
 import { ReceiveMessage } from "@/types/Message";
 import { logger } from "@/utils/Logger";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import MessageUI from "./Message";
 import LinkMessage from "@/utils/helpers/LinkParser";
 import { Roles } from "@/utils/enums/Roles";
-
+import { useInView } from "react-intersection-observer";
+import { Spinner } from "react-bootstrap";
+import { QueryDocumentSnapshot } from "firebase/firestore";
+import { DocumentData } from "firebase-admin/firestore";
 const ChatView = () => {
     const user = useAppSelector((state) => state.user);
 
     const [text, setText] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [messages, setMessages] = useState<ReceiveMessage[]>([]);
+    const [hasMore, setHasMore] = useState<boolean>(true);
+    const [lastVisible, setLastVisible] = useState<null | QueryDocumentSnapshot<DocumentData>>(null);
+    const { ref, inView } = useInView();
 
     const handleSendMessage = async () => {
         try {
@@ -42,10 +48,42 @@ const ChatView = () => {
         }
     }
 
+    const fetchOlderMessages = useCallback(() => {
+        if (!hasMore) return;
+        Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) => {
+            if (olderMessages.length === 0) {
+                setHasMore(false);
+            } else {
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    ...olderMessages.filter((msg) => !prevMessages.some((m) => m.id === msg.id)),
+                ]);
+                setLastVisible(newLastVisible);
+            }
+        }, lastVisible);
+    }, [hasMore, lastVisible]);
+
+    const handleNewMessages = ((newMessages: ReceiveMessage[]) => {
+        setMessages((prevMessages) => [
+            ...newMessages.filter((msg) => !prevMessages.some((m) => m.id === msg.id)),
+            ...prevMessages,
+        ]);
+        
+    });
+
     useEffect(() => {
-        const unsubscribe = Chat.fetchMessages(setMessages);
+        const unsubscribe = Chat.fetchNewMessages((newMessages: ReceiveMessage[]) => {
+            handleNewMessages(newMessages);
+        });
+
         return () => unsubscribe();
-    }, [])
+    }, [handleNewMessages]);
+
+    useEffect(() => {
+        if (inView) {
+            fetchOlderMessages();
+        }
+    }, [inView, fetchOlderMessages]); 
 
     return (
         <div className="flex flex-col w-full h-full max-h-full">
@@ -53,19 +91,28 @@ const ChatView = () => {
                 <>
                     <div className="flex-grow flex items-center justify-center text-red-500 font-bold text-2xl">
                         You are banned from the chat
-                        
-                            {user.banExpiry.toDate() > new Date() && (new Date().getTime() - user.banExpiry.toDate().getTime() >= 24 * 60 * 60 * 1000)
-                                ? null
-                                : " for less than 24 hours"}
-                    
+
+                        {user.banExpiry.toDate() > new Date() && (new Date().getTime() - user.banExpiry.toDate().getTime() >= 24 * 60 * 60 * 1000)
+                            ? null
+                            : " for less than 24 hours"}
+
                     </div>
                 </>
             ) : (
                 <>
-                    <div className="flex-grow flex flex-col-reverse overflow-y-auto scrollbar-thin px-4 py-2 bg-gray-100 bg-opacity-50 rounded-lg">
+                    <div
+                        className="flex-grow flex-col-reverse flex overflow-y-auto scrollbar-thin px-4 py-2 bg-gray-100 bg-opacity-50 rounded-lg">
+
                         {messages.map((message, index) => (
                             <MessageUI key={index} message={message} user={user} />
                         ))}
+
+                        {hasMore && (
+                            <div ref={ref} className="flex justify-center items-cente font-bold">
+                                <Spinner animation="border" variant="primary" size="sm" />
+                            </div>
+                        )}
+
                     </div>
 
                     {/* desktop version */}
