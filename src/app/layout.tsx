@@ -13,6 +13,9 @@ import Loader from "../components/Loader/Loader";
 import { appStore } from "../context/store/redux-store";
 import { loaderActions } from "../context/store/slices/loader-slice";
 
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+
 const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700", "800"],
