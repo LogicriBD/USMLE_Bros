@@ -1,5 +1,5 @@
 import { BlogType } from "@/utils/enums/Blog";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -42,6 +42,19 @@ class BlogRepository {
         }catch(error: any){
             throw new ApiError(400, error.message);
         }
+    }
+
+    async fetchAllMetadataByCategory(category: BlogType): Promise<BlogMetadata[]> {
+        const q = query(
+            collection(firestore, "blogmetadata"),
+            where("category", "==", category)
+        );
+        const querySnapshot = await getDocs(q);
+        const metadata: BlogMetadata[] = [];
+        querySnapshot.forEach((doc) => {
+            metadata.push(doc.data() as BlogMetadata);
+        });
+        return metadata;
     }
 }
 
