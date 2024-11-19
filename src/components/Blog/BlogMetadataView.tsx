@@ -57,7 +57,7 @@ export const dummyBlogMetadata: BlogMetadata[] = [
 ];
 
 
-const BlogView = () => {
+const BlogMetadataView = () => {
 
     const [blogMetadata, setBlogMetadata] = useState<BlogMetadata[]>([]);
     const category = useAppSelector((state) => state.blog.category);
@@ -91,4 +91,4 @@ const BlogView = () => {
         </div>
     );
 }
-export default BlogView;
+export default BlogMetadataView;
