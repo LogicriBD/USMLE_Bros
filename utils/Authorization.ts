@@ -13,7 +13,9 @@ export class Authorization {
   private redirectUrl: string;
   private isAdminRoute: boolean;
   constructor(private request: NextRequest) {
-    this.redirectUrl = request.url.includes("/admin") ? "/access-denied" : "/";
+    this.redirectUrl = request.url.includes("/admin")
+      ? "/access-denied"
+      : "/authentication/login";
     this.isAdminRoute = request.url.includes("/admin");
   }
 
@@ -29,6 +31,16 @@ export class Authorization {
         type: this.isAdminRoute ? "role" : "verification",
       });
       if (!this.isAdminRoute) {
+        if (this.request.url.includes("/authentication") && response.success) {
+          return NextResponse.redirect(
+            new URL("/", this.request.url).toString()
+          );
+        }
+        if (!response.success) {
+          return NextResponse.redirect(
+            new URL(this.redirectUrl, this.request.url).toString()
+          );
+        }
         return NextResponse.next();
       } else {
         const role = response.role;

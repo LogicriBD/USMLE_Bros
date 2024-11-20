@@ -8,7 +8,7 @@ export const Routes = {
     verify: "/auth",
   },
   content: {
-    upload: "/admin/upload/file",
+    upload: "/upload",
   },
 };
 
