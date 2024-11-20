@@ -8,5 +8,10 @@ export async function middleware(request: NextRequest) {
 
 //Protected Routes Matcher
 export const config = {
-  matcher: ["/admin/:path*", "/content/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/content/:path*",
+    "/chat",
+    "/authentication/:path*",
+  ],
 };

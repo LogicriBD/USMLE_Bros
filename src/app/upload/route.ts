@@ -1,4 +1,4 @@
-import { bucket } from "@/database/config/adminApp";
+import { StorageService } from "@/utils/Cloudinary";
 import { logger } from "@/utils/Logger";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,21 +14,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const fileBuffer = Buffer.from(arrayBuffer);
-    const fileName = `uploads/${Date.now()}-${file.name}`;
-    const bucketFile = bucket.file(fileName);
+    const uploadResult = await StorageService.upload(file);
+    if (!uploadResult) {
+      return NextResponse.json(
+        { success: false, error: "Failed to upload file" },
+        { status: 500 }
+      );
+    }
+    const fileUrl = StorageService.getUrlByFileKey(uploadResult.public_id);
 
-    await bucketFile.save(fileBuffer, {
-      metadata: { contentType: file.type },
-    });
-
-    const [url] = await bucketFile.getSignedUrl({
-      action: "read",
-      expires: "03-09-2491",
-    });
-
-    return NextResponse.json({ success: true, file: { url } });
+    return NextResponse.json({ success: true, file: { url: fileUrl } });
   } catch (error: any) {
     logger.error(error);
     return NextResponse.json(
