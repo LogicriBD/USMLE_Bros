@@ -15,14 +15,12 @@ const BlogUploader = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
 
-    const [error, setError] = useState({ title: "", preview: "", content:"" });
-    const [formData, setFormData] = useState({ title: "", previewImage: null, content: "" });
+    const [error, setError] = useState({ title: "", preview: "", content: "", type:"" });
+    const [formData, setFormData] = useState({ title: "", previewImage: null, content: "", type:BlogType.BLOG });
     const [images, setImages] = useState<string[]>([]);
 
-    const handleContentChange = (newContent: string, imageUrl?: string) =>
-    {
-        if (imageUrl)
-        {
+    const handleContentChange = (newContent: string, imageUrl?: string) => {
+        if (imageUrl) {
             setImages((prev) => [...prev, imageUrl])
         }
         setFormData((prev) => ({ ...prev, content: newContent }));
@@ -49,7 +47,7 @@ const BlogUploader = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if(isError()) return;
+        if (isError()) return;
 
 
         if (!formData.title) {
@@ -62,18 +60,23 @@ const BlogUploader = () => {
             return;
         }
 
-        if(!formData.content) {
+        if (!formData.content) {
             setError((prev) => ({ ...prev, content: "Content is required." }));
             return;
         }
 
-        try{
+        if (!formData.type) {
+            setError((prev) => ({ ...prev, type: "Type is required." }));
+            return;
+        }
+
+        try {
             dispatch(loaderActions.turnOn());
             const imageUrl = await uploadImage();
 
-            const blogmetadata:BlogMetadata = {
+            const blogmetadata: BlogMetadata = {
                 title: formData.title,
-                category: BlogType.BLOG,
+                category: formData.type,
                 userName: user.name,
                 createdAt: new Date(),
                 userId: user.id,
@@ -89,13 +92,13 @@ const BlogUploader = () => {
                 content: blogData
             }
 
-            const blogActions = new createBlog({blog:blog});
+            const blogActions = new createBlog({ blog: blog });
             await blogActions.execute();
 
-            setFormData({ title: "", previewImage: null, content: "" });
-        }catch(error) {
+            setFormData({ title: "", previewImage: null, content: "", type:BlogType.BLOG });
+        } catch (error) {
             console.error("Error creating blog:", error);
-        }finally{
+        } finally {
             dispatch(loaderActions.turnOff());
         }
     };
@@ -123,27 +126,51 @@ const BlogUploader = () => {
     const handleTitleChange = (event) => {
         setFormData((prev) => ({ ...prev, title: event.target.value }));
 
-        if(error.title) {setError((prev) => ({ ...prev, title: "" }))}
+        if (error.title) { setError((prev) => ({ ...prev, title: "" })) }
+    }
+
+    const handleTypeChange = (event) => {
+        setFormData((prev) => ({ ...prev, type: event.target.value }));
+
+        if (error.type) { setError((prev) => ({ ...prev, type: "" })) }
     }
 
     return (
         <div className="w-full h-full flex flex-col py-4 px-3 space-y-2">
             <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                    <Form.Label className="text-marrow-dark font-bold">Title</Form.Label>
-                    <Form.Control
-                        className="rounded-lg text-black font-semibold bg-white"
-                        type="text"
-                        name="title"
-                        placeholder="Set a title for blog..."
-                        value={formData.title}
-                        onChange={handleTitleChange}
-                        isInvalid={!!error.title}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        {error.title}
-                    </Form.Control.Feedback>
-                </Form.Group>
+                <div className="flex flex-row justify-between space-x-2">
+                    <Form.Group className="mb-3 w-5/6">
+                        <Form.Label className="text-marrow-dark font-bold">Title</Form.Label>
+                        <Form.Control
+                            className="rounded-lg w-full text-black font-semibold bg-white"
+                            type="text"
+                            name="title"
+                            placeholder="Set a title for blog..."
+                            value={formData.title}
+                            onChange={handleTitleChange}
+                            isInvalid={!!error.title}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {error.title}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="mb-3 w-1/6">
+                        <Form.Label className="text-marrow-dark font-bold">Type</Form.Label>
+                        <Form.Select
+                            className="rounded-lg text-black font-semibold bg-white"
+                            name="type"
+                            value={formData.type}
+                            onChange={handleTypeChange}
+                            isInvalid={!!error.type}
+                        >
+                            <option value={BlogType.BLOG}>Blog</option>
+                            <option value={BlogType.EXAM_UPDATES}>Exam Updates</option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            {error.type}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </div>
                 <Form.Group className="mb-3">
                     <Form.Label className="text-marrow-dark font-bold">Preview Image</Form.Label>
                     <Form.Control

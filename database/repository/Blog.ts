@@ -50,11 +50,29 @@ class BlogRepository {
             where("category", "==", category)
         );
         const querySnapshot = await getDocs(q);
-        const metadata: BlogMetadata[] = [];
+        let metadata: BlogMetadata[] = [];
         querySnapshot.forEach((doc) => {
             metadata.push({ id: doc.id, ...doc.data() } as BlogMetadata);
         });
         return metadata;
+    }
+
+    async fetchBlogByMetadataId(id: string) : Promise<BlogData>{
+        try{
+            const q = query(
+                collection(firestore, "blog"),
+                where("metadataId", "==", id)
+            );
+
+            const querySnapshot = await getDocs(q);
+            let blog:BlogData[] = [];
+            querySnapshot.forEach((doc) => {
+                blog.push({id: doc.id, ...doc.data()} as BlogData);
+            });
+            return blog[0];
+        }catch(error:any){
+            throw new ApiError(400, error.message);
+        }
     }
 
     async fetchMetadataById(id: string): Promise<BlogMetadata> {
