@@ -1,5 +1,5 @@
 import { BlogType } from "@/utils/enums/Blog";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -26,7 +26,7 @@ export type Blog = {
 
 class BlogRepository {
     async createBlog(Blog: Blog) {
-        try{
+        try {
             const metadataRef = await addDoc(
                 collection(firestore, "blogmetadata"),
                 {
@@ -39,7 +39,7 @@ class BlogRepository {
                 metadataId: metadataId,
                 content: Blog.content.content,
             });
-        }catch(error: any){
+        } catch (error: any) {
             throw new ApiError(400, error.message);
         }
     }
@@ -52,9 +52,23 @@ class BlogRepository {
         const querySnapshot = await getDocs(q);
         const metadata: BlogMetadata[] = [];
         querySnapshot.forEach((doc) => {
-            metadata.push(doc.data() as BlogMetadata);
+            metadata.push({ id: doc.id, ...doc.data() } as BlogMetadata);
         });
         return metadata;
+    }
+
+    async fetchMetadataById(id: string): Promise<BlogMetadata> {
+        try {
+            const docRef = doc(firestore, "blogmetadata", id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                return { id: docSnap.id, ...docSnap.data() } as BlogMetadata;
+            } else {
+                throw new ApiError(404, "Blog not found");
+            }
+        } catch (error: any) {
+            throw new ApiError(400, error.message);
+        }
     }
 }
 

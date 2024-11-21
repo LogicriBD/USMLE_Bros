@@ -91,6 +91,8 @@ const BlogUploader = () => {
 
             const blogActions = new createBlog({blog:blog});
             await blogActions.execute();
+
+            setFormData({ title: "", previewImage: null, content: "" });
         }catch(error) {
             console.error("Error creating blog:", error);
         }finally{
@@ -111,7 +113,7 @@ const BlogUploader = () => {
             });
             const data = await response.json();
             console.log("Image Uploaded:", data.file.url);
-            return data.file as string;
+            return data.file.url as string;
         } catch (error) {
             console.error("Error uploading image:", error);
             return "";

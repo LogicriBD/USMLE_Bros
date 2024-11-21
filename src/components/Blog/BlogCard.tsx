@@ -1,16 +1,29 @@
 import { BlogMetadata } from "@/database/repository/Blog";
+import { useAppDispatch } from "@/src/context/store/hooks";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { useNavigate } from "@/src/hooks/useNavigate";
 import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 import { Image } from "react-bootstrap";
 
 type Props = BlogMetadata & {
 }
 const BlogCard = (props: Props) => {
+
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    const handleNavigate = (id: string) => {
+        dispatch(loaderActions.turnOn());
+        navigate(`/blog/${id}`);
+    }
     return (
-        <div className="w-full h-full max-w-xs flex flex-col shadow-md rounded-md overflow-hidden cursor-pointer">
+        <div
+            onClick={() => handleNavigate(props.id??'')}
+            className="w-full h-full max-w-xs flex flex-col shadow-md rounded-md overflow-hidden cursor-pointer">
             <div className="max-h-56">
                 <Image
-                    src="/logos/icon.png"
-                    alt="icon"
+                    src={props.imageUrl}
+                    alt={props.title}
                     fluid
                     className="object-cover w-full h-full"
                 />
