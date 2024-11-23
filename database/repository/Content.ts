@@ -146,7 +146,7 @@ class ContentRepository {
           ...metadataSnapshot.data(),
         } as ContentMetaData;
       } else {
-        throw Error(`User not found for id: ${id}`);
+        throw new ApiError(404, `User not found for id: ${id}`);
       }
     } catch (err: any) {
       logger.error(err);

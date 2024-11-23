@@ -49,7 +49,7 @@ const Navbar = () =>
                         className="cursor-pointer"
                         onClick={() => router.push("/")}
                     />
-                    <div className="hidden md:flex space-x-3 text-white flex justify-center items-center">
+                    <div className="hidden md:flex space-x-3 text-white justify-center items-center">
                         {
                             <NavbarItems />
                         }
