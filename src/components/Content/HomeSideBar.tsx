@@ -6,6 +6,7 @@ import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import FilterMobile from './FilterMobile';
 import { appStore } from '@/src/context/store/redux-store';
 import { loaderActions } from '@/src/context/store/slices/loader-slice';
+import AdBanner from '../Ads/AdBanner';
 
 const HomeSideBar = () =>
 {
@@ -24,8 +25,15 @@ const HomeSideBar = () =>
     return (
         <div className="w-full h-full flex flex-col">
             <div className="hidden md:flex flex-col space-y-4 w-full h-full p-4">
-                <div className="flex justify-end">
+                <div className="flex flex-col space-y-4 justify-end">
                     <Filter />
+                    <div>
+                        <AdBanner 
+                            dataAdSlot={process.env.NEXT_PUBLIC_DATA_AD_SLOT_DISPLAY_AD} 
+                            dataAdFormat="auto" 
+                            dataFullWidthResponsive={true} 
+                        />
+                    </div>
                 </div>
             </div>
 
