@@ -12,7 +12,7 @@ import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import DOMPurify from 'dompurify';
 import Toolbar from './toolbar';
-
+import ImageResize from 'tiptap-extension-resize-image';
 function preprocessWordHTML(inputHtml) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(inputHtml, 'text/html');
@@ -46,6 +46,7 @@ export default function CustomEditor(props: Props) {
                     keepAttributes: false,
                 },
             }),
+            ImageResize,
             Image.configure({
                 inline: true,
                 allowBase64: true,
