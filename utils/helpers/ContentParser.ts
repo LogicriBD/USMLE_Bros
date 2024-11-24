@@ -4,7 +4,12 @@ export function splitContentByH1Sections(content: any): any[] {
 
   let match;
   while ((match = regex.exec(content)) !== null) {
-    sections.push(match[0]);
+    const trimmedSection = match[0]
+      .replace(/&nbsp;/g, ' ')
+      .replace(/>\s+/, '>')
+      .replace(/\s+</, '<')
+      .trim();
+    sections.push(trimmedSection);
   }
 
   return sections;

@@ -32,7 +32,7 @@ const BlogFullView = async (props:Props) => {
     const blog = await fetchBlog();
 
     return(
-        <div className="w-full h-full flex flex-col items-center">
+        <div className="w-full min-h-full h-fit flex flex-col items-center">
             <div className="w-full lg:w-5/6 h-full min-h-full flex flex-col">
                 <div className="w-full flex items-center justify-center p-3 md:text-5xl text-3xl text-white font-bold">
                     {blogMetadata?.title}
