@@ -13,6 +13,7 @@ import TableHeader from '@tiptap/extension-table-header';
 import DOMPurify from 'dompurify';
 import Toolbar from './toolbar';
 import ImageResize from 'tiptap-extension-resize-image';
+import { forwardRef, useImperativeHandle } from 'react';
 function preprocessWordHTML(inputHtml) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(inputHtml, 'text/html');
@@ -32,7 +33,7 @@ type Props = {
     value: string;
     onChange: (content: any) => void;
 }
-export default function CustomEditor(props: Props) {
+const CustomEditor = forwardRef((props: Props, ref) => {
 
     const editor = useEditor({
         extensions: [
@@ -142,6 +143,12 @@ export default function CustomEditor(props: Props) {
         },
     });
 
+    useImperativeHandle(ref, () => ({
+        clearContents: () => {
+            editor?.commands.clearContent();
+        },
+    }));
+
     return (
         <div className="border bg-white rounded-lg shadow-sm">
             <Toolbar editor={editor} />
@@ -154,5 +161,6 @@ export default function CustomEditor(props: Props) {
             </div>
         </div>
     )
-}
+});
 
+export default CustomEditor;

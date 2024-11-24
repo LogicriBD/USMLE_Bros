@@ -11,7 +11,7 @@ import { Blog, BlogData, BlogMetadata } from "@/database/repository/Blog";
 import CustomEditor from "../Upload/CustomEditor";
 
 const BlogUploader = () => {
-
+    const editorRef = useRef<any>(null);
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -83,9 +83,9 @@ const BlogUploader = () => {
                 userId: user.id,
                 imageUrl: imageUrl
             };
-
+            const newContent = await uploadAndReplaceImageSrc();
             const blogData: BlogData = {
-                content: await uploadAndReplaceImageSrc(),
+                content: newContent,
             }
 
             const blog: Blog = {
@@ -95,8 +95,10 @@ const BlogUploader = () => {
 
             const blogActions = new createBlog({ blog: blog });
             await blogActions.execute();
-
             setFormData({ title: "", previewImage: null, content: "", type:BlogType.BLOG });
+            if(editorRef.current){
+                editorRef.current.clearContents();
+            }
         } catch (error) {
             console.error("Error creating blog:", error);
         } finally {
@@ -140,16 +142,16 @@ const BlogUploader = () => {
     const uploadAndReplaceImageSrc = async () => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(formData.content, 'text/html');
-        const imgTags = doc.querySelectorAll('img');
-
-        Array.from(imgTags).forEach(async imgTag => {
+        const imgTags = Array.from(doc.querySelectorAll('img'));
+    
+        for (const imgTag of imgTags) {
             const src = imgTag.getAttribute('src');
             if (src) {
                 const file = await fetch(src).then((r) => r.blob());
                 const formData = new FormData();
                 formData.append('file', file);
-
-                try{
+    
+                try {
                     const response = await fetch(routes.content.upload, {
                         method: "POST",
                         body: formData,
@@ -157,14 +159,15 @@ const BlogUploader = () => {
                     const data = await response.json();
                     console.log("Image Uploaded:", data.file.url);
                     imgTag.setAttribute('src', data.file.url);
-                }catch (error) {
+                } catch (error) {
                     console.error('Error uploading image:', error);
                 }
             }
-        });
+        }
+    
         formData.content = doc.body.innerHTML;
         return formData.content;
-    }
+    };
 
     return (
         <div className="w-full h-full flex flex-col py-4 px-3 space-y-2">
@@ -218,7 +221,7 @@ const BlogUploader = () => {
                 </Form.Group>
                 <Form.Group className="mb-3 h-fit">
                     <Form.Label className="text-marrow-dark font-bold">Content</Form.Label>
-                    <CustomEditor value={formData.content} onChange={handleContentChange} />
+                    <CustomEditor ref={editorRef} value={formData.content} onChange={handleContentChange} />
                     <Form.Control.Feedback type="invalid">
                         {error.content}
                     </Form.Control.Feedback>
