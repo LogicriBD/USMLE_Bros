@@ -25,7 +25,6 @@ const BlogUploader = () => {
             setImages((prev) => [...prev, imageUrl])
         }
         setFormData((prev) => ({ ...prev, content: newContent }));
-        console.log("Content:", newContent);
     };
 
     const handleFileChange = (e) => {

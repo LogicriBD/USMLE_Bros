@@ -24,9 +24,12 @@ export default function Toolbar({ editor }: ToolbarProps) {
 
     const handleImageUpload = (e: any) => {
         const file = e.target.files[0];
-        if(file){
-            const objectUrl = URL.createObjectURL(file);
-            editor.chain().focus().setImage({ src: objectUrl }).run();
+        if (file) {
+            const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+            if (validImageTypes.includes(file.type)) {
+                const objectUrl = URL.createObjectURL(file);
+                editor.chain().focus().setImage({ src: objectUrl }).run();
+            }
         }
         setShowImageBar(false);
     }
@@ -37,7 +40,7 @@ export default function Toolbar({ editor }: ToolbarProps) {
     }
 
     return (
-        <div className="border-b p-2 flex flex-wrap gap-2">
+        <div className="bg-white z-50 sticky top-0 border-b p-2 flex flex-wrap gap-2">
             <Toggle
                 title='Bold'
                 pressed={editor.isActive('bold')}
@@ -115,10 +118,10 @@ export default function Toolbar({ editor }: ToolbarProps) {
                     <Link className="h-4 w-4 text-white" />
                 </Button>
                 {showLinkBar && (
-                    <LinkUploadBar editor={editor} callback={setLink}/>
+                    <LinkUploadBar editor={editor} callback={setLink} />
                 )}
             </div>
-            
+
             <Toggle
                 title='Heading 1'
                 pressed={editor.isActive('heading', { level: 1 })}

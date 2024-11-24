@@ -13,6 +13,7 @@ import { extractFirstH1, splitContentByH1Sections } from "@/utils/helpers/Conten
 import SpinLoading from "../../Spinner";
 import { ContentsFetchById } from "@/actions/content/ContentFetchById";
 import { ContentDeleteById } from "@/actions/content/ContentDeleteById";
+import CustomEditor from "../../Upload/CustomEditor";
 
 
 const LoadableEditor = ({ loading, content, handleContentChange }: {
@@ -204,7 +205,8 @@ const CreateContent = () =>
                     {error && (<div className="text-red-500 font-normal text-sm px-2">{error}</div>)}
                 </div>
                 <div className="w-full">
-                    <LoadableEditor loading={loading} content={content} handleContentChange={handleContentChange} />
+                    {/* <LoadableEditor loading={loading} content={content} handleContentChange={handleContentChange} /> */}
+                    <CustomEditor value={content} onChange={setContent} />
                 </div>
             </Modal.Body>
             <Modal.Footer
