@@ -103,13 +103,14 @@ table {
   max-width: 100%;
 }
 
-table,
-th,
-td {
-  border: 1px solid #000;
+.content-display table,
+.content-display th,
+.content-display td,
+.content-display tr {
+  border: 1px solid #000 !important;
 }
 
-th,
-td {
+.content-display th,
+.content-display td {
   padding: 0.5em;
 }

@@ -97,7 +97,6 @@ const CustomEditor = forwardRef((props: Props, ref) => {
 
                 const pastedHTML = clipboardData.getData('text/html');
                 const preprocessHTML = preprocessWordHTML(pastedHTML)
-                console.log('before ' + preprocessHTML);
                 if (preprocessHTML) {
                     event.preventDefault();
                     const sanitizerConfig = {
@@ -128,7 +127,6 @@ const CustomEditor = forwardRef((props: Props, ref) => {
                         KEEP_CONTENT: true,
                     };
                     const cleanHTML = DOMPurify.sanitize(preprocessHTML, sanitizerConfig);
-                    console.log('after ' + cleanHTML);
                     (editor as Editor).commands.insertContent(cleanHTML,
                         {
                             parseOptions: {

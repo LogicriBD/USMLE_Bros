@@ -11,14 +11,13 @@ interface IParseHTMLContent {
 }
 
 const ParseHTMLContent = ({ id, content }: IParseHTMLContent) => {
-    console.log(content);
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(loaderActions.turnOff());
     }, [])
 
     return (
-        <div id={id} className='w-full'>
+        <div id={id} className='w-full content-display'>
             {parse(content)}
         </div>
     )
