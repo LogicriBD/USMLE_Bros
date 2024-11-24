@@ -136,7 +136,7 @@ export default function CustomEditor(props: Props) {
                 <EditorContent
                     content={props.value}
                     editor={editor}
-                    className="prose"
+                    className="prose overflow-x-auto"
                 />
             </div>
         </div>

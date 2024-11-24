@@ -28,6 +28,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     }
 
     const fetchedContents = await fetchContents();
+    console.log(fetchedContents);
     if (!fetchedContents)
     {
         return (

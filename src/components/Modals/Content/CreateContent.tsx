@@ -1,6 +1,5 @@
 "use client"
 import { Modal } from "react-bootstrap";
-import Editor from "../../Upload/Editor";
 import { useEffect, useState } from "react";
 import { closeModal } from "@/utils/Modal";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
@@ -10,30 +9,9 @@ import { logger } from "@/utils/Logger";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
 import { extractFirstH1, splitContentByH1Sections } from "@/utils/helpers/ContentParser";
-import SpinLoading from "../../Spinner";
 import { ContentsFetchById } from "@/actions/content/ContentFetchById";
 import { ContentDeleteById } from "@/actions/content/ContentDeleteById";
 import CustomEditor from "../../Upload/CustomEditor";
-
-
-const LoadableEditor = ({ loading, content, handleContentChange }: {
-    loading: boolean;
-    content: string;
-    handleContentChange: (newContent: string, imageUrl?: string) => void;
-}) =>
-{
-
-    if (loading)
-    {
-        return (
-            <SpinLoading />
-        )
-    }
-
-    return (
-        <Editor value={content} onChange={handleContentChange} />
-    )
-}
 
 const CreateContent = () =>
 {
@@ -205,7 +183,6 @@ const CreateContent = () =>
                     {error && (<div className="text-red-500 font-normal text-sm px-2">{error}</div>)}
                 </div>
                 <div className="w-full">
-                    {/* <LoadableEditor loading={loading} content={content} handleContentChange={handleContentChange} /> */}
                     <CustomEditor value={content} onChange={setContent} />
                 </div>
             </Modal.Body>
