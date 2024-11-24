@@ -18,25 +18,20 @@ export default function Toolbar({ editor }: ToolbarProps) {
     }
 
     const addImage = () => {
-        // const url = window.prompt('Enter the URL of the image:')
-        // if (url) {
-        //     editor.chain().focus().setImage({ src: url }).run()
-        // }
         setShowImageBar(!showImageBar);
         setShowLinkBar(false);
     }
 
+    const handleImageUpload = (e: any) => {
+        const file = e.target.files[0];
+        if(file){
+            const objectUrl = URL.createObjectURL(file);
+            editor.chain().focus().setImage({ src: objectUrl }).run();
+        }
+        setShowImageBar(false);
+    }
+
     const setLink = () => {
-        // const previousUrl = editor.getAttributes('link').href
-        // const url = window.prompt('Enter the URL of the link:', previousUrl)
-        // if (url === null) {
-        //     return
-        // }
-        // if (url === '') {
-        //     editor.chain().focus().extendMarkRange('link').unsetLink().run()
-        //     return
-        // }
-        // editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
         setShowLinkBar(!showLinkBar);
         setShowImageBar(false);
     }
@@ -112,7 +107,7 @@ export default function Toolbar({ editor }: ToolbarProps) {
 
                 </Button>
                 {showImageBar && (
-                    <ImageUploadBar />
+                    <ImageUploadBar handleImageUpload={handleImageUpload} />
                 )}
             </div>
             <div className='relative flex flex-col'>
@@ -120,7 +115,7 @@ export default function Toolbar({ editor }: ToolbarProps) {
                     <Link className="h-4 w-4 text-white" />
                 </Button>
                 {showLinkBar && (
-                    <LinkUploadBar />
+                    <LinkUploadBar editor={editor} callback={setLink}/>
                 )}
             </div>
             

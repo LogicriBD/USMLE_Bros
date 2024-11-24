@@ -51,7 +51,9 @@ export default function CustomEditor(props: Props) {
                 allowBase64: true,
             }),
             Link.configure({
-                openOnClick: false,
+                openOnClick: true,
+                autolink: true,  
+                linkOnPaste: true, 
             }),
             Underline,
             TextAlign.configure({

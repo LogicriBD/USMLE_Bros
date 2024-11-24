@@ -2,7 +2,10 @@
 import { Paperclip } from "lucide-react";
 import { useRef } from "react";
 
-const ImageUploadBar = () => {
+type Props = {
+    handleImageUpload: (e: any) => void;
+}
+const ImageUploadBar = (props:Props) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleDivClick = () => {
@@ -24,6 +27,7 @@ const ImageUploadBar = () => {
                     type="file"
                     className="hidden"
                     ref={fileInputRef}
+                    onChange={props.handleImageUpload}
                 />
                 <Paperclip className="h-4 w-4 text-gray-600 ml-2" />
             </div>
