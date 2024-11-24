@@ -154,7 +154,6 @@ const CreateContent = () => {
     }
 
     useEffect(() => {
-        console.log(modalData);
         if (!!modalData) {
             setContentHeader(modalData.title);
             setTitle(modalData.title);
