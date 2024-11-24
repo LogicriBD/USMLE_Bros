@@ -87,6 +87,9 @@ export default function CustomEditor(props: Props) {
 
                             (editor as Editor).commands.insertContent(`<img src="${objectURL}" alt="pasted-image" />`);
 
+                            setTimeout(() => {
+                                URL.revokeObjectURL(objectURL);
+                            }, 7200000);
                         }
                     }
                 }
@@ -97,7 +100,17 @@ export default function CustomEditor(props: Props) {
                 if (preprocessHTML) {
                     event.preventDefault();
                     const sanitizerConfig = {
-                        ADD_TAGS: ['table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'img', 'a', 'span', 'div', 'br', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+                        ADD_TAGS: ['table', 
+                        'thead', 
+                        'tbody', 
+                        'tfoot', 
+                        'tr', 
+                        'td', 
+                        'th', 
+                        'img', 
+                        'a', 
+                        'span', 
+                        'div', 'br', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
                         ],
                         ADD_ATTR: [
                             'style',

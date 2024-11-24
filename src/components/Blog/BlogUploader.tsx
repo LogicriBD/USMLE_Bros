@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Form } from "react-bootstrap";
-import Editor from "../Upload/Editor";
 import { routes } from "@/src/api/Routes";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
@@ -15,6 +14,7 @@ const BlogUploader = () => {
 
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [error, setError] = useState({ title: "", preview: "", content: "", type:"" });
     const [formData, setFormData] = useState({ title: "", previewImage: null, content: "", type:BlogType.BLOG });
@@ -85,7 +85,7 @@ const BlogUploader = () => {
             };
 
             const blogData: BlogData = {
-                content: formData.content,
+                content: await uploadAndReplaceImageSrc(),
             }
 
             const blog: Blog = {
@@ -117,6 +117,7 @@ const BlogUploader = () => {
             });
             const data = await response.json();
             console.log("Image Uploaded:", data.file.url);
+            if(fileInputRef.current) fileInputRef.current.value = "";
             return data.file.url as string;
         } catch (error) {
             console.error("Error uploading image:", error);
@@ -134,6 +135,35 @@ const BlogUploader = () => {
         setFormData((prev) => ({ ...prev, type: event.target.value }));
 
         if (error.type) { setError((prev) => ({ ...prev, type: "" })) }
+    }
+
+    const uploadAndReplaceImageSrc = async () => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(formData.content, 'text/html');
+        const imgTags = doc.querySelectorAll('img');
+
+        Array.from(imgTags).forEach(async imgTag => {
+            const src = imgTag.getAttribute('src');
+            if (src) {
+                const file = await fetch(src).then((r) => r.blob());
+                const formData = new FormData();
+                formData.append('file', file);
+
+                try{
+                    const response = await fetch(routes.content.upload, {
+                        method: "POST",
+                        body: formData,
+                    });
+                    const data = await response.json();
+                    console.log("Image Uploaded:", data.file.url);
+                    imgTag.setAttribute('src', data.file.url);
+                }catch (error) {
+                    console.error('Error uploading image:', error);
+                }
+            }
+        });
+        formData.content = doc.body.innerHTML;
+        return formData.content;
     }
 
     return (
@@ -175,6 +205,7 @@ const BlogUploader = () => {
                 <Form.Group className="mb-3">
                     <Form.Label className="text-marrow-dark font-bold">Preview Image</Form.Label>
                     <Form.Control
+                        ref={fileInputRef}
                         className="rounded-lg text-black font-semibold bg-white"
                         type="file"
                         name="previewImage"
@@ -187,7 +218,6 @@ const BlogUploader = () => {
                 </Form.Group>
                 <Form.Group className="mb-3 h-fit">
                     <Form.Label className="text-marrow-dark font-bold">Content</Form.Label>
-                    {/* <Editor value={formData.content} onChange={handleContentChange} /> */}
                     <CustomEditor value={formData.content} onChange={handleContentChange} />
                     <Form.Control.Feedback type="invalid">
                         {error.content}
