@@ -9,6 +9,7 @@ import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { createBlog } from "@/actions/blog/CreateBlog";
 import { BlogType } from "@/utils/enums/Blog";
 import { Blog, BlogData, BlogMetadata } from "@/database/repository/Blog";
+import CustomEditor from "../Upload/CustomEditor";
 
 const BlogUploader = () => {
 
@@ -24,6 +25,7 @@ const BlogUploader = () => {
             setImages((prev) => [...prev, imageUrl])
         }
         setFormData((prev) => ({ ...prev, content: newContent }));
+        console.log("Content:", newContent);
     };
 
     const handleFileChange = (e) => {
@@ -186,7 +188,8 @@ const BlogUploader = () => {
                 </Form.Group>
                 <Form.Group className="mb-3 h-fit">
                     <Form.Label className="text-marrow-dark font-bold">Content</Form.Label>
-                    <Editor value={formData.content} onChange={handleContentChange} />
+                    {/* <Editor value={formData.content} onChange={handleContentChange} /> */}
+                    <CustomEditor value={formData.content} onChange={handleContentChange} />
                     <Form.Control.Feedback type="invalid">
                         {error.content}
                     </Form.Control.Feedback>

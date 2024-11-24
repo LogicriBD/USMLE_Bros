@@ -47,3 +47,39 @@ body {
   }
 }
 
+
+.ProseMirror {
+  outline: none;
+  min-height: 500px;
+}
+
+.ProseMirror p {
+  margin: 0;
+}
+
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.ProseMirror a {
+  color: #0000FF;
+  text-decoration: underline;
+}
+
+.ProseMirror h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+}
+
+.ProseMirror ul {
+  list-style-type: disc
+}
+
+.ProseMirror ol {
+  list-style-type: decimal
+}
