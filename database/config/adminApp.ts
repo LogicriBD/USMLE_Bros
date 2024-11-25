@@ -12,7 +12,9 @@ import { getStorage } from "firebase-admin/storage";
 const serviceAccount = {
   projectId: process.env.FIREBASE_PROJECT_ID,
   clientEmail: process.env.FIREBASE_SERVICE_ACCOUNT,
-  privateKey: JSON.parse(process.env.FIREBASE_PRIVATE_KEY!)["private_key"],
+  privateKey: JSON.parse(process.env.FIREBASE_PRIVATE_KEY || "{}")[
+    "private_key"
+  ],
 } as ServiceAccount;
 
 export const adminApp = !getApps().length
