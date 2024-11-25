@@ -10,7 +10,6 @@ const nextConfig = {
     FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
     FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
     FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
-    NODE_ENV: process.env.NODE_ENV,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
