@@ -7,6 +7,7 @@ const nextConfig = {
     CLOUDINARY_URL: process.env.CLOUDINARY_URL,
     CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
   },
+  output: "standalone",
 };
 
 export default nextConfig;
