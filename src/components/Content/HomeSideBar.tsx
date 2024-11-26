@@ -28,10 +28,10 @@ const HomeSideBar = () =>
                 <div className="flex flex-col space-y-4 justify-end">
                     <Filter />
                     <div>
-                        <AdBanner 
-                            dataAdSlot={process.env.NEXT_PUBLIC_DATA_AD_SLOT_DISPLAY_AD} 
-                            dataAdFormat="auto" 
-                            dataFullWidthResponsive={true} 
+                        <AdBanner
+                            dataAdSlot={process.env.DATA_AD_SLOT_DISPLAY_AD}
+                            dataAdFormat="auto"
+                            dataFullWidthResponsive={true}
                         />
                     </div>
                 </div>
