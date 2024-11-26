@@ -12,7 +12,8 @@ import ModalSelector from "@/src/components/ModalSelector";
 import Loader from "../components/Loader/Loader";
 import { appStore } from "../context/store/redux-store";
 import { loaderActions } from "../context/store/slices/loader-slice";
-
+import Script from "next/script";
+const AD_CLIENT = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT;
 const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700", "800"],
@@ -47,6 +48,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+      <Script 
+        async 
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${AD_CLIENT}`}
+        crossOrigin="anonymous"
+    >
+     </Script>
         <link rel="icon" href="logos/icon.png" />
       </head>
       <body
