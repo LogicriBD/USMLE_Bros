@@ -19,6 +19,8 @@ const nextConfig = {
     FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
     FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
     API_URL: process.env.API_URL,
+    GOOGLE_ADSENSE_CLIENT: process.env.GOOGLE_ADSENSE_CLIENT,
+    DATA_AD_SLOT_DISPLAY_AD: process.env.DATA_AD_SLOT_DISPLAY_AD,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
