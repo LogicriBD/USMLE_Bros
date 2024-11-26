@@ -36,6 +36,10 @@ const ForumSideBar = () => {
         fetchTopics();
     }, [isSubmit]);
 
+    const getChildTopics = (parentId: string) => {
+        return topics.filter((topic) => topic.level === 1 && topic.parentId === parentId);
+    };
+
     return (
         <div className="w-full bg-marrow text-white md:min-h-full min-h-0">
             <div className="px-6 py-3 font-bold text-xl border-b border-gray-700 flex justify-between">
@@ -57,7 +61,7 @@ const ForumSideBar = () => {
                 </span>
             </div>
             <ul
-                className={`${isOpen ? "scale-y-100 max-h-screen" : "scale-y-0 max-h-0 md:scale-y-100 md:max-h-screen pl-0"}`}>
+                className={`${isOpen ? "scale-y-100 max-h-screen transition-y-0" : "scale-y-0 max-h-0 md:scale-y-100 md:max-h-screen pl-0 -transition-y-full"} transform transition-transform duration-300 ease-in-out`}>
 
                 <li className="border-b border-gray-700 flex">
                     <button
@@ -70,39 +74,52 @@ const ForumSideBar = () => {
                         })}
                         className="py-2 px-4 w-full flex items-center justify-between bg-marrow text-cyan-300"
                     >
-                        <span className="text-md">Create New Discussion Topics</span>
+                        <span className="text-md font-semibold text-white">Create New Discussion Topics</span>
                         <span>
                             <FontAwesomeIcon icon={faPlusCircle} className="ml-2 text-lg" />
                         </span>
                     </button>
                 </li>
-                {topics && topics.map((topic: TopicType, index: number) => (
-                    <ul
-                        key={index}
-                        className="pl-3"
-                    >
-                        <li className="border-b border-gray-700 flex">
-                            <button
-                                onClick={(() => {
-                                    dispatch(modalActions.addModal({
-                                        type: ModalName.CreateDiscussion,
-                                        data: {
-                                            parentId: topic.id,
-                                            level: 1,
-                                        },
-                                    }));
-                                    setIsOpen(false);
-                                })}
-                                className="py-2 px-4 w-full flex items-center justify-between bg-marrow text-cyan-300"
-                            >
-                                <span className="text-md">{topic.title}</span>
-                                <span>
-                                    <FontAwesomeIcon title="Create new topic" icon={faPlusCircle} className="ml-2 text-lg" />
-                                </span>
-                            </button>
-                        </li>
-                    </ul>
-                ))}
+                {topics && topics
+                    .filter((topic: TopicType) => topic.level === 0)
+                    .map((topic: TopicType, index: number) => (
+                        topic.level === 0 && (
+                            <ul key={index} className="pl-3 ">
+                                <li className="border-b border-gray-700 flex flex-col">
+                                    <button
+                                        onClick={() => {
+                                            dispatch(modalActions.addModal({
+                                                type: ModalName.CreateDiscussion,
+                                                data: {
+                                                    parentId: topic.id,
+                                                    level: 1,
+                                                },
+                                            }));
+                                            setIsOpen(false);
+                                        }}
+                                        className="py-2 px-4 w-full flex items-center justify-between bg-marrow text-cyan-100"
+                                    >
+                                        <span className="text-md font-semibold">{topic.title}</span>
+                                        <span>
+                                            <FontAwesomeIcon title="Create new topic" icon={faPlusCircle} className="ml-2 text-lg" />
+                                        </span>
+                                    </button>
+                                </li>
+                                <ul className="pl-6 w-full">
+                                    {getChildTopics(topic.id ?? "").map((childTopic) => (
+                                        <li
+                                            key={childTopic.id}
+                                            className="border-b border-gray-700 py-2 px-4 flex justify-between items-center bg-marrow-light text-white hover:bg-marrow-lighter hover:text-white transition-all"
+                                        >
+                                            <span className="text-md font-semibold">{childTopic.title}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+
+
+                            </ul>
+                        )
+                    ))}
             </ul>
         </div>
     );

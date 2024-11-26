@@ -16,6 +16,9 @@ const CreateModal = () => {
 
     const handleSubmit = async () => {
         try{
+            if(name === "" || description === ""){
+                return;
+            }
             dispatch(loaderActions.turnOn());
             const topic: TopicType = {
                 title: name,
@@ -43,7 +46,7 @@ const CreateModal = () => {
             animation
         >
             <Modal.Header closeButton>
-                <Modal.Title>Create New Discussion</Modal.Title>
+                <Modal.Title>Create New Discussion {data.parentId && "Under This"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="w-full flex flex-col space-y-2">
