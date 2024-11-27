@@ -2,6 +2,7 @@
 import { TopicType } from "@/database/repository/Topic"
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
+import { useNavigate } from "@/src/hooks/useNavigate";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { Roles } from "@/utils/enums/Roles";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
@@ -17,6 +18,7 @@ const TopicCardBody = (props: Props) => {
     const role = useAppSelector((state) => state.user.role);
     const isAdminRole = role === Roles.Admin;
     const pathname = usePathname();
+    const navigate = useNavigate();
 
     return (
         <div className="w-full p-3 flex flex-col space-y-2 bg-gray-200 ">
@@ -40,21 +42,29 @@ const TopicCardBody = (props: Props) => {
                             />
                         </div>
                     )}
-                    <div className="flex flex-col hover:text-teal-500 cursor-pointer transition-all duration-300">
+                    <div 
+                        onClick={(e) => {
+                            e.preventDefault();
+                            const level = props.topic.level ?? 0;
+                            if(!pathname.includes("admin") && level !== 0){
+                                navigate(`/forum/${props.topic.id}/${level}`);
+                            }
+                        }}
+                        className="flex flex-col hover:text-teal-500 cursor-pointer transition-all duration-300">
                         <span className="font-semibold"> {props.topic.title}</span>
                         <span className="text-sm">{props.topic.description}</span>
                     </div>
                 </div>
-                <div className="flex flex-row space-x-2 items-center justify-center">
+                {/* <div className="flex flex-row space-x-3 items-center justify-center pr-2">
                     <div className="text-black flex flex-col space-y-1 items-center justify-center">
-                        <div className="text-xl">0</div>
+                        <div className="text-xl">{props.topic.threads ?? 0}</div>
                         <div className="text-sm">Threads</div>
                     </div>
                     <div className="text-black flex flex-col space-y-1 items-center justify-center">
-                        <div className="text-xl">0</div>
+                        <div className="text-xl">{props.topic.messages ?? 0}</div>
                         <div className="text-sm">Messages</div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

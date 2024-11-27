@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -34,6 +34,43 @@ class TopicRepository{
                 topics.push({id: doc.id, ...doc.data()} as TopicType);
             });
             return topics;
+        }catch(error:any){
+            throw new ApiError(400, error.message);
+        }
+    }
+
+    async fetchTopicAndSubTopicsById(id:string){
+        try{
+            const topicRef = doc(firestore, "topics", id);
+            const topicSnapshot = await getDoc(topicRef);
+            const topic = topicSnapshot.exists() ? { id: topicSnapshot.id, ...topicSnapshot.data() } as TopicType : null; 
+            
+            if (!topic) {
+                throw new Error(`Topic with id ${id} not found`);
+            }
+
+            const q = query(
+                collection(firestore, "topics"),
+                where("parentId", "==", id)
+            )
+
+            const querySnapshot = await getDocs(q);
+            const subTopics:TopicType[] = [];
+            querySnapshot.forEach((doc) => {
+                subTopics.push({id: doc.id, ...doc.data()} as TopicType);
+            });
+
+            return {topic, subTopics};
+        }catch(error:any){
+            throw new ApiError(400, error.message);
+        }
+    }
+
+    async fetchTopicById(id:string){
+        try{
+            const topicRef = doc(firestore, "topics", id);
+            const topicSnapshot = await getDoc(topicRef);
+            return { id: topicSnapshot.id, ...topicSnapshot.data() } as TopicType;
         }catch(error:any){
             throw new ApiError(400, error.message);
         }
