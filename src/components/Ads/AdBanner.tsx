@@ -1,15 +1,17 @@
 "use client";
 import { useEffect } from "react";
 
-const ADSENSE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT;
+const ADSENSE_CLIENT_ID = process.env.GOOGLE_ADSENSE_CLIENT;
 type Props = {
     dataAdSlot: string | undefined;
     dataAdFormat: string;
     dataFullWidthResponsive: boolean;
 }
-const AdBanner = (props: Props) => {
+const AdBanner = (props: Props) =>
+{
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     }, []);
 
