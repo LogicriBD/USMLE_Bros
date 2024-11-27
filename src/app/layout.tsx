@@ -13,7 +13,7 @@ import Loader from "../components/Loader/Loader";
 import { appStore } from "../context/store/redux-store";
 import { loaderActions } from "../context/store/slices/loader-slice";
 import Script from "next/script";
-const AD_CLIENT = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT;
+const AD_CLIENT = process.env.GOOGLE_ADSENSE_CLIENT;
 const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700", "800"],
