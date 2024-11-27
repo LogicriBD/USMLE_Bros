@@ -8,4 +8,5 @@ export enum ModalName {
   SuccessModal = "SuccessModal",
   BanModal = "BanModal",
   CreateDiscussion = "CreateDiscussion",
+  CreateThread = "CreateThread",
 }

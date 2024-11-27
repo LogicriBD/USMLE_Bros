@@ -12,10 +12,17 @@ const AdBanner = (props: Props) => {
 
     useEffect(() => {
         setMounted(true);
-        if (window && (window as any).adsbygoogle) {
-            ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-        }
     }, []);
+
+    useEffect(() => {
+        if (mounted && typeof window !== "undefined" && (window as any).adsbygoogle) {
+            try {
+                ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+            } catch (error) {
+                console.error("AdSense push error:", error);
+            }
+        }
+    }, [mounted]);
 
     if (!mounted) {
         return null;

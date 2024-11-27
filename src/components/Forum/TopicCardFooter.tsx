@@ -2,7 +2,6 @@ import { TopicType } from "@/database/repository/Topic";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-
 type Props = {
     topics: TopicType[]
 }
@@ -13,7 +12,7 @@ const TopicCardFooter = (props:Props) => {
                 return (
                     <div 
                         key={index}
-                        className="cursor-pointer text-md text-marrow-dark hover:text-teal-500 transition duration-300 font-semibold flex flex-row space-x-2"
+                        className="text-md text-marrow-dark hover:text-teal-500 transition duration-300 font-semibold flex flex-row space-x-2"
                     >
                         <span className="flex h-full items-center">
                             <FontAwesomeIcon
