@@ -46,7 +46,7 @@ const CreateModal = () => {
             animation
         >
             <Modal.Header closeButton>
-                <Modal.Title>Create New Discussion {data.parentId && "Under This"}</Modal.Title>
+                <Modal.Title>Create New {data.level === 2 ?  "Sub Topic" : "Discussion"} {data.parentId && "Under This"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="w-full flex flex-col space-y-2">

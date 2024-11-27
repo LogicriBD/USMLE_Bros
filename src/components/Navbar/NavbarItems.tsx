@@ -40,6 +40,7 @@ const NavbarItems = () =>
                 {!pathname.includes("chat") && (<NavItem url="/chat">Chat</NavItem>)}
                 {isAdminRole && (<AdminItems />)}
                 {!pathname.includes("blog") &&!pathname.includes("admin") && (<NavItem url="/blog">Blog</NavItem>)}
+                {!pathname.includes("forum") &&!pathname.includes("admin") && (<NavItem url="/forum">Forum</NavItem>)}
             </div>
         )
     }

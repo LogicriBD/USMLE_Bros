@@ -8,6 +8,7 @@ import { logger } from "@/utils/Logger";
 import { useEffect, useState } from "react";
 import TopicCardHeader from "./TopicCardHeader";
 import TopicCardBody from "./TopicCardBody";
+import TopicCardFooter from "./TopicCardFooter";
 
 const ForumAdminMain = () => {
 
@@ -33,8 +34,8 @@ const ForumAdminMain = () => {
         fetchTopics();
     }, [isSubmit]);
 
-    const getChildTopics = (parentId: string) =>
-        topics.filter((topic) => topic.level === 1 && topic.parentId === parentId);
+    const getChildTopics = (parentId: string, lvl:number) =>
+        topics.filter((topic) => topic.level === lvl && topic.parentId === parentId);
 
     return (
         <div className="w-full h-full px-1">
@@ -45,8 +46,11 @@ const ForumAdminMain = () => {
                         <div className="w-full shadow-md rounded-lg">
                             <TopicCardHeader topic={topic} />
                             <div className="divide-y divide-gray-300">
-                                {getChildTopics(topic.id ?? "").map((childTopic) => (
-                                    <TopicCardBody topic={childTopic} />
+                                {getChildTopics(topic.id ?? "", 1).map((childTopic) => (
+                                    <div className="w-full flex flex-col">
+                                        <TopicCardBody topic={childTopic} />
+                                        <TopicCardFooter topics = {getChildTopics(childTopic.id ?? "", 2)} />
+                                    </div>
                                 ))}
                             </div>
                         </div>
