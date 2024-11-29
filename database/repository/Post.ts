@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { ApiError } from "next/dist/server/api-utils";
 import { firestore } from "../config/firebaseApp";
 
@@ -25,20 +25,28 @@ class PostRepository{
         }
     }
 
-    async FetchPostsByThreadId(threadId:string){
+    FetchPostsByThreadId(threadId:string, callback){
         try{
 
-            const q = query(
+            const postquery = query(
                 collection(firestore, "posts"),
-                where("threadId", "==", threadId)
+                where("threadId", "==", threadId),
+                orderBy("createdAt", "desc")
             )
 
-            const querySnapshot = await getDocs(q);
-            const posts:PostType[] = [];
-            querySnapshot.forEach((doc) => {
-                posts.push({ id: doc.id, ...doc.data() } as PostType);
-            });
-            return posts;
+            const unsubscribe = onSnapshot(postquery, (snapshot) => {
+                if(!snapshot.empty){
+                    const newPosts: PostType[] = snapshot.docs.map((doc) => {
+                        const docData = doc.data() as PostType;
+                        return {
+                            id: doc.id,
+                            ...docData
+                        }
+                    });
+
+                    callback(newPosts)
+                }
+            })
         }catch(error:any){
             throw new ApiError(400, error.message);
         }

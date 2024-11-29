@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -32,7 +32,8 @@ class ThreadRepository {
             const querySnapshot = await getDocs(
                 query(
                     collection(firestore, "threads"),
-                    where("topicId", "==", topicId)
+                    where("topicId", "==", topicId),
+                    orderBy("createdAt", "desc")
                 )
             );
             const threads: ThreadType[] = [];
