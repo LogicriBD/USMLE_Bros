@@ -12,6 +12,8 @@ import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const ForumLevelTwo = ({ id }: { id: string }) => {
     
@@ -76,15 +78,14 @@ const ForumLevelTwo = ({ id }: { id: string }) => {
                             threads.map((thread: ThreadType, index: number) => (
                                 <div
                                     key={index}
-                                    className="w-full bg-gray-100 px-4 py-2 flex flex-col md:flex-row items-start md:items-center justify-between"
+                                    onClick={() => router.push(`/thread/${thread.id}`)}
+                                    className="w-full bg-gray-100 px-4 py-2 flex flex-col md:flex-row items-start md:items-center justify-between cursor-pointer"
                                 >
-                                    {/* Thread Details */}
                                     <div className="flex-1 text-marrow-dark flex flex-col space-y-2">
                                         <div className="font-semibold text-lg">{thread.title}</div>
                                         <div className="font-normal text-gray-600 text-sm">{thread.description}</div>
                                     </div>
 
-                                    {/* Metadata */}
                                     <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 md:mt-0 md:ml-8 text-sm">
                                         <div className="flex flex-col">
                                             <span className="font-medium text-gray-500">Posts</span>
@@ -92,18 +93,36 @@ const ForumLevelTwo = ({ id }: { id: string }) => {
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="font-medium text-gray-500">Created By</span>
-                                            <span className="font-semibold">{thread.createdBy}</span>
+                                            <span className="flex-row space-x-2">
+                                                <FontAwesomeIcon
+                                                    icon={faUser}
+                                                    className="text-marrow-dark text-md"
+                                                />
+                                                <span className="font-semibold">{thread.createdBy}</span>
+                                            </span>
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="font-medium text-gray-500">Created At</span>
-                                            <span className="font-semibold">
-                                                {formatFirebaseDate(thread.createdAt, true)}
+                                            <span className="flex-row space-x-2">
+                                                <FontAwesomeIcon
+                                                    icon={faClock}
+                                                    className="text-marrow-dark text-md"
+                                                />
+                                                <span className="font-semibold">
+                                                    {formatFirebaseDate(thread.createdAt, true)}
+                                                </span>
                                             </span>
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="font-medium text-gray-500">Last Updated</span>
-                                            <span className="font-semibold">
-                                                {formatFirebaseDate(thread.updatedAt, true)}
+                                            <span className="flex-row space-x-2">
+                                                <FontAwesomeIcon
+                                                    icon={faClock}
+                                                    className="text-marrow-dark text-md"
+                                                />
+                                                <span className="font-semibold">
+                                                    {formatFirebaseDate(thread.updatedAt, true)}
+                                                </span>
                                             </span>
                                         </div>
                                     </div>

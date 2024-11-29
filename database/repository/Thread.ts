@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -40,6 +40,21 @@ class ThreadRepository{
                 threads.push({id: doc.id, ...doc.data()} as ThreadType);
             });
             return threads;
+        }catch(error:any){
+            throw new ApiError(400, error.message);
+        }
+    }
+
+    async FetchThreadById(threadId:string){
+        try{
+            const threadRef = doc(firestore, "threads", threadId);
+            const threadDoc = await getDoc(threadRef);
+
+            if(threadDoc.exists()){
+                return {id: threadDoc.id, ...threadDoc.data()} as ThreadType;
+            }else{
+                throw new ApiError(404, "Thread not found");
+            }
         }catch(error:any){
             throw new ApiError(400, error.message);
         }

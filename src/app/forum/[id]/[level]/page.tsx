@@ -12,7 +12,7 @@ const ForumLoader = () => {
     )
 }
 
-const ForumPage = async ({ params }: { params: { id: string, level: string } }) => {
+const ForumPage = ({ params }: { params: { id: string, level: string } }) => {
     const { id, level } = params;
 
     if (level === "1") {
