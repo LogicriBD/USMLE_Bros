@@ -34,7 +34,8 @@ const CreatePost = (props:Props) => {
                 threadId: props.thread.id,
                 userId: user.id,
                 userName: user.name,
-                content: sanitizedContent
+                content: sanitizedContent,
+                createdAt: new Date()
             }
 
             const postActions = new Create(post);

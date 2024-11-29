@@ -11,9 +11,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CreatePost from "./CreatePost";
 import { motion } from "framer-motion";
+import { PostType } from "@/database/repository/Post";
+import { FetchPosts } from "@/actions/forum/FetchPosts";
+import DisplayPost from "./DisplayPost";
 const ThreadDisplay = ({ id }: { id: string }) => {
     const [thread, setThread] = useState<ThreadType>({} as ThreadType);
     const [canCreate, setCanCreate] = useState<boolean>(false);
+
+    const [posts, setPosts] = useState<PostType[]>([]);
 
     const user = useAppSelector((state) => state.user);
 
@@ -37,6 +42,22 @@ const ThreadDisplay = ({ id }: { id: string }) => {
         }
     }
 
+    const fetchPosts = async() => {
+        try{
+            if(thread.id === undefined){
+                return;
+            }
+            dispatch(loaderActions.turnOn());
+            const postActions = new FetchPosts(thread.id)
+            const posts = await postActions.execute();
+            setPosts(posts);
+        }catch(error:any) {
+            logger.log("Error fetching posts:", error);
+        }finally{
+            dispatch(loaderActions.turnOff());
+        }
+    }
+
     const onCreateClicked = () => {
         if (user.name === "") {
             router.push("/authentication/login");
@@ -49,7 +70,11 @@ const ThreadDisplay = ({ id }: { id: string }) => {
         fetchThread();
     }, []);
 
-    return (
+    useEffect(() => {
+        fetchPosts();
+    }, [thread]);
+
+     return (
         <div className="w-full h-full flex flex-col py-2 px-2 space-y-3">
             <div className="sticky top-0 flex md:flex-row space-y-2 flex-col justify-between items-center w-full px-4 py-2 border-2 border-cyan-700 bg-gradient-to-t from-[#4D9BA9] to-[var(--background-start-rgb)]">
                 <span className="flex flex-col">
@@ -78,6 +103,11 @@ const ThreadDisplay = ({ id }: { id: string }) => {
                 >
                     <CreatePost thread={thread} onCancel={onCancel} />
                 </motion.div>
+            )}
+            {posts.length > 0 && (
+                posts.map((post: PostType, index: number) => (
+                    <DisplayPost key={index} post={post} />
+                ))
             )}
         </div>
     )
