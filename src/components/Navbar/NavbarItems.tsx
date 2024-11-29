@@ -19,6 +19,7 @@ const AdminItems = () =>
                 <NavItem url={"/admin"} cached>Users</NavItem>
                 <NavItem url={"/admin/upload"} cached>Upload</NavItem>
                 <NavItem url={"/admin/blog"} cached>Blog Upload</NavItem>
+                <NavItem url={"/admin/forum"} cached>Create Forum</NavItem>
             </>
         )
     }
@@ -39,6 +40,7 @@ const NavbarItems = () =>
                 {!pathname.includes("chat") && (<NavItem url="/chat">Chat</NavItem>)}
                 {isAdminRole && (<AdminItems />)}
                 {!pathname.includes("blog") &&!pathname.includes("admin") && (<NavItem url="/blog">Blog</NavItem>)}
+                {!pathname.includes("forum") &&!pathname.includes("admin") && (<NavItem url="/forum">Forum</NavItem>)}
             </div>
         )
     }
@@ -47,6 +49,7 @@ const NavbarItems = () =>
         return (
             <div className="flex md:flex-row flex-col gap-3 mx-2 px-2">
                 {!pathname.includes("blog") &&!pathname.includes("admin") && (<NavItem url="/blog">Blog</NavItem>)}
+                {!pathname.includes("forum") &&!pathname.includes("admin") && (<NavItem url="/forum">Forum</NavItem>)}
             </div>
         );
     }

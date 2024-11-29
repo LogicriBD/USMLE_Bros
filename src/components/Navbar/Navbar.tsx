@@ -13,14 +13,11 @@ import { validateUserSession } from "@/database/config/auth";
 
 const Navbar = () =>
 {
-    // const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn) || appStore.getState().auth.isLoggedIn;
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user);
     const isAuthLoading = useAppSelector((state) => state.loader.authLoading);
-    // const role = useAppSelector((state) => state.user.role);
     const pathname = usePathname();
     const router = useRouter();
-    // const isAdminPortal = pathname.includes("/admin") && role === Roles.Admin;
 
     useEffect(() =>
     {
