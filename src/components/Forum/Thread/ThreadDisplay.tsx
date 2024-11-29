@@ -11,8 +11,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CreatePost from "./CreatePost";
 import { motion } from "framer-motion";
-import { PostType } from "@/database/repository/Post";
-import { FetchPosts } from "@/actions/forum/FetchPosts";
+import { Post, PostType } from "@/database/repository/Post";
 import DisplayPost from "./DisplayPost";
 const ThreadDisplay = ({ id }: { id: string }) => {
     const [thread, setThread] = useState<ThreadType>({} as ThreadType);
@@ -42,22 +41,6 @@ const ThreadDisplay = ({ id }: { id: string }) => {
         }
     }
 
-    const fetchPosts = async() => {
-        try{
-            if(thread.id === undefined){
-                return;
-            }
-            dispatch(loaderActions.turnOn());
-            const postActions = new FetchPosts(thread.id)
-            const posts = await postActions.execute();
-            setPosts(posts);
-        }catch(error:any) {
-            logger.log("Error fetching posts:", error);
-        }finally{
-            dispatch(loaderActions.turnOff());
-        }
-    }
-
     const onCreateClicked = () => {
         if (user.name === "") {
             router.push("/authentication/login");
@@ -70,9 +53,17 @@ const ThreadDisplay = ({ id }: { id: string }) => {
         fetchThread();
     }, []);
 
+    const handleNewPosts = (newPosts: PostType[]) => {
+        setPosts(newPosts);
+    }
+
     useEffect(() => {
-        fetchPosts();
-    }, [thread]);
+        const unsubscribe = Post.FetchPostsByThreadId(id, (newPosts: PostType[]) => {
+            handleNewPosts(newPosts);
+        });
+
+        return () =>  unsubscribe();
+    },[]);
 
      return (
         <div className="w-full h-full flex flex-col py-2 px-2 space-y-3">

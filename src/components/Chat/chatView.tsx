@@ -11,8 +11,7 @@ import LinkMessage from "@/utils/helpers/LinkParser";
 import { Roles } from "@/utils/enums/Roles";
 import { useInView } from "react-intersection-observer";
 import { Spinner } from "react-bootstrap";
-import { QueryDocumentSnapshot } from "firebase/firestore";
-import { DocumentData } from "firebase-admin/firestore";
+import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 const ChatView = () => {
     const user = useAppSelector((state) => state.user);
 

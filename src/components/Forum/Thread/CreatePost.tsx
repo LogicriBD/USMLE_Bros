@@ -22,7 +22,7 @@ const CreatePost = (props:Props) => {
     const createPost = async() => {
         try{
 
-            if(props.thread.id === undefined || user.id === "" || user.name === ""){
+            if(props.thread.id === undefined || user.id === "" || user.name === "" || content.trim() === ""){
                 return;
             }
 
