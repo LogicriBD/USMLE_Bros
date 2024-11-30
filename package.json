@@ -4,11 +4,10 @@
   "author": {
     "name": "UsmleBros"
   },
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "serve": "node build/standalone/server.js",
     "start": "next start",
     "lint": "next lint"
   },
