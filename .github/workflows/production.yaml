@@ -15,9 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Authenticate with Vercel
-        run: vercel login --token ${{ secrets.VERCEL_TOKEN }}
-
       - name: Set up Cloudinary secrets
         run: |
           echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> $GITHUB_ENV
