@@ -1,6 +1,7 @@
 import { Timestamp, addDoc, arrayUnion, collection, doc, onSnapshot, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { ApiError } from "next/dist/server/api-utils";
 import { firestore } from "../config/firebaseApp";
+import { Thread } from "./Thread";
 
 export type PostType = {
     id?: string;
@@ -24,12 +25,13 @@ export type CommentType = {
 class PostRepository {
     async CreatePost(post: PostType) {
         try {
-            await addDoc(
-                collection(firestore, "posts"),
-                {
-                    ...post
-                }
-            );
+            const newPostRef = await addDoc(collection(firestore, "posts"), {
+                ...post,
+            });
+    
+            if (newPostRef.id) {
+                await Thread.updateThreadPosts(post.threadId);
+            }
         } catch (error: any) {
             throw new ApiError(400, error.message);
         }

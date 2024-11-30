@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, increment, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -73,6 +73,17 @@ class ThreadRepository {
             console.error("Error updating thread:", error);
         }
 
+    }
+
+    async updateThreadPosts(threadId: string) {
+        try{
+            const threadRef = doc(firestore, "threads", threadId);
+            await updateDoc(threadRef, {
+                posts: increment(1),
+            });
+        }catch(error: any){
+            throw new ApiError(400, error.message);
+        }
     }
 }
 
