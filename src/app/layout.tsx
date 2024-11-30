@@ -55,6 +55,7 @@ export default function RootLayout({
     >
      </Script>
         <link rel="icon" href="logos/icon.png" />
+        <meta name="google-site-verification" content="GHbAPG5W6DW3JtjrpbiObD0IerU9kjeMc_nr4-TygEs" />
       </head>
       <body
         className={`${openSans.className} antialiased`}
