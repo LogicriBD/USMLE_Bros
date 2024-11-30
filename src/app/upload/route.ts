@@ -2,8 +2,6 @@ import { StorageService } from "@/utils/Cloudinary";
 import { logger } from "@/utils/Logger";
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
-
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
