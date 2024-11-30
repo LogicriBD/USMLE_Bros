@@ -16,10 +16,6 @@ export class Authorization {
     "/admin",
     "/chat",
     "/upload",
-    "/admin/delete",
-    "/admin/blog",
-    "/admin/forum",
-    "/admin/upload",
     "/content",
   ];
   constructor(private request: NextRequest) {
