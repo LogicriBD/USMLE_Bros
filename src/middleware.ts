@@ -6,7 +6,4 @@ export async function middleware(request: NextRequest) {
   return await authorization.authorize();
 }
 
-//Protected Routes Matcher
-export const config = {
-  matcher: ["/admin/:path*", "/content/:path*", "/chat"],
-};
+export const config = { matcher: ["/:path*"] };

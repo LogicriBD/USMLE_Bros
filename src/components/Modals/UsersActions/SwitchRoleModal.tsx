@@ -2,7 +2,6 @@ import { UserChangeRole } from "@/actions/user/UserChangeRole";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
-import { withAdminPriviledges } from "@/src/hoc/withAdminPrivileges";
 import { logger } from "@/utils/Logger";
 import { closeModal } from "@/utils/Modal";
 import { Roles } from "@/utils/enums/Roles";
@@ -64,4 +63,4 @@ const SwitchRoleModal = () =>
     )
 }
 
-export default withAdminPriviledges(SwitchRoleModal);
+export default SwitchRoleModal;

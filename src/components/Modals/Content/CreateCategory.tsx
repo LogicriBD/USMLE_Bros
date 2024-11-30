@@ -3,7 +3,6 @@ import { useAppDispatch } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
-import { withAdminPriviledges } from "@/src/hoc/withAdminPrivileges";
 import { logger } from "@/utils/Logger";
 import { closeModal } from "@/utils/Modal";
 import { ModalName } from "@/utils/enums/ModalEnum";
@@ -67,4 +66,4 @@ const CreateCategory = () =>
     );
 }
 
-export default withAdminPriviledges(CreateCategory);
+export default CreateCategory;
