@@ -12,12 +12,7 @@ type AuthorizationRequest = {
 export class Authorization {
   private redirectUrl: string;
   private isAdminRoute: boolean;
-  private ProtectedRoutes: string[] = [
-    "/admin",
-    "/chat",
-    "/upload",
-    "/content",
-  ];
+  private ProtectedRoutes: string[] = ["/admin", "/chat", "/upload"];
   constructor(private request: NextRequest) {
     this.redirectUrl = request.nextUrl.pathname.includes("/admin")
       ? "/access-denied"
