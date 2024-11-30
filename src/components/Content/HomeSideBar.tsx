@@ -16,7 +16,7 @@ const HomeSideBar = () =>
     {
         setIsOpen(!isOpen);
     };
-    console.log(process.env);
+
     useEffect(() =>
     {
         appStore.dispatch(loaderActions.turnOff())
