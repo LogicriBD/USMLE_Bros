@@ -105,9 +105,6 @@ export const validateUserSession = () => {
 
 export const setAccessTokenInCookie = (token: string) => {
   Cookies.set("access", token, {
-    path: "/",
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    expires: 1 / 24,
+    expires: new Date(new Date().getTime() + 55 * 60 * 1000),
   });
 };
