@@ -44,14 +44,6 @@ export class Authorization {
           type: this.isAdminRoute ? "role" : "verification",
         });
         if (!this.isAdminRoute) {
-          if (
-            this.request.url.includes("/authentication") &&
-            response.success
-          ) {
-            return NextResponse.redirect(
-              new URL("/", this.request.url).toString()
-            );
-          }
           if (!response.success) {
             return NextResponse.redirect(
               new URL(this.redirectUrl, this.request.url).toString()
