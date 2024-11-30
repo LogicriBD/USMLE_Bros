@@ -71,6 +71,7 @@ const CreateContent = () => {
                     });
                     const data = await response.json();
                     console.log("Image Uploaded:", data.file.url);
+                    imgTag.setAttribute('src', data.file.url);
                     if (imgTags.indexOf(imgTag) === 0) {
                         metadataImageUrl = data.file.url;
                     }
