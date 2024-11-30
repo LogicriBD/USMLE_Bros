@@ -2,13 +2,13 @@ const API_URL = process.env.API_URL;
 console.log(API_URL);
 export const Routes = {
   user: {
-    delete: "/admin/delete",
+    delete: "/api/admin/delete",
   },
   auth: {
-    verify: "/auth",
+    verify: "/api/auth",
   },
   content: {
-    upload: "/upload",
+    upload: "/api/upload",
   },
 };
 
