@@ -17,9 +17,7 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  distDir: "build",
   reactStrictMode: false,
-  output: "standalone",
 };
 
 export default nextConfig;
