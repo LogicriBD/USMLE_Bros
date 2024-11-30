@@ -1,5 +1,5 @@
 import { BlogType } from "@/utils/enums/Blog";
-import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 import { firestore } from "../config/firebaseApp";
 import { ApiError } from "next/dist/server/api-utils";
 
@@ -45,16 +45,21 @@ class BlogRepository {
     }
 
     async fetchAllMetadataByCategory(category: BlogType): Promise<BlogMetadata[]> {
-        const q = query(
-            collection(firestore, "blogmetadata"),
-            where("category", "==", category)
-        );
-        const querySnapshot = await getDocs(q);
-        let metadata: BlogMetadata[] = [];
-        querySnapshot.forEach((doc) => {
-            metadata.push({ id: doc.id, ...doc.data() } as BlogMetadata);
-        });
-        return metadata;
+        try{
+            const q = query(
+                collection(firestore, "blogmetadata"),
+                where("category", "==", category),
+                orderBy("createdAt", "desc")
+            );
+            const querySnapshot = await getDocs(q);
+            let metadata: BlogMetadata[] = [];
+            querySnapshot.forEach((doc) => {
+                metadata.push({ id: doc.id, ...doc.data() } as BlogMetadata);
+            });
+            return metadata;
+        }catch(error:any){
+            throw new ApiError(400, error.message);
+        }
     }
 
     async fetchBlogByMetadataId(id: string) : Promise<BlogData>{
