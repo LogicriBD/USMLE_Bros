@@ -1,6 +1,7 @@
 import { StorageService } from "@/utils/Cloudinary";
 import { logger } from "@/utils/Logger";
 import { NextRequest, NextResponse } from "next/server";
+export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
   try {

@@ -1,7 +1,7 @@
 import { auth, firestore } from "@/database/config/adminApp";
 import { logger } from "@/utils/Logger";
 import { NextRequest, NextResponse } from "next/server";
-
+export const runtime = "nodejs";
 let sessionRef;
 
 export async function POST(request: NextRequest) {
