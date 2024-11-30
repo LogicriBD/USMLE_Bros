@@ -15,40 +15,43 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Add Cloudinary Secrets to Vercel
-        run: |
-          echo ${{ secrets.CLOUDINARY_API_KEY }} | vercel env add CLOUDINARY_API_KEY production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.CLOUDINARY_API_SECRET }} | vercel env add CLOUDINARY_API_SECRET production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.CLOUDINARY_CLOUD_NAME }} | vercel env add CLOUDINARY_CLOUD_NAME production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.CLOUDINARY_URL }} | vercel env add CLOUDINARY_URL production --token ${{ secrets.VERCEL_TOKEN }}
-          echo "https://usmle-bros-test.vercel.app" | vercel env add API_URL production --token ${{ secrets.VERCEL_TOKEN }}
-
-      - name: Add Firebase Secrets to Vercel
-        run: |
-          echo ${{ secrets.FIREBASE_PRIVATE_KEY }} | base64 --decode | sed 's/\\n/\n/g' | vercel env add FIREBASE_PRIVATE_KEY production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.FIREBASE_PROJECT_ID }} | vercel env add FIREBASE_PROJECT_ID production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.FIREBASE_SERVICE_ACCOUNT }} | vercel env add FIREBASE_SERVICE_ACCOUNT production --token ${{ secrets.VERCEL_TOKEN }}
-
-      - name: Add Other Secrets to Vercel
-        run: |
-          echo ${{ secrets.FIREBASE_API_KEY }} | vercel env add FIREBASE_API_KEY production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.FIREBASE_AUTH_DOMAIN }} | vercel env add FIREBASE_AUTH_DOMAIN production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.FIREBASE_STORAGE_BUCKET }} | vercel env add FIREBASE_STORAGE_BUCKET production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }} | vercel env add FIREBASE_MESSAGING_SENDER_ID production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.FIREBASE_APP_ID }} | vercel env add FIREBASE_APP_ID production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.FIREBASE_MEASUREMENT_ID }} | vercel env add FIREBASE_MEASUREMENT_ID production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.GOOGLE_ADSENSE_CLIENT }} | vercel env add GOOGLE_ADSENSE_CLIENT production --token ${{ secrets.VERCEL_TOKEN }}
-          echo ${{ secrets.DATA_AD_SLOT_DISPLAY_AD }} | vercel env add DATA_AD_SLOT_DISPLAY_AD production --token ${{ secrets.VERCEL_TOKEN }}
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
 
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=Production --token=${{ secrets.VERCEL_TOKEN }} && cat .vercel/.env.production.local
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Install Dependencies and Build
+      - name: Set up Cloudinary secrets
         run: |
-          npm install --global vercel@latest
-          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> $GITHUB_ENV
+          echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> $GITHUB_ENV
+          echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> $GITHUB_ENV
+          echo "CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}" >> $GITHUB_ENV
+          echo "API_URL=${{ secrets.API_URL }}" >> $GITHUB_ENV
 
-      - name: Deploy to Vercel
+      - name: Set up Firebase secrets
+        run: |
+          echo "FIREBASE_PRIVATE_KEY=$(echo ${{ secrets.FIREBASE_PRIVATE_KEY }} | base64 --decode | sed 's/\\n/\n/g')" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> $GITHUB_ENV
+          echo "FIREBASE_SERVICE_ACCOUNT=${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" >> $GITHUB_ENV
+
+      - name: Set up Environment Variables
+        run: |
+          echo "NODE_ENV=development" >> $GITHUB_ENV
+          echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> $GITHUB_ENV
+          echo "FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> $GITHUB_ENV
+          echo "FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> $GITHUB_ENV
+          echo "API_URL=${{ secrets.API_URL }}" >> $GITHUB_ENV
+          echo "GOOGLE_ADSENSE_CLIENT=${{ secrets.GOOGLE_ADSENSE_CLIENT }}" >> $GITHUB_ENV
+          echo "DATA_AD_SLOT_DISPLAY_AD=${{ secrets.DATA_AD_SLOT_DISPLAY_AD }}" >> $GITHUB_ENV
+
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
     environment:
