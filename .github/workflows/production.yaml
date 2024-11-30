@@ -21,6 +21,7 @@ jobs:
           echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> $GITHUB_ENV
           echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> $GITHUB_ENV
           echo "CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}" >> $GITHUB_ENV
+          echo "API_URL=https://usmle-bros-test.vercel.app" >> $GITHUB_ENV
 
       - name: Set up Firebase secrets
         run: |
@@ -30,7 +31,6 @@ jobs:
 
       - name: Set up Environment Variables
         run: |
-          echo "API_URL=${{ secrets.API_URL }}" >> $GITHUB_ENV
           echo "NODE_ENV=development" >> $GITHUB_ENV
           echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> $GITHUB_ENV
           echo "FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}" >> $GITHUB_ENV
