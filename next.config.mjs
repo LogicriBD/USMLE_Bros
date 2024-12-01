@@ -1,17 +1,17 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  serverRuntimeConfig: {
-    env: {
-      CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
-      CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
-      CLOUDINARY_URL: process.env.CLOUDINARY_URL,
-      CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
-      FIREBASE_SERVICE_ACCOUNT: process.env.FIREBASE_SERVICE_ACCOUNT,
-      FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
-      FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
-    },
-  },
+  // serverRuntimeConfig: {
+  //   env: {
+  //     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  //     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+  //     CLOUDINARY_URL: process.env.CLOUDINARY_URL,
+  //     CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+  //     FIREBASE_SERVICE_ACCOUNT: process.env.FIREBASE_SERVICE_ACCOUNT,
+  //     FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
+  //     FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+  //   },
+  // },
   env: {
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
