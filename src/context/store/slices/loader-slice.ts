@@ -1,8 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface ILoader {
   isLoading: boolean;
   authLoading: boolean;
+  message?: string;
 }
 
 const initialState: ILoader = {
@@ -19,6 +20,7 @@ const loaderSlice = createSlice({
     },
     turnOff: (state: ILoader) => {
       state.isLoading = false;
+      state.message = "";
     },
     authTurnOn: (state: ILoader) => {
       state.authLoading = true;
@@ -26,6 +28,13 @@ const loaderSlice = createSlice({
     authTurnOff: (state: ILoader) => {
       state.authLoading = false;
     },
+    turnOnWithMessage: (state: ILoader, action:PayloadAction<string>) => {
+      state.isLoading = true;
+      state.message = action.payload;
+    },
+    setMessage: (state: ILoader, action:PayloadAction<string>) => {
+      state.message = action.payload;
+    }
   },
 });
 
