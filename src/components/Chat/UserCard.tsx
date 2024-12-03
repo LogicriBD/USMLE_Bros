@@ -26,35 +26,34 @@ const UserCard = (props: Props) => {
                     </span>
                 )}
             </div>
-            {
-                user.role === Roles.Admin && (
-                    props.user.banExpiry && props.user.banExpiry.toDate() > new Date() ? (
-                        <div className="w-full px-4">
-                            <span className="text-white bg-red-500 text-sm font-normal py-1 px-2 rounded-md transition duration-300">
-                                Banned
-                                <FontAwesomeIcon icon={faBan} className="ml-2 text-white text-sm" />
-                            </span>
-                        </div>
-                    ) : (
-                        <div className="w-full px-4">
-                            <button
-                                onClick={() =>
-                                    dispatch(
-                                        modalActions.addModal({
-                                            type: ModalName.BanModal,
-                                            data: props.user,
-                                        })
-                                    )
-                                }
-                                className="text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer text-sm font-normal py-1 px-2 rounded-md transition duration-300"
-                            >
-                                Ban
-                                <FontAwesomeIcon icon={faBan} className="ml-2 text-white text-sm" />
-                            </button>
-                        </div>
-                    )
+            {user.id !== props.user.id && user.role === Roles.Admin && (
+                props.user.banExpiry && props.user.banExpiry.toDate() > new Date() ? (
+                    <div className="w-full px-4">
+                        <span className="text-white bg-red-500 text-sm font-normal py-1 px-2 rounded-md transition duration-300">
+                            Banned
+                            <FontAwesomeIcon icon={faBan} className="ml-2 text-white text-sm" />
+                        </span>
+                    </div>
+                ) : (
+                    <div className="w-full px-4">
+                        <button
+                            onClick={() =>
+                                dispatch(
+                                    modalActions.addModal({
+                                        type: ModalName.BanModal,
+                                        data: props.user,
+                                    })
+                                )
+                            }
+                            className="text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer text-sm font-normal py-1 px-2 rounded-md transition duration-300"
+                        >
+                            Ban
+                            <FontAwesomeIcon icon={faBan} className="ml-2 text-white text-sm" />
+                        </button>
+                    </div>
                 )
-            }
+
+            )}
         </div>
     );
 }
