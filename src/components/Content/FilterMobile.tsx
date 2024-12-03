@@ -1,10 +1,32 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCategories } from "@/src/hooks/categories/useCategories";
 import SpinLoading from "../Spinner";
+import { useEffect, useState } from "react";
+import { ContentMetaData } from "@/database/repository/Content";
+import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory";
 
 const FilterMobile = () =>
 {
 
     const { stepBasedCategories, selectedCategory, selectCategory, loading } = useCategories();
+    const [contents, setContents] = useState<ContentMetaData[]>([]);
+
+    useEffect(() =>
+    {
+        if (selectedCategory)
+        {
+            const contentFetchMetadata = new ContentFetchByCategory({
+                categoryId: selectedCategory.id
+            });
+            contentFetchMetadata.execute().then((data) =>
+            {
+                if (data)
+                {
+                    setContents(data);
+                }
+            })
+        }
+    }, [selectCategory])
 
     if (loading)
     {
@@ -23,12 +45,18 @@ const FilterMobile = () =>
                     <div className="w-full">
                         <div className="p-2 text-left text-white text-lg font-bold">Step {step.step.name}</div>
                         {step.categories.map((category, index) => (
-                            <div
-                                key={index}
-                                className={`${selectedCategory?.id === category.id ? `bg-gray-700` : `bg-gray-800`} flex w-full hover:bg-gray-700 text-gray-200 transition duration-500 font-semibold cursor-pointer text-sm px-4 py-3`}
-                                onClick={() => selectCategory(category)}
-                            >
-                                {category.name}
+                            <div key={index}>
+                                <div
+                                    className={`${selectedCategory?.id === category.id ? `bg-gray-700` : `bg-gray-800`} flex w-full hover:bg-gray-700 text-gray-200 transition duration-500 font-semibold cursor-pointer text-sm px-4 py-3`}
+                                    onClick={() => selectCategory(category)}
+                                >
+                                    {category.name}
+                                </div>
+                                {selectedCategory?.id === category.id && contents.length > 0 && contents.map((content, index) => (
+                                    <div key={index} className="text-white text-sm font-semibold px-4 py-2">
+                                        {content.title}
+                                    </div>)
+                                )}
                             </div>
                         ))}
                     </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FetchBlogMetadataById } from "@/actions/blog/FetchBlogMetadataById";
 import BlogFullView from "@/src/components/Blog/BlogFullView";
 import { Props } from "@/types/Metadata";
