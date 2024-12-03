@@ -5,14 +5,15 @@ import { Chat } from "@/database/repository/Chat";
 import { useAppSelector } from "@/src/context/store/hooks";
 import { ReceiveMessage } from "@/types/Message";
 import { logger } from "@/utils/Logger";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MessageUI from "./Message";
 import LinkMessage from "@/utils/helpers/LinkParser";
 import { Roles } from "@/utils/enums/Roles";
 import { useInView } from "react-intersection-observer";
 import { Spinner } from "react-bootstrap";
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
-const ChatView = () => {
+const ChatView = () =>
+{
     const user = useAppSelector((state) => state.user);
 
     const [text, setText] = useState<string>("");
@@ -22,9 +23,12 @@ const ChatView = () => {
     const [lastVisible, setLastVisible] = useState<null | QueryDocumentSnapshot<DocumentData>>(null);
     const { ref, inView } = useInView();
 
-    const handleSendMessage = async () => {
-        try {
-            if (text !== "") {
+    const handleSendMessage = async () =>
+    {
+        try
+        {
+            if (text !== "")
+            {
                 setLoading(true);
 
                 const messageContent = user.role === Roles.Admin ? LinkMessage(text) : text;
@@ -39,22 +43,28 @@ const ChatView = () => {
                 });
                 await sendAction.execute();
             }
-        } catch (error: any) {
+        } catch (error: any)
+        {
             logger.error(error);
-        } finally {
+        } finally
+        {
             setLoading(false);
             setText("");
         }
     }
 
-    const fetchOlderMessages = useCallback(() => {
+    const fetchOlderMessages = useCallback(() =>
+    {
         console.log("fetching older messages");
 
         if (!hasMore) return;
-        Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) => {
-            if (olderMessages.length === 0) {
+        Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) =>
+        {
+            if (olderMessages.length === 0)
+            {
                 setHasMore(false);
-            } else {
+            } else
+            {
                 setHasMore(true);
                 setMessages((prevMessages) => [
                     ...prevMessages,
@@ -65,15 +75,18 @@ const ChatView = () => {
         }, lastVisible);
     }, [hasMore, lastVisible]);
 
-    const handleNewMessages = ((newMessages: ReceiveMessage[]) => {
+    const handleNewMessages = ((newMessages: ReceiveMessage[]) =>
+    {
         setMessages((prevMessages) => [
             ...newMessages.filter((msg) => !prevMessages.some((m) => m.id === msg.id)),
             ...prevMessages,
-        ]); 
+        ]);
     });
 
-    useEffect(() => {
-        const unsubscribe = Chat.fetchNewMessages((newMessages: ReceiveMessage[], newLastVisible) => {
+    useEffect(() =>
+    {
+        const unsubscribe = Chat.fetchNewMessages((newMessages: ReceiveMessage[], newLastVisible) =>
+        {
             console.log("fetching new messages");
             handleNewMessages(newMessages);
             setLastVisible(newLastVisible);
@@ -82,11 +95,13 @@ const ChatView = () => {
         return () => unsubscribe();
     }, []);
 
-    useEffect(() => {
-        if (inView && hasMore) {
+    useEffect(() =>
+    {
+        if (inView && hasMore)
+        {
             fetchOlderMessages();
         }
-    }, [inView, hasMore, fetchOlderMessages]); 
+    }, [inView, hasMore, fetchOlderMessages]);
 
     return (
         <div className="flex flex-col w-full h-full max-h-full">
@@ -124,8 +139,10 @@ const ChatView = () => {
                             type="text"
                             value={text}
                             onChange={(e) => setText(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
+                            onKeyDown={(e) =>
+                            {
+                                if (e.key === "Enter")
+                                {
                                     e.preventDefault();
                                     handleSendMessage();
                                 }

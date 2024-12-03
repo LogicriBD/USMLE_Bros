@@ -1,10 +1,51 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ContentFetchMetadataById } from "@/actions/content/ContentFetchMetadataById";
 import { firestore } from "@/database/config/adminApp";
 import ContentDisplay from "@/src/components/Content/ContentDisplay";
 import Sidebar from "@/src/components/Content/Sidebar";
 import SpinLoading from "@/src/components/Spinner";
 import { ServerAuthContext } from "@/src/context/ServerAuthContext";
+import { Props } from "@/types/Metadata";
+import { ResolvingMetadata } from "next";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
+
+
+export async function generateMetadata({ params, searchParams }: Props,
+    parent: ResolvingMetadata)
+{
+    const id = (await params).id
+    const contentFetchById = new ContentFetchMetadataById(id);
+    const contents = await contentFetchById.execute();
+    if (!contents)
+    {
+        throw new Error("Could not fetch metadata");
+    }
+
+    return {
+        title: `USMLE Bros | Content - ${contents.title}`,
+        description: `Learn about ${contents.title}, containing information about ${contents.sections?.join(", ")}`,
+        openGraph: {
+            images: [contents?.imageUrl],
+        },
+        authors: [{
+            name: "USMLE Bros",
+            url: "https://usmle-bros.vercel.app/",
+        }, {
+            name: "RobustTech BD",
+            url: "https://robustechbd.com/"
+        }],
+        icons: [
+            {
+                href: "/logos/icon.png",
+                sizes: "192x192",
+                type: "image/png",
+                url: "/logos/icon.png",
+            },
+        ],
+        keywords: [contents.title, "USMLE", "Bros", "Content", "USMLE Bros Content", "USMLE Bros Content Page", "USMLE Bros Content Display", "USMLE Bros Content Page", "USMLE Bros Content Display Page", ...contents.sections ? contents.sections : []]
+    }
+}
 
 const SidebarLoading = () =>
 {
