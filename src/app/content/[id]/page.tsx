@@ -28,6 +28,7 @@ const ContentPage = async ({ params }: { params: { id: string } }) =>
 {
     const updateSession = async () =>
     {
+        ServerAuthContext.setLoggedIn(false);
         const cookieStore = await cookies();
         const cookie = cookieStore.get("access");
         if (!cookie)
@@ -56,7 +57,7 @@ const ContentPage = async ({ params }: { params: { id: string } }) =>
 
     await updateSession();
     return (
-        <div className="w-full flex flex-row h-full ">
+        <div className="w-full flex flex-row h-full min-h-full">
             <Suspense fallback={<SidebarLoading />}>
                 <Sidebar id={params.id} />
             </Suspense>
