@@ -3,7 +3,7 @@ import Image from "next/image";
 const Loading = () =>
 {
     return (
-        <div className="w-screen h-screen flex justify-center items-center">
+        <div className="w-full h-full min-w-full min-h-full flex justify-center items-center">
             <div
                 style={{ zIndex: "1600" }}
                 className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">

@@ -56,4 +56,4 @@ EXPOSE $APP_PORT
 ENV PORT $APP_PORT
 ENV HOSTNAME 0.0.0.0
 
-CMD ["npm","run","serve"]
+CMD ["node", "server.js"]

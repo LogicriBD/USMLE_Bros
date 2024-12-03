@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type ModalStoreType = {
   type: string;
   data: any;
+  props?: string;
 };
 
 const initState: ModalStoreType = {
@@ -20,6 +21,9 @@ export const modalSlice = createSlice({
     ) => {
       state.data = action.payload.data;
       state.type = action.payload.type;
+    },
+    addModalProps: (state: ModalStoreType, action: PayloadAction<string>) => {
+      state.props = action.payload;
     },
     updateModalType: (
       state: ModalStoreType,

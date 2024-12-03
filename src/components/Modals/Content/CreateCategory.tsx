@@ -1,5 +1,5 @@
 import { CategoryCreate } from "@/actions/category/CategoryCreate";
-import { useAppDispatch } from "@/src/context/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
@@ -13,6 +13,7 @@ const CreateCategory = () =>
 {
 
     const dispatch = useAppDispatch();
+    const modalProps = useAppSelector((state) => state.modal.props);
     const [name, setName] = useState<string>("");
 
     const handleSubmit = async () =>
@@ -20,7 +21,7 @@ const CreateCategory = () =>
         try
         {
             dispatch(loaderActions.turnOn());
-            const categoryAction = new CategoryCreate({ name: name });
+            const categoryAction = new CategoryCreate({ name: name, id: modalProps! });
             await categoryAction.execute();
             dispatch(submitActions.toggleSubmit());
         } catch (error)

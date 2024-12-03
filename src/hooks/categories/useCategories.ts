@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { CategoryFetchAll } from "@/actions/category/CategoryFetchAll";
-import { CategoryData } from "@/database/repository/Category";
+import { CategoryFetchBySteps } from "@/actions/category/CategoryFetchBySteps";
+import { StepFetchAll } from "@/actions/category/StepFetchAll";
+import { CategoryData, StepData } from "@/database/repository/Category";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { categoryActions } from "@/src/context/store/slices/category-slice";
 import { logger } from "@/utils/Logger";
@@ -21,19 +22,36 @@ export const useCategories = (
   const selectedCategory = useAppSelector(
     (state) => state.category.selectedCategory
   );
-  
+  const [stepBasedCategories, setStepBasedCategories] = useState<
+    { step: StepData; categories: CategoryData[] }[]
+  >([]);
+
   const [categories, setCategories] = useState<CategoryData[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchCategories = async () => {
     try {
-      const categoryAction = await new CategoryFetchAll();
-      const categories = await categoryAction.execute();
-      setCategories(categories);
+      console.log("Comes Here");
+      setStepBasedCategories([]);
+      const stepAction = new StepFetchAll();
+      const steps = await stepAction.execute();
+      const categories = await Promise.all(
+        steps.map(async (step) => {
+          const categoryAction = new CategoryFetchBySteps(step.id);
+          const categories = await categoryAction.execute();
+          setStepBasedCategories((prev) => [...prev, { step, categories }]);
+          return categories;
+        })
+      );
+      setStepBasedCategories((prev) =>
+        prev.sort((a, b) => Number(a.step.name) - Number(b.step.name))
+      );
+      const categoriesFlat = categories.flat();
+      setCategories(categoriesFlat);
       if (categories.length > 0) {
-        dispatch(categoryActions.setCategories(categories));
+        dispatch(categoryActions.setCategories(categoriesFlat));
         if (!selectedCategory) {
-          dispatch(categoryActions.setSelectedCategory(categories[0]));
+          dispatch(categoryActions.setSelectedCategory(categoriesFlat[0]));
         }
       }
     } catch (error) {
@@ -62,5 +80,11 @@ export const useCategories = (
     dispatch(categoryActions.setSelectedCategory(category));
   };
 
-  return { categories, selectedCategory, selectCategory, loading };
+  return {
+    categories,
+    selectedCategory,
+    selectCategory,
+    loading,
+    stepBasedCategories,
+  };
 };

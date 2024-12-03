@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
 import "./globals.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-svg-core/styles.css'
+import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import Navbar from "@/src/components/Navbar/Navbar";
 import { config } from '@fortawesome/fontawesome-svg-core'
-import '@fortawesome/fontawesome-svg-core/styles.css'
-config.autoAddCss = true
-import 'bootstrap/dist/css/bootstrap.min.css';
+config.autoAddCss = false
 import StoreProvider from "../context/StoreProvider";
 import { Suspense } from "react";
 import ModalSelector from "@/src/components/ModalSelector";
@@ -43,17 +43,19 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>)
+{
   appStore.dispatch(loaderActions.authTurnOn());
   return (
     <html lang="en">
       <head>
-      <Script 
-        async 
-        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${AD_CLIENT}`}
-        crossOrigin="anonymous"
-    >
-     </Script>
+        <Script
+          id="google-adsense"
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${AD_CLIENT}`}
+          crossOrigin="anonymous"
+        >
+        </Script>
         <link rel="icon" href="logos/icon.png" />
         <meta name="google-site-verification" content="GHbAPG5W6DW3JtjrpbiObD0IerU9kjeMc_nr4-TygEs" />
       </head>

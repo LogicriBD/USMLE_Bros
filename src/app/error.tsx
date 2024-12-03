@@ -17,7 +17,7 @@ export default function Error({
     }, [error])
 
     return (
-        <div className='h-full flex flex-col items-center justify-center bg-marrow'>
+        <div className='h-full min-h-full flex flex-col items-center justify-center bg-marrow'>
             <h2>Something went wrong!</h2>
             <button
                 className='bg-marrow-dark hover:bg-cyan-900 text-white px-4 py-2 rounded-lg mt-4'
