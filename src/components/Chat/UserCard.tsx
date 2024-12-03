@@ -52,7 +52,6 @@ const UserCard = (props: Props) => {
                         </button>
                     </div>
                 )
-
             )}
         </div>
     );

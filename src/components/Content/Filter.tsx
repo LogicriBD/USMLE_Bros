@@ -16,7 +16,7 @@ const Filter = () =>
     const navigate = useNavigate();
     const { stepBasedCategories, selectedCategory, selectCategory, loading } = useCategories();
     const [toggleSteps, setToggleSteps] = useState(stepBasedCategories.map(() => false));
-    const handleNavigate = (id: string) =>
+    const handleNavigate = (id: string | undefined) =>
     {
         if (!id) return;
         dispatch(loaderActions.turnOn());
@@ -68,8 +68,10 @@ const Filter = () =>
                 <div className="text-lg font-bold text-black justify-start text-start flex w-full px-2 py-3 sticky-top bg-gray-100">Categories</div>
                 {stepBasedCategories.length > 0 && stepBasedCategories.map((step, index) => (
                     <div key={index} className="w-full px-4 py-2">
-                        <div className="w-full justify-between flex flex-row">
-                            <div className={`w-full p-2 text-left text-black text-lg font-bold cursor-pointer`} onClick={() => toggleStep(index)}>Step {step.step.name}</div>
+                        <div 
+                            onClick={() => toggleStep(index)}
+                            className="w-full justify-between flex flex-row">
+                            <div className={`w-full p-2 text-left text-black text-lg font-bold cursor-pointer`}>Step {step.step.name}</div>
                             {toggleSteps[index] && (<FontAwesomeIcon icon={faChevronDown} className="text-black cursor-pointer py-2" />)}
                             {!toggleSteps[index] && (<FontAwesomeIcon icon={faChevronUp} className="text-black cursor-pointer py-2" />)}
                         </div>
