@@ -6,11 +6,22 @@ import { useEffect, useState } from "react";
 import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { useAppDispatch } from "@/src/context/store/hooks";
+import { useNavigate } from "@/src/hooks/useNavigate";
 
 const Filter = () =>
 {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { stepBasedCategories, selectedCategory, selectCategory, loading } = useCategories();
     const [toggleSteps, setToggleSteps] = useState(stepBasedCategories.map(() => false));
+    const handleNavigate = (id: string) =>
+    {
+        if (!id) return;
+        dispatch(loaderActions.turnOn());
+        navigate(`/content/${id}`);
+    }
 
     const [contents, setContents] = useState<ContentMetaData[]>([]);
 
@@ -72,9 +83,10 @@ const Filter = () =>
                                 </div>
                                 <ul className="ms-2 list-disc list-inside">
                                     {selectedCategory?.id === category.id && contents.length > 0 && contents.map((content, index) => (
-                                        <li key={index} className="text-black text-sm font-semibold px-4 py-2">
+                                        <li key={index} className="text-black text-sm font-semibold px-4 py-2 cursor-pointer" onClick={() => handleNavigate(content.id)}>
                                             {content.title}
-                                        </li>)
+                                        </li>
+                                    )
                                     )}
                                 </ul>
                             </div>
