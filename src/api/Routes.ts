@@ -10,6 +10,9 @@ export const Routes = {
   content: {
     upload: "/api/upload",
   },
+  mail: {
+    send: "/api/sendmail",
+  },
 };
 
 const addApiPrefix = (routesObj, prefix) => {
