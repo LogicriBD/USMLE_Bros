@@ -1,4 +1,3 @@
-"use client";
 import ContentsMetadataDisplay from "../components/Content/ContentsMetadataDisplay";
 import HomeSideBar from "../components/Content/HomeSideBar";
 

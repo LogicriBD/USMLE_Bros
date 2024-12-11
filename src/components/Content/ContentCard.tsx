@@ -2,7 +2,7 @@ import { useAppDispatch } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { useNavigate } from "@/src/hooks/useNavigate";
 import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
-import { Image } from "react-bootstrap";
+import Image from "next/image";
 
 type Props = {
   id: string;
@@ -30,7 +30,8 @@ const ContentCard = (props: Props) =>
         <Image
           src={props.image}
           alt={props.title}
-          fluid
+          width={300}
+          height={200}
           className="object-cover w-full h-full"
         />
       </div>

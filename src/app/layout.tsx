@@ -34,7 +34,7 @@ export const metadata: Metadata = {
       type: "image/png",
       url: "/logos/icon.png",
     },
-  ]
+  ],
 };
 
 export default function RootLayout({

@@ -7,24 +7,31 @@ type Props = {
     dataAdFormat: string;
     dataFullWidthResponsive: boolean;
 }
-const AdBanner = (props: Props) => {
+const AdBanner = (props: Props) =>
+{
     const [mounted, setMounted] = useState(false);
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         setMounted(true);
     }, []);
 
-    useEffect(() => {
-        if (mounted && typeof window !== "undefined" && (window as any).adsbygoogle) {
-            try {
+    useEffect(() =>
+    {
+        if (mounted && typeof window !== "undefined" && (window as any).adsbygoogle)
+        {
+            try
+            {
                 ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-            } catch (error) {
+            } catch (error)
+            {
                 console.error("AdSense push error:", error);
             }
         }
     }, [mounted]);
 
-    if (!mounted) {
+    if (!mounted)
+    {
         return null;
     }
 
