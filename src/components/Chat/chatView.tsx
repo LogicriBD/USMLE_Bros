@@ -55,7 +55,7 @@ const ChatView = () =>
 
     const fetchOlderMessages = useCallback(async () =>
     {
-        console.log("fetching older messages");
+        logger.log("fetching older messages");
 
         if (!hasMore) return;
         await Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) =>
@@ -101,7 +101,7 @@ const ChatView = () =>
         {
             fetchOlderMessages();
         }
-    }, [inView, hasMore, fetchOlderMessages]);
+    }, [inView, hasMore]);
 
     return (
         <div className="flex flex-col w-full h-full max-h-full">
