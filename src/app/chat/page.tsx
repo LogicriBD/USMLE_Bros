@@ -2,7 +2,7 @@ import ChatSideBar from "@/src/components/Chat/ChatSideBar";
 import ChatView from "@/src/components/Chat/chatView";
 
 import { Metadata } from "next";
-
+import '../globals.css'
 export const metadata: Metadata = {
     title: "USMLE Bros | Chat",
     description: "Chat with your fellow USMLE bros and get your queries solved",
@@ -32,7 +32,7 @@ const ChatPage = () =>
             <div className="lg:w-1/5 w-1/6 max-w-[58px] lg:max-w-full h-full overflow-hidden">
                 <ChatSideBar />
             </div>
-            <div className="flex-grow lg:w-4/5 w-5/6 h-full flex flex-col">
+            <div className="flex-grow lg:w-4/5 w-5/6 h-full max-h-full flex flex-col">
                 <ChatView />
             </div>
         </div>

@@ -1,11 +1,59 @@
-2024-12-11T18:40:09.521Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:40:24.074Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:40:40.101Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:40:54.851Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:42:34.584Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:43:49.467Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:44:13.455Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:44:19.783Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:45:49.481Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:46:10.966Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
-2024-12-11T18:49:59.987Z log:: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.). 
+2024-12-11T18:44:35.991Z log:: fetching new messages 
+2024-12-11T18:44:35.991Z log:: fetching new messages 
+2024-12-11T18:46:59.885Z log:: fetching older messages 
+2024-12-11T18:47:09.686Z log:: fetching older messages 
+2024-12-11T18:55:15.152Z log:: fetching older messages 
+2024-12-11T18:55:22.451Z log:: fetching older messages 
+2024-12-11T19:14:54.761Z log:: fetching older messages 
+2024-12-11T19:16:11.711Z log:: fetching older messages 
+2024-12-11T19:23:35.058Z log:: fetching older messages 
+2024-12-11T19:23:38.811Z log:: fetching older messages 
+2024-12-11T19:23:51.456Z log:: fetching older messages 
+2024-12-11T19:24:14.219Z log:: fetching older messages 
+2024-12-11T19:24:18.620Z log:: fetching older messages 
+2024-12-11T19:25:04.433Z log:: fetching older messages 
+2024-12-11T19:26:29.839Z log:: Error: The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/usmle-test-2/firestore/indexes?create_composite=ClFwcm9qZWN0cy91c21sZS10ZXN0LTIvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL2Jsb2dtZXRhZGF0YS9pbmRleGVzL18QARoMCghjYXRlZ29yeRABGg0KCWNyZWF0ZWRBdBACGgwKCF9fbmFtZV9fEAI 
+2024-12-11T19:26:40.265Z log:: Error: The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/usmle-test-2/firestore/indexes?create_composite=ClFwcm9qZWN0cy91c21sZS10ZXN0LTIvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL2Jsb2dtZXRhZGF0YS9pbmRleGVzL18QARoMCghjYXRlZ29yeRABGg0KCWNyZWF0ZWRBdBACGgwKCF9fbmFtZV9fEAI 
+2024-12-11T19:26:43.761Z log:: fetching older messages 
+2024-12-11T19:26:48.585Z log:: fetching older messages 
+2024-12-11T19:33:07.442Z log:: fetching older messages 
+2024-12-11T19:35:26.882Z log:: fetching older messages 
+2024-12-11T19:37:25.137Z log:: fetching older messages 
+2024-12-11T19:38:58.831Z log:: fetching older messages 
+2024-12-11T19:39:26.714Z log:: fetching older messages 
+2024-12-11T19:40:56.285Z log:: fetching older messages 
+2024-12-11T19:41:06.050Z log:: fetching older messages 
+2024-12-11T19:48:32.313Z log:: fetching older messages 
+2024-12-11T19:48:48.157Z log:: fetching older messages 
+2024-12-11T19:52:34.764Z log:: fetching older messages 
+2024-12-11T19:52:45.912Z log:: fetching older messages 
+2024-12-11T19:52:48.531Z log:: fetching older messages 
+2024-12-11T19:54:36.066Z log:: fetching older messages 
+2024-12-11T19:54:43.903Z log:: fetching older messages 
+2024-12-11T19:54:44.401Z log:: fetching older messages 
+2024-12-11T19:54:44.744Z log:: fetching older messages 
+2024-12-11T19:54:50.401Z log:: fetching older messages 
+2024-12-11T19:56:30.740Z log:: fetching older messages 
+2024-12-11T19:56:48.602Z log:: fetching older messages 
+2024-12-11T20:00:35.519Z log:: fetching older messages 
+2024-12-11T20:00:38.957Z log:: fetching older messages 
+2024-12-11T20:01:08.030Z log:: fetching older messages 
+2024-12-11T20:03:30.108Z log:: fetching older messages 
+2024-12-11T20:03:33.595Z log:: fetching older messages 
+2024-12-11T20:03:37.976Z log:: fetching older messages 
+2024-12-11T20:03:41.193Z log:: fetching older messages 
+2024-12-11T20:03:43.696Z log:: fetching older messages 
+2024-12-11T20:07:33.995Z log:: fetching older messages 
+2024-12-11T20:08:24.165Z log:: fetching older messages 
+2024-12-11T20:09:35.499Z log:: fetching older messages 
+2024-12-11T20:10:24.526Z log:: fetching older messages 
+2024-12-11T20:13:40.067Z log:: fetching older messages 
+2024-12-11T20:21:06.025Z log:: fetching older messages 
+2024-12-11T20:22:08.115Z log:: fetching older messages 
+2024-12-11T20:22:13.824Z log:: fetching older messages 
+2024-12-11T20:22:15.775Z log:: fetching older messages 
+2024-12-11T20:22:44.350Z log:: fetching older messages 
+2024-12-11T20:24:02.512Z log:: fetching older messages 
+2024-12-11T20:24:07.204Z log:: fetching older messages 
+2024-12-11T20:24:13.506Z log:: fetching older messages 
+2024-12-11T20:24:16.291Z log:: fetching older messages 

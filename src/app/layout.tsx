@@ -11,6 +11,7 @@ import Loader from "../components/Loader/Loader";
 import { appStore } from "../context/store/redux-store";
 import { loaderActions } from "../context/store/slices/loader-slice";
 import Script from "next/script";
+import Head from "next/head";
 const AD_CLIENT = process.env.GOOGLE_ADSENSE_CLIENT;
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -44,12 +45,11 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>)
-{
+}>) {
   appStore.dispatch(loaderActions.authTurnOn());
   return (
     <html lang="en">
-      <head>
+      <Head>
         <Script
           id="google-adsense"
           async
@@ -57,7 +57,11 @@ export default function RootLayout({
           crossOrigin="anonymous"
         >
         </Script>
-      </head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
+        <link rel="stylesheet" href="/_next/static/css/app/layout.css" />
+      </Head>
       <body
         className={`${openSans.className} antialiased`}
       >

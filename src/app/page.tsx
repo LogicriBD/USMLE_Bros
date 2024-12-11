@@ -1,6 +1,5 @@
 import ContentsMetadataDisplay from "../components/Content/ContentsMetadataDisplay";
 import HomeSideBar from "../components/Content/HomeSideBar";
-
 const Home = () =>
 {
   return (
