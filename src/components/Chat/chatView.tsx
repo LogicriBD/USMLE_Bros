@@ -53,12 +53,12 @@ const ChatView = () =>
         }
     }
 
-    const fetchOlderMessages = useCallback(() =>
+    const fetchOlderMessages = useCallback(async () =>
     {
         console.log("fetching older messages");
 
         if (!hasMore) return;
-        Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) =>
+        await Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) =>
         {
             if (olderMessages.length === 0)
             {
