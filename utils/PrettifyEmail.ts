@@ -49,7 +49,7 @@ class PrettifyEmailImpl {
       <h1 style="color: #438796; font-size: 2.5em; margin: 20px 0;">${subject}</h1>
       <div style="text-align: left;">
         <p style="color: #4D9BA9; font-weight: bold;">Greetings,</p>
-        <p style="color: #4D9BA9; font-weight: bold;">${message}</p>
+        <div style="width:100%;max-width:100%;">${message}</div>
         <p style="color: #4D9BA9;">Kind Regards,</p>
         <p style="color: #4D9BA9;">Admin, USMLE Bros</p>
       </div>

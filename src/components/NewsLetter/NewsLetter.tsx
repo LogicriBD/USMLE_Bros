@@ -4,11 +4,15 @@ import { Form } from "react-bootstrap"
 import CustomEditor from "../Upload/CustomEditor"
 import { useRef, useState } from "react";
 import { routes } from "@/src/api/Routes";
+import { useAppDispatch } from "@/src/context/store/hooks";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { logger } from "../../../utils/Logger";
+
 const NewsLetterUploader = () =>
 {
 
     const editorRef = useRef<any>(null);
-
+    const dispatch = useAppDispatch();
     const [formData, setFormData] = useState({ subject: "", receiver: "All", content: "" });
     const [error, setError] = useState({ subject: "", receiver: "", content: "" });
 
@@ -16,9 +20,10 @@ const NewsLetterUploader = () =>
     {
         return !!error.subject || !!error.receiver || !!error.content;
     }
-    const handleSubmit = (e) =>
+    const handleSubmit = async (e) =>
     {
         e.preventDefault();
+
         if (isError()) return;
         if (!formData.subject)
         {
@@ -30,7 +35,37 @@ const NewsLetterUploader = () =>
             setError((prev) => ({ ...prev, content: "Content is required." }));
             return;
         }
-        console.log(formData);
+        logger.log(formData);
+        try
+        {
+            dispatch(loaderActions.turnOn());
+            const newContent = await uploadAndReplaceImageSrc();
+            console.log(newContent)
+            setFormData((prev) => ({ ...prev, content: newContent }));
+
+            const response = await fetch(routes.mail.send, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await response.json();
+            if (response.ok)
+            {
+                logger.log("Newsletter sent successfully:", data.message);
+            }
+            else
+            {
+                throw new Error(data.message);
+            }
+        } catch (error)
+        {
+            logger.error("Error creating blog:", error);
+        } finally
+        {
+            dispatch(loaderActions.turnOff());
+        }
     }
 
     const handleContentChange = (newContent: string) =>
@@ -60,11 +95,11 @@ const NewsLetterUploader = () =>
                         body: formData,
                     });
                     const data = await response.json();
-                    console.log("Image Uploaded:", data.file.url);
+                    logger.log("Image Uploaded:", data.file.url);
                     imgTag.setAttribute('src', data.file.url);
                 } catch (error)
                 {
-                    console.error('Error uploading image:', error);
+                    logger.error('Error uploading image:', error);
                 }
             }
         }

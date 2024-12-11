@@ -3,10 +3,10 @@ import { EmailService } from "@/utils/EmailService";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { message, subject } = await req.json();
+  const { message, subject, receiver } = await req.json();
 
   try {
-    const newsletter = new Newsletter(subject, message);
+    const newsletter = new Newsletter(subject, message, receiver);
     await EmailService.sendEmail(newsletter);
     return NextResponse.json(
       { message: "Email sent successfully" },
