@@ -63,7 +63,7 @@ const MessageUI = (props: Props) => {
                     >
                         <div className="flex items-center justify-between space-x-2 text-xs">
                             <div className="font-bold">{isUserMessage ? "You" : props.message.userName}</div>
-                            {(isUserMessage || user.role === Roles.Admin ) && (
+                            {isUserMessage && (
                                 <FontAwesomeIcon
                                     icon={faTrash}
                                     className="cursor-pointer text-xl hover:scale-125 duration-300 transition"
