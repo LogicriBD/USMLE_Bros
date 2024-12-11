@@ -12,6 +12,8 @@ import SuccessModal from "./Modals/SuccessModal";
 import BanModal from "./Modals/Chat/BanModal";
 import CreateModal from "./Modals/forum/Create";
 import CreateThreadModal from "./Modals/forum/CreateThreadModal";
+import NewsletterSuccessModal from "./Modals/Newsletter/NewsletterSuccessModal";
+import NewsletterErrorModal from "./Modals/Newsletter/NewsletterErrorModal";
 
 const ModalSelector = () =>
 {
@@ -31,6 +33,8 @@ const ModalSelector = () =>
                 {currentSelectedModal === ModalName.BanModal && <BanModal />}
                 {currentSelectedModal === ModalName.CreateDiscussion && <CreateModal />}
                 {currentSelectedModal === ModalName.CreateThread && <CreateThreadModal />}
+                {currentSelectedModal === ModalName.NewsletterSuccess && <NewsletterSuccessModal />}
+                {currentSelectedModal === ModalName.NewsletterError && <NewsletterErrorModal />}
             </React.Fragment>
         </>
     )

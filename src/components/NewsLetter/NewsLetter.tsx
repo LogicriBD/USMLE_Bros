@@ -7,6 +7,8 @@ import { routes } from "@/src/api/Routes";
 import { useAppDispatch } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { logger } from "../../../utils/Logger";
+import { modalActions } from "@/src/context/store/slices/modal-slice";
+import { ModalName } from "@/utils/enums/ModalEnum";
 
 const NewsLetterUploader = () =>
 {
@@ -40,7 +42,6 @@ const NewsLetterUploader = () =>
         {
             dispatch(loaderActions.turnOn());
             const newContent = await uploadAndReplaceImageSrc();
-            console.log(newContent)
             setFormData((prev) => ({ ...prev, content: newContent }));
 
             const response = await fetch(routes.mail.send, {
@@ -53,14 +54,18 @@ const NewsLetterUploader = () =>
             const data = await response.json();
             if (response.ok)
             {
-                logger.log("Newsletter sent successfully:", data.message);
+
+                setFormData({ subject: "", receiver: "All", content: "" });
             }
             else
             {
                 throw new Error(data.message);
             }
-        } catch (error)
+            dispatch(modalActions.updateModalType(ModalName.NewsletterSuccess));
+        } catch (error: any)
         {
+            dispatch(modalActions.addModalProps(error.message));
+            dispatch(modalActions.updateModalType(ModalName.NewsletterError));
             logger.error("Error creating blog:", error);
         } finally
         {

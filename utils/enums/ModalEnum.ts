@@ -4,6 +4,8 @@ export enum ModalName {
   DeleteUser = "DeleteUser",
   CreateCategory = "CreateCategory",
   CreateContent = "CreateContent",
+  NewsletterSuccess = "NewsletterSuccess",
+  NewsletterError = "NewsletterError",
   ErrorModal = "ErrorModal",
   SuccessModal = "SuccessModal",
   BanModal = "BanModal",
