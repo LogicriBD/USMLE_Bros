@@ -5,28 +5,6 @@ import { useAppDispatch } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import Link from "next/link";
 import { useEffect } from "react";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-    title: "USMLE Bros | Access Denied",
-    description: "You are not allowed to view this page",
-    authors: [{
-        name: "USMLE Bros",
-        url: "https://usmle-bros.vercel.app/",
-    }, {
-        name: "RobustTech BD",
-        url: "https://robustechbd.com/"
-    }],
-    icons: [
-        {
-            href: "/logos/icon.png",
-            sizes: "192x192",
-            type: "image/png",
-            url: "/logos/icon.png",
-        },
-    ],
-    keywords: ["USMLE", "Bros", "Access Denied", "Access Denied Page", "USMLE Bros Access Denied", "USMLE Bros Access Denied Page"]
-}
 
 const AccessDeniedPage = () =>
 {
