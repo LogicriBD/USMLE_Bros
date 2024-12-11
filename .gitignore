@@ -2,7 +2,6 @@
 
 # dependencies
 /node_modules
-/logs/activity.log
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -37,3 +36,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+logs/activity.log
