@@ -1,3 +1,5 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~@fortawesome/fontawesome-svg-core/styles.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -28,25 +30,23 @@ body {
 }
 /* Custom Scrollbar */
 @media (min-width: 1024px) {
-
   .scrollbar-thin::-webkit-scrollbar {
-    width:10px;
+    width: 10px;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-thumb {
     background-color: #888686;
     border-radius: 10px;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background-color: #646363;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-track {
-    background-color: #f1f1f1; 
+    background-color: #f1f1f1;
   }
 }
-
 
 .ProseMirror {
   outline: none;
@@ -65,7 +65,7 @@ body {
 }
 
 .ProseMirror a {
-  color: #0000FF;
+  color: #0000ff;
   text-decoration: underline;
 }
 
@@ -77,26 +77,26 @@ body {
 }
 
 .ProseMirror ul {
-  list-style-type: disc
+  list-style-type: disc;
 }
 
 .ProseMirror ol {
-  list-style-type: decimal
+  list-style-type: decimal;
 }
 
 .ProseMirror table {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .ProseMirror table,
 .ProseMirror th,
 .ProseMirror td {
-    border: 1px solid #000;
+  border: 1px solid #000;
 }
 
 .ProseMirror th,
 .ProseMirror td {
-    padding: 0.5em;
+  padding: 0.5em;
 }
 
 table {

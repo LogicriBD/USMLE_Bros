@@ -1,6 +1,4 @@
 import "./globals.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-svg-core/styles.css'
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import Navbar from "@/src/components/Navbar/Navbar";
