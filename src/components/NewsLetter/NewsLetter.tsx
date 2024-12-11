@@ -1,49 +1,60 @@
+"use client";
 import { Roles } from "@/utils/enums/Roles"
 import { Form } from "react-bootstrap"
 import CustomEditor from "../Upload/CustomEditor"
 import { useRef, useState } from "react";
 import { routes } from "@/src/api/Routes";
-const NewsLetterPage = () => {
+const NewsLetterUploader = () =>
+{
 
     const editorRef = useRef<any>(null);
 
     const [formData, setFormData] = useState({ subject: "", receiver: "All", content: "" });
     const [error, setError] = useState({ subject: "", receiver: "", content: "" });
 
-    const isError = () => {
+    const isError = () =>
+    {
         return !!error.subject || !!error.receiver || !!error.content;
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = (e) =>
+    {
         e.preventDefault();
         if (isError()) return;
-        if (!formData.subject) {
+        if (!formData.subject)
+        {
             setError((prev) => ({ ...prev, subject: "Subject is required." }));
             return;
         }
-        if (!formData.content) {
+        if (!formData.content)
+        {
             setError((prev) => ({ ...prev, content: "Content is required." }));
             return;
         }
         console.log(formData);
     }
 
-    const handleContentChange = (newContent: string) => {
+    const handleContentChange = (newContent: string) =>
+    {
         setFormData((prev) => ({ ...prev, content: newContent }));
     };
 
-    const uploadAndReplaceImageSrc = async () => {
+    const uploadAndReplaceImageSrc = async () =>
+    {
         const parser = new DOMParser();
         const doc = parser.parseFromString(formData.content, 'text/html');
         const imgTags = Array.from(doc.querySelectorAll('img'));
 
-        for (const imgTag of imgTags) {
+        for (const imgTag of imgTags)
+        {
             const src = imgTag.getAttribute('src');
-            if (src) {
+            if (src)
+            {
                 const file = await fetch(src).then((r) => r.blob());
                 const formData = new FormData();
                 formData.append('file', file);
 
-                try {
+                try
+                {
                     const response = await fetch(routes.content.upload, {
                         method: "POST",
                         body: formData,
@@ -51,7 +62,8 @@ const NewsLetterPage = () => {
                     const data = await response.json();
                     console.log("Image Uploaded:", data.file.url);
                     imgTag.setAttribute('src', data.file.url);
-                } catch (error) {
+                } catch (error)
+                {
                     console.error('Error uploading image:', error);
                 }
             }
@@ -88,10 +100,11 @@ const NewsLetterPage = () => {
                             value={formData.receiver}
                             onChange={(e) => setFormData({ ...formData, receiver: e.target.value })}
                             isInvalid={!!error.receiver}
-                        />
-                        <option value={"All"}>All</option>
-                        <option value={Roles.User}>Users</option>
-                        <option value={Roles.Admin}>Admins</option>
+                        >
+                            <option value={"All"}>All</option>
+                            <option value={Roles.User}>Users</option>
+                            <option value={Roles.Admin}>Admins</option>
+                        </Form.Select>
                         <Form.Control.Feedback type="invalid">
                             {error.receiver}
                         </Form.Control.Feedback>
@@ -120,4 +133,4 @@ const NewsLetterPage = () => {
     )
 };
 
-export default NewsLetterPage;
+export default NewsLetterUploader;

@@ -35,6 +35,9 @@ export const metadata: Metadata = {
       url: "/logos/icon.png",
     },
   ],
+  verification: {
+    google: "GHbAPG5W6DW3JtjrpbiObD0IerU9kjeMc_nr4-TygEs",
+  },
 };
 
 export default function RootLayout({
@@ -54,8 +57,6 @@ export default function RootLayout({
           crossOrigin="anonymous"
         >
         </Script>
-        <link rel="icon" href="logos/icon.png" />
-        <meta name="google-site-verification" content="GHbAPG5W6DW3JtjrpbiObD0IerU9kjeMc_nr4-TygEs" />
       </head>
       <body
         className={`${openSans.className} antialiased`}
