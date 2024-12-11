@@ -1,4 +1,4 @@
-import { Timestamp, addDoc, arrayUnion, collection, doc, onSnapshot, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { Timestamp, addDoc, arrayUnion, collection, deleteDoc, doc, onSnapshot, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { ApiError } from "next/dist/server/api-utils";
 import { firestore } from "../config/firebaseApp";
 import { Thread } from "./Thread";
@@ -84,6 +84,15 @@ class PostRepository {
                 comments: arrayUnion(newComment),
             });
         }catch(error:any){
+            throw new ApiError(400, error.message);
+        }
+    }
+
+    async deletePost (postId: string) {
+        try {
+            const postRef = doc(firestore, "posts", postId);
+            await deleteDoc(postRef);
+        } catch (error: any) {
             throw new ApiError(400, error.message);
         }
     }

@@ -1,14 +1,17 @@
 "use client";
 import { CommentType, PostType } from "@/database/repository/Post"
 import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
-import { faUser, faClock } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faClock, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import SpinLoading from "../../Spinner";
-import { useAppSelector } from "@/src/context/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { CreateComment } from "@/actions/forum/CreateComment";
 import { logger } from "@/utils/Logger";
 import DisplayComment from "./DisplayComment";
+import { Roles } from "@/utils/enums/Roles";
+import { DeletePost } from "@/actions/forum/DeletePost";
+import { loaderActions } from "@/src/context/store/slices/loader-slice";
 
 type Props = {
     post: PostType;
@@ -17,6 +20,8 @@ const DisplayPost = (props: Props) => {
 
     const [comment, setComment] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
+
+    const dispatch = useAppDispatch();
 
     const user = useAppSelector((state) => state.user);
 
@@ -33,13 +38,25 @@ const DisplayPost = (props: Props) => {
                 createdAt: new Date(),
                 postId: props.post.id
             }
-            const commentActions = new CreateComment(props.post.id,newComment);
+            const commentActions = new CreateComment(props.post.id, newComment);
             await commentActions.execute();
-        }catch(error:any){
+        } catch (error: any) {
             logger.log("Error creating comment:", error);
-        }finally{
+        } finally {
             setLoading(false);
             setComment("");
+        }
+    }
+
+    const deletePost = async () => {
+        try{
+            dispatch(loaderActions.turnOn());
+            const deleteActions = new DeletePost(props.post.id);
+            await deleteActions.execute();
+        }catch(error:any){
+            logger.log("Error deleting post:", error);
+        }finally{
+            dispatch(loaderActions.turnOff());
         }
     }
 
@@ -53,9 +70,20 @@ const DisplayPost = (props: Props) => {
                     />
                     <span className="font-medium text-sm">{props.post.userName}</span>
                 </div>
-                <div className="flex items-center space-x-1 text-gray-500 text-sm">
-                    <FontAwesomeIcon icon={faClock} className="text-teal-600" />
-                    <span>{formatFirebaseDate(props.post.createdAt, true)}</span>
+                <div className="flex items-center space-x-3 text-gray-500 text-sm">
+                    <span>
+                        <FontAwesomeIcon icon={faClock} className="text-teal-600 mr-1" />
+                        <span>{formatFirebaseDate(props.post.createdAt, true)}</span>
+                    </span>
+                    <span>
+                        {user.id !== "" && user.role === Roles.Admin && (
+                            <FontAwesomeIcon
+                                icon={faTrash}
+                                className="cursor-pointer text-xl hover:scale-125 duration-300 transition"
+                                onClick={deletePost}
+                            />
+                        )}
+                    </span>
                 </div>
             </div>
 
