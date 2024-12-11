@@ -9,6 +9,8 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { DeleteMessage } from "@/actions/chat/deleteMessage";
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
+import { useAppSelector } from "@/src/context/store/hooks";
+import { Roles } from "@/utils/enums/Roles";
 
 type Props = {
     message: ReceiveMessage;
@@ -19,6 +21,7 @@ const MessageUI = (props: Props) => {
     const isUserMessage = props.message.userId === props.user.id;
 
     const [loading, setLoading] = useState<boolean>(false);
+    const user = useAppSelector((state) => state.user);
 
     const options = {
         replace: (node) => {
@@ -33,11 +36,11 @@ const MessageUI = (props: Props) => {
         },
     }
 
-    const deleteMessage = () => {
+    const deleteMessage = async () => {
         try {
             setLoading(true);
             const deleteAction = new DeleteMessage({ messageId: props.message.id });
-            deleteAction.execute();
+            await deleteAction.execute();
         } catch (error: any) {
             console.error(error);
         } finally {
@@ -60,7 +63,7 @@ const MessageUI = (props: Props) => {
                     >
                         <div className="flex items-center justify-between text-xs">
                             <div className="font-bold">{isUserMessage ? "You" : props.message.userName}</div>
-                            {isUserMessage && (
+                            {(isUserMessage || user.role === Roles.Admin ) && (
                                 <FontAwesomeIcon
                                     icon={faTrash}
                                     className="cursor-pointer text-xl hover:scale-125 duration-300 transition"
