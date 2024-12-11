@@ -1,5 +1,5 @@
 export interface EmailMessage {
-  getRecipients: () => string;
+  getRecipients: () => Promise<string[]>;
   getSubject: () => string;
   getMessage: () => string;
 }

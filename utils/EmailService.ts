@@ -1,7 +1,5 @@
 import nodemailer from "nodemailer";
-import { StatusCodes } from "http-status-codes";
 import { EmailMessage } from "../types/Email";
-import { ApiError } from "next/dist/server/api-utils";
 
 class EmailServiceImpl {
   private static instance: EmailServiceImpl;
@@ -29,19 +27,17 @@ class EmailServiceImpl {
 
   public async sendEmail(email: EmailMessage) {
     try {
+      const receipients = await email.getRecipients();
       const mailOptions = {
         from: process.env.EMAIL_FROM,
-        to: email.getRecipients(),
+        to: receipients,
         subject: email.getSubject(),
         html: email.getMessage(),
       };
 
       return await this.transporter.sendMail(mailOptions);
     } catch (err: any) {
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Unable to send email. Please try again later."+JSON.stringify(err)
-      );
+      throw new Error(err);
     }
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useCategories } from "@/src/hooks/categories/useCategories";
 import SpinLoading from "../Spinner";
@@ -68,7 +69,7 @@ const Filter = () =>
                 <div className="text-lg font-bold text-black justify-start text-start flex w-full px-2 py-3 sticky-top bg-gray-100">Categories</div>
                 {stepBasedCategories.length > 0 && stepBasedCategories.map((step, index) => (
                     <div key={index} className="w-full px-4 py-2">
-                        <div 
+                        <div
                             onClick={() => toggleStep(index)}
                             className="w-full justify-between flex flex-row">
                             <div className={`w-full p-2 text-left text-black text-lg font-bold cursor-pointer`}>Step {step.step.name}</div>

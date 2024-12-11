@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useRef, useState } from "react";
@@ -10,68 +11,82 @@ import { BlogType } from "@/utils/enums/Blog";
 import { Blog, BlogData, BlogMetadata } from "@/database/repository/Blog";
 import CustomEditor from "../Upload/CustomEditor";
 
-const BlogUploader = () => {
+const BlogUploader = () =>
+{
     const editorRef = useRef<any>(null);
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const [error, setError] = useState({ title: "", preview: "", content: "", type:"" });
-    const [formData, setFormData] = useState({ title: "", previewImage: null, content: "", type:BlogType.BLOG });
+    const [error, setError] = useState({ title: "", preview: "", content: "", type: "" });
+    const [formData, setFormData] = useState({ title: "", previewImage: null, content: "", type: BlogType.BLOG });
     const [images, setImages] = useState<string[]>([]);
 
-    const handleContentChange = (newContent: string, imageUrl?: string) => {
-        if (imageUrl) {
+    const handleContentChange = (newContent: string, imageUrl?: string) =>
+    {
+        if (imageUrl)
+        {
             setImages((prev) => [...prev, imageUrl])
         }
         setFormData((prev) => ({ ...prev, content: newContent }));
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e) =>
+    {
         const file = e.target.files[0];
-        if (file) {
+        if (file)
+        {
             const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-            if (validImageTypes.includes(file.type)) {
+            if (validImageTypes.includes(file.type))
+            {
                 setError((prev) => ({ ...prev, preview: "" }));
                 setFormData((prev) => ({ ...prev, previewImage: file }));
-            } else {
+            } else
+            {
                 setError((prev) => ({ ...prev, preview: "Please upload a valid image file." }));
                 setFormData((prev) => ({ ...prev, previewImage: null }));
             }
         }
     };
 
-    const isError = () => {
+    const isError = () =>
+    {
         return !!error.title || !!error.preview || !!error.content;
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e) =>
+    {
         e.preventDefault();
 
         if (isError()) return;
 
 
-        if (!formData.title) {
+        if (!formData.title)
+        {
             setError((prev) => ({ ...prev, title: "Title is required." }));
             return;
         }
 
-        if (!formData.previewImage) {
+        if (!formData.previewImage)
+        {
             setError((prev) => ({ ...prev, preview: "Preview image is required." }));
             return;
         }
 
-        if (!formData.content) {
+        if (!formData.content)
+        {
             setError((prev) => ({ ...prev, content: "Content is required." }));
             return;
         }
 
-        if (!formData.type) {
+        if (!formData.type)
+        {
             setError((prev) => ({ ...prev, type: "Type is required." }));
             return;
         }
 
-        try {
+        try
+        {
             dispatch(loaderActions.turnOn());
             const imageUrl = await uploadImage();
 
@@ -95,63 +110,76 @@ const BlogUploader = () => {
 
             const blogActions = new createBlog({ blog: blog });
             await blogActions.execute();
-            setFormData({ title: "", previewImage: null, content: "", type:BlogType.BLOG });
-            if(editorRef.current){
+            setFormData({ title: "", previewImage: null, content: "", type: BlogType.BLOG });
+            if (editorRef.current)
+            {
                 editorRef.current.clearContents();
             }
-        } catch (error) {
+        } catch (error)
+        {
             console.error("Error creating blog:", error);
-        } finally {
+        } finally
+        {
             dispatch(loaderActions.turnOff());
         }
     };
 
-    const uploadImage = async () => {
+    const uploadImage = async () =>
+    {
         const f = new FormData();
-        if (formData.previewImage) {
+        if (formData.previewImage)
+        {
             f.append("file", formData.previewImage);
         }
 
-        try {
+        try
+        {
             const response = await fetch(routes.content.upload, {
                 method: "POST",
                 body: f,
             });
             const data = await response.json();
             console.log("Image Uploaded:", data.file.url);
-            if(fileInputRef.current) fileInputRef.current.value = "";
+            if (fileInputRef.current) fileInputRef.current.value = "";
             return data.file.url as string;
-        } catch (error) {
+        } catch (error)
+        {
             console.error("Error uploading image:", error);
             return "";
         }
     }
 
-    const handleTitleChange = (event) => {
+    const handleTitleChange = (event) =>
+    {
         setFormData((prev) => ({ ...prev, title: event.target.value }));
 
         if (error.title) { setError((prev) => ({ ...prev, title: "" })) }
     }
 
-    const handleTypeChange = (event) => {
+    const handleTypeChange = (event) =>
+    {
         setFormData((prev) => ({ ...prev, type: event.target.value }));
 
         if (error.type) { setError((prev) => ({ ...prev, type: "" })) }
     }
 
-    const uploadAndReplaceImageSrc = async () => {
+    const uploadAndReplaceImageSrc = async () =>
+    {
         const parser = new DOMParser();
         const doc = parser.parseFromString(formData.content, 'text/html');
         const imgTags = Array.from(doc.querySelectorAll('img'));
-    
-        for (const imgTag of imgTags) {
+
+        for (const imgTag of imgTags)
+        {
             const src = imgTag.getAttribute('src');
-            if (src) {
+            if (src)
+            {
                 const file = await fetch(src).then((r) => r.blob());
                 const formData = new FormData();
                 formData.append('file', file);
-    
-                try {
+
+                try
+                {
                     const response = await fetch(routes.content.upload, {
                         method: "POST",
                         body: formData,
@@ -159,12 +187,13 @@ const BlogUploader = () => {
                     const data = await response.json();
                     console.log("Image Uploaded:", data.file.url);
                     imgTag.setAttribute('src', data.file.url);
-                } catch (error) {
+                } catch (error)
+                {
                     console.error('Error uploading image:', error);
                 }
             }
         }
-    
+
         formData.content = doc.body.innerHTML;
         return formData.content;
     };
