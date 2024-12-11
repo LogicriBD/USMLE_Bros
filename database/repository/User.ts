@@ -76,6 +76,23 @@ class UserImpl {
     }
   }
 
+  async findUsersByRole(role: string): Promise<UserData[]> {
+    try {
+      const q = query(
+        collection(firestore, "users"), 
+        where("role", "==", role)
+      );
+      const querySnapshot = await getDocs(q);
+      const users: UserData[] = [];
+      querySnapshot.forEach((doc) => {
+        users.push({ id: doc.id, ...doc.data() } as UserData);
+      });
+      return users;
+    } catch (error: any) {
+      throw new ApiError(400, error.message);
+    }
+  }
+
   async deleteUser(id: string) {
     try {
       const userRef = doc(firestore, "users", id);
