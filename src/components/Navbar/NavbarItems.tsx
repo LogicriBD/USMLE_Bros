@@ -19,7 +19,7 @@ const AdminItems = () =>
                 <NavItem url={"/admin"} cached>Users</NavItem>
                 <NavItem url={"/admin/upload"} cached>Upload</NavItem>
                 <NavItem url={"/admin/blog"} cached>Blog Upload</NavItem>
-                <NavItem url={"/admin/forum"} cached>Create Forum</NavItem>'
+                <NavItem url={"/admin/forum"} cached>Create Forum</NavItem>
                 <NavItem url={"/admin/newsletter"} cached>NewsLetter</NavItem>
             </>
         )

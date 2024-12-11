@@ -61,7 +61,7 @@ const MessageUI = (props: Props) => {
                         className={`flex flex-col max-w-3/4 ${isUserMessage ? "bg-sky-700 text-white" : "bg-gray-300 text-black"} 
                     rounded-lg p-3 space-y-1`}
                     >
-                        <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center justify-between space-x-2 text-xs">
                             <div className="font-bold">{isUserMessage ? "You" : props.message.userName}</div>
                             {(isUserMessage || user.role === Roles.Admin ) && (
                                 <FontAwesomeIcon
