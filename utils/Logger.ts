@@ -1,19 +1,16 @@
-import fs from "fs";
-import path from "path";
-
 class Logger {
-  private path: string;
-
-  constructor() {
-    this.path = path.join(__dirname, "../", "logs");
-  }
-
   log(...args: any[]) {
     if (!this.isProductionEnvironment()) {
       console.log(args);
     } else {
-      args.push("log:: ");
-      fs.writeFileSync(this.path, args.join(" "), { flag: "a+" });
+      args.push("\n");
+      fetch(`${process.env.API_URL}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: args.join(" "), level: "log" }),
+      });
     }
   }
 
@@ -21,8 +18,14 @@ class Logger {
     if (!this.isProductionEnvironment()) {
       console.error(args);
     } else {
-      args.push("error:: ");
-      fs.writeFileSync(this.path, args.join(" "), { flag: "a+" });
+      args.push("\n");
+      fetch(`${process.env.API_URL}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: args.join(" "), level: "log" }),
+      });
     }
   }
 
@@ -30,8 +33,14 @@ class Logger {
     if (!this.isProductionEnvironment()) {
       console.warn(args);
     } else {
-      args.push("warn:: ");
-      fs.writeFileSync(this.path, args.join(" "), { flag: "a+" });
+      args.push("\n");
+      fetch(`${process.env.API_URL}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: args.join(" "), level: "log" }),
+      });
     }
   }
 
@@ -39,8 +48,14 @@ class Logger {
     if (!this.isProductionEnvironment()) {
       console.info(args);
     } else {
-      args.push("info:: ");
-      fs.writeFileSync(this.path, args.join(" "), { flag: "a+" });
+      args.push("\n");
+      fetch(`${process.env.API_URL}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: args.join(" "), level: "log" }),
+      });
     }
   }
 
@@ -48,13 +63,22 @@ class Logger {
     if (!this.isProductionEnvironment()) {
       console.debug(args);
     } else {
-      args.push("debug:: ");
-      fs.writeFileSync(this.path, args.join(" "), { flag: "a+" });
+      args.push("\n");
+      fetch(`${process.env.API_URL}/api/log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: args.join(" "), level: "log" }),
+      });
     }
   }
 
   isProductionEnvironment() {
-    return process.env.NODE_ENV === "production";
+    return (
+      process.env.NODE_ENV === "production" ||
+      process.env.NEXT_PUBLIC_NODE_ENV === "production"
+    );
   }
 }
 
