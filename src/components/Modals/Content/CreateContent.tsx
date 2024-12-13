@@ -13,8 +13,10 @@ import { ContentsFetchById } from "@/actions/content/ContentFetchById";
 import { ContentDeleteById } from "@/actions/content/ContentDeleteById";
 import CustomEditor from "../../Upload/CustomEditor";
 import { routes } from "@/src/api/Routes";
+import SpinLoading from "../../Spinner";
 
-const CreateContent = () => {
+const CreateContent = () =>
+{
     const editorRef = useRef<any>(null);
 
     const dispatch = useAppDispatch();
@@ -28,14 +30,17 @@ const CreateContent = () => {
 
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
     const user = useAppSelector((state) => state.user);
-    const handleClose = () => {
+    const handleClose = () =>
+    {
         setShowModal(false);
         setContent("");
         closeModal();
     };
 
-    const fetchContent = async (metadataId: string) => {
-        try {
+    const fetchContent = async (metadataId: string) =>
+    {
+        try
+        {
             const contentByMetadataIdAction = new ContentsFetchById({ metadataId: metadataId, all: true });
             const contents = await contentByMetadataIdAction.execute();
             const sortedContents = contents.sort((a, b) => a.serialNumber - b.serialNumber);
@@ -43,28 +48,34 @@ const CreateContent = () => {
             setContent(content);
             setLoading(false);
         }
-        catch (err: any) {
+        catch (err: any)
+        {
             logger.error(err);
             setError(err.message);
         }
-        finally {
+        finally
+        {
             setLoading(false);
         }
     }
 
-    const uploadAndReplaceImageSrc = async () => {
+    const uploadAndReplaceImageSrc = async () =>
+    {
         const parser = new DOMParser();
         const doc = parser.parseFromString(content, 'text/html');
         const imgTags = Array.from(doc.querySelectorAll('img'));
         let metadataImageUrl = "";
-        for (const imgTag of imgTags) {
+        for (const imgTag of imgTags)
+        {
             const src = imgTag.getAttribute('src');
-            if (src) {
+            if (src)
+            {
                 const file = await fetch(src).then((r) => r.blob());
                 const formData = new FormData();
                 formData.append('file', file);
 
-                try {
+                try
+                {
                     const response = await fetch(routes.content.upload, {
                         method: "POST",
                         body: formData,
@@ -72,37 +83,46 @@ const CreateContent = () => {
                     const data = await response.json();
                     console.log("Image Uploaded:", data.file.url);
                     imgTag.setAttribute('src', data.file.url);
-                    if (imgTags.indexOf(imgTag) === 0) {
+                    if (imgTags.indexOf(imgTag) === 0)
+                    {
                         metadataImageUrl = data.file.url;
                     }
-                } catch (error) {
+                } catch (error)
+                {
                     console.error('Error uploading image:', error);
                 }
             }
         }
         const newContent = doc.body.innerHTML;
-        return {newContent, metadataImageUrl};
+        return { newContent, metadataImageUrl };
     };
 
-    const handleSubmit = async () => {
-        if (title === "") {
+    const handleSubmit = async () =>
+    {
+        if (title === "")
+        {
             setError("Title is required");
             return;
         }
-        try {
+        try
+        {
             dispatch(loaderActions.turnOn());
 
             setError(undefined);
 
-            if (selectedCategory) {
-                const {newContent, metadataImageUrl} = await uploadAndReplaceImageSrc();
+            if (selectedCategory)
+            {
+                const { newContent, metadataImageUrl } = await uploadAndReplaceImageSrc();
                 const contentSections = splitContentByH1Sections(newContent);
-                const sections = contentSections.map((newContent) => {
+                const sections = contentSections.map((newContent) =>
+                {
                     const section = extractFirstH1(newContent);
-                    if (section) {
+                    if (section)
+                    {
                         return section
                     }
-                    else {
+                    else
+                    {
                         return null;
                     }
                 })
@@ -115,10 +135,12 @@ const CreateContent = () => {
                     createdAt: new Date(),
                     userId: user.id
                 }
-                if (metadataImageUrl !== "") {
+                if (metadataImageUrl !== "")
+                {
                     metadata.imageUrl = metadataImageUrl;
                 }
-                if (filterNullSections.length > 0) {
+                if (filterNullSections.length > 0)
+                {
                     metadata.sections = filterNullSections.filter(section => section !== null) as string[];
                 }
 
@@ -134,7 +156,8 @@ const CreateContent = () => {
                     metadata: metadata,
                     content: contentdata
                 }
-                if (!!modalData) {
+                if (!!modalData)
+                {
                     const contentDeleteAction = new ContentDeleteById({ id: modalData.id });
                     await contentDeleteAction.execute();
                 }
@@ -142,29 +165,44 @@ const CreateContent = () => {
                 await contentAction.execute();
                 console.log(metadata)
                 dispatch(submitActions.toggleSubmit());
-                if (editorRef.current) {
+                if (editorRef.current)
+                {
                     editorRef.current.clearContents();
                 }
             }
-        } catch (error) {
+        } catch (error)
+        {
             logger.error(error);
-        } finally {
+        } finally
+        {
             dispatch(loaderActions.turnOff());
             closeModal();
         }
     }
 
-    useEffect(() => {
-        if (!!modalData) {
+    useEffect(() =>
+    {
+        if (!!modalData)
+        {
             setContentHeader(modalData.title);
             setTitle(modalData.title);
             setLoading(true);
             fetchContent(modalData.id);
         }
-        else {
+        else
+        {
             setContentHeader(`New Content ${selectedCategory && (`for ${selectedCategory.name}`)}`)
         }
     }, [modalData, selectedCategory]);
+
+    if (loading)
+    {
+        return (
+            <SpinLoading />
+        )
+    }
+
+
 
     return (
         <Modal

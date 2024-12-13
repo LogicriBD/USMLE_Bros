@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { TopicType } from "@/database/repository/Topic";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
@@ -7,7 +8,8 @@ import TopicCardHeader from "../TopicCardHeader";
 import TopicCardBody from "../TopicCardBody";
 import { FetchTopicsById } from "@/actions/forum/FetchTopicsById";
 
-const ForumLevelOne = ({ id }: { id: string }) => {
+const ForumLevelOne = ({ id }: { id: string }) =>
+{
 
     const [thisTopic, setThisTopic] = useState<TopicType>({} as TopicType);
     const [subTopics, setSubTopics] = useState<TopicType[]>([]);
@@ -15,21 +17,26 @@ const ForumLevelOne = ({ id }: { id: string }) => {
     const dispatch = useAppDispatch();
     const isSubmit = useAppSelector((state) => state.submit.toggle);
 
-    const fetchTopics = async () => {
-        try{
+    const fetchTopics = async () =>
+    {
+        try
+        {
             dispatch(loaderActions.turnOn());
             const topicActions = new FetchTopicsById(id);
             const topic = await topicActions.execute();
             setThisTopic(topic.topics);
             setSubTopics(topic.subTopics);
-        }catch(error){
+        } catch (error)
+        {
             console.log(error);
-        }finally{
+        } finally
+        {
             dispatch(loaderActions.turnOff());
         }
     }
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         fetchTopics();
     }, [isSubmit]);
 
@@ -39,8 +46,8 @@ const ForumLevelOne = ({ id }: { id: string }) => {
                 <div className="w-full shadow-md rounded-lg space-y-9">
                     <TopicCardHeader topic={thisTopic} />
                     <div className="divide-y divide-gray-300">
-                        {subTopics && subTopics.map((topic) => (
-                            <div className="w-full flex flex-col">
+                        {subTopics && subTopics.map((topic, index) => (
+                            <div className="w-full flex flex-col" key={index}>
                                 <TopicCardBody topic={topic} />
                             </div>
                         ))}

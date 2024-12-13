@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-css-tags */
-/* eslint-disable @next/next/no-script-component-in-head */
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Open_Sans } from "next/font/google";
 import Navbar from "@/src/components/Navbar/Navbar";
 import { config } from '@fortawesome/fontawesome-svg-core'
@@ -13,7 +12,6 @@ import Loader from "../components/Loader/Loader";
 import { appStore } from "../context/store/redux-store";
 import { loaderActions } from "../context/store/slices/loader-slice";
 import Script from "next/script";
-import Head from "next/head";
 const AD_CLIENT = process.env.GOOGLE_ADSENSE_CLIENT;
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -43,6 +41,13 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+}
+
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -52,7 +57,8 @@ export default function RootLayout({
   appStore.dispatch(loaderActions.authTurnOn());
   return (
     <html lang="en">
-      <Head>
+      <head>
+        <meta charSet="utf-8" />
         <Script
           id="google-adsense"
           async
@@ -60,11 +66,9 @@ export default function RootLayout({
           crossOrigin="anonymous"
         >
         </Script>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
         <link rel="stylesheet" href="/_next/static/css/app/layout.css" />
-      </Head>
+      </head>
       <body
         className={`${openSans.className} antialiased`}
       >

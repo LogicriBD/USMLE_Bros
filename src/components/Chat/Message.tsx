@@ -9,24 +9,24 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { DeleteMessage } from "@/actions/chat/deleteMessage";
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { useAppSelector } from "@/src/context/store/hooks";
-import { Roles } from "@/utils/enums/Roles";
 
 type Props = {
     message: ReceiveMessage;
     user: UserData;
 }
 
-const MessageUI = (props: Props) => {
+const MessageUI = (props: Props) =>
+{
     const isUserMessage = props.message.userId === props.user.id;
 
     const [loading, setLoading] = useState<boolean>(false);
-    const user = useAppSelector((state) => state.user);
 
     const options = {
-        replace: (node) => {
-            if (node.name === 'a') {
-                const { href, children } = node.attribs;
+        replace: (node) =>
+        {
+            if (node.name === 'a')
+            {
+                const { href } = node.attribs;
                 return (
                     <A href={href}>
                         {domToReact(node.children)}
@@ -36,14 +36,18 @@ const MessageUI = (props: Props) => {
         },
     }
 
-    const deleteMessage = async () => {
-        try {
+    const deleteMessage = async () =>
+    {
+        try
+        {
             setLoading(true);
             const deleteAction = new DeleteMessage({ messageId: props.message.id });
             await deleteAction.execute();
-        } catch (error: any) {
+        } catch (error: any)
+        {
             console.error(error);
-        } finally {
+        } finally
+        {
             setLoading(false);
         }
     }

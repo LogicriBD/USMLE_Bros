@@ -1,32 +1,39 @@
 import { type Editor } from '@tiptap/react'
 import { ImageUploadBar, LinkUploadBar, Toggle } from '../CustomStyle/CustomComponents';
 import { Button } from '../CustomStyle/CustomComponents';
-import { Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, List, Image as ImageIcon, Link, Heading1, ListOrdered, Strikethrough, Heading2, Heading3, Undo, Redo, Paperclip } from 'lucide-react'
+import { Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, List, Image as ImageIcon, Link, Heading1, ListOrdered, Strikethrough, Heading2, Heading3, Undo, Redo } from 'lucide-react'
 import { useState } from 'react';
 
-interface ToolbarProps {
+interface ToolbarProps
+{
     editor: Editor | null
 }
 
-export default function Toolbar({ editor }: ToolbarProps) {
+export default function Toolbar({ editor }: ToolbarProps)
+{
 
     const [showImageBar, setShowImageBar] = useState<boolean>(false);
     const [showLinkBar, setShowLinkBar] = useState<boolean>(false);
 
-    if (!editor) {
+    if (!editor)
+    {
         return null
     }
 
-    const addImage = () => {
+    const addImage = () =>
+    {
         setShowImageBar(!showImageBar);
         setShowLinkBar(false);
     }
 
-    const handleImageUpload = (e: any) => {
+    const handleImageUpload = (e: any) =>
+    {
         const file = e.target.files[0];
-        if (file) {
+        if (file)
+        {
             const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-            if (validImageTypes.includes(file.type)) {
+            if (validImageTypes.includes(file.type))
+            {
                 const objectUrl = URL.createObjectURL(file);
                 editor.chain().focus().setImage({ src: objectUrl }).run();
             }
@@ -34,7 +41,8 @@ export default function Toolbar({ editor }: ToolbarProps) {
         setShowImageBar(false);
     }
 
-    const setLink = () => {
+    const setLink = () =>
+    {
         setShowLinkBar(!showLinkBar);
         setShowImageBar(false);
     }

@@ -10,19 +10,23 @@ import { logger } from "@/utils/Logger";
 import DOMPurify from 'dompurify';
 
 type Props = {
-    thread:ThreadType;
+    thread: ThreadType;
     onCancel(): void;
 }
-const CreatePost = (props:Props) => {
+const CreatePost = (props: Props) =>
+{
 
     const [content, setContent] = useState<string>("");
     const user = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
 
-    const createPost = async() => {
-        try{
+    const createPost = async () =>
+    {
+        try
+        {
 
-            if(props.thread.id === undefined || user.id === "" || user.name === "" || content.trim() === ""){
+            if (props.thread.id === undefined || user.id === "" || user.name === "" || content.trim() === "")
+            {
                 return;
             }
 
@@ -30,7 +34,7 @@ const CreatePost = (props:Props) => {
 
             const sanitizedContent = DOMPurify.sanitize(content);
 
-            let post:PostType = {
+            const post: PostType = {
                 threadId: props.thread.id,
                 userId: user.id,
                 userName: user.name,
@@ -40,15 +44,17 @@ const CreatePost = (props:Props) => {
 
             const postActions = new Create(post);
             await postActions.execute();
-        }catch(error:any){
+        } catch (error: any)
+        {
             logger.error("Error creating post:", error);
-        }finally{
+        } finally
+        {
             dispatch(loaderActions.turnOff());
             props.onCancel();
         }
     }
 
-    return(
+    return (
         <div className="w-full h-fit flex flex-col bg-gray-100 rounded-lg shadow-md">
             <div className="w-full flex justify-start pt-2 pb-1 px-3 text-gray-600 text-md font-semibold">
                 Create New Post

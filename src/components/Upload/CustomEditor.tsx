@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 'use client';
 
 import { useEditor, EditorContent, Editor } from '@tiptap/react';
@@ -14,15 +15,18 @@ import DOMPurify from 'dompurify';
 import Toolbar from './toolbar';
 import ImageResize from 'tiptap-extension-resize-image';
 import { forwardRef, useImperativeHandle } from 'react';
-function preprocessWordHTML(inputHtml) {
+function preprocessWordHTML(inputHtml)
+{
     const parser = new DOMParser();
     const doc = parser.parseFromString(inputHtml, 'text/html');
 
     const conditionalBlocks = doc.querySelectorAll('span');
 
-    conditionalBlocks.forEach((block) => {
+    conditionalBlocks.forEach((block) =>
+    {
         const imgTag = block.querySelector('img');
-        if (imgTag) {
+        if (imgTag)
+        {
             block.replaceWith(imgTag);
         }
     });
@@ -33,7 +37,8 @@ type Props = {
     value: string;
     onChange: (content: any) => void;
 }
-const CustomEditor = forwardRef((props: Props, ref) => {
+const CustomEditor = forwardRef((props: Props, ref) =>
+{
 
     const editor = useEditor({
         extensions: [
@@ -54,8 +59,8 @@ const CustomEditor = forwardRef((props: Props, ref) => {
             }),
             Link.configure({
                 openOnClick: true,
-                autolink: true,  
-                linkOnPaste: true, 
+                autolink: true,
+                linkOnPaste: true,
             }),
             Underline,
             TextAlign.configure({
@@ -69,26 +74,32 @@ const CustomEditor = forwardRef((props: Props, ref) => {
             TableHeader,
         ],
         content: props.value,
-        onUpdate: ({ editor }) => {
+        onUpdate: ({ editor }) =>
+        {
             props.onChange(editor.getHTML());
         },
         editorProps: {
-            handlePaste(view, event) {
+            handlePaste(view, event)
+            {
                 const clipboardData = event.clipboardData || (window as any).clipboardData;
                 const items = clipboardData.items;
 
-                for (let i = 0; i < items.length; i++) {
+                for (let i = 0; i < items.length; i++)
+                {
                     const item = items[i];
-                    if (item.type.startsWith('image/')) {
+                    if (item.type.startsWith('image/'))
+                    {
                         event.preventDefault();
 
                         const file = item.getAsFile();
-                        if (file) {
+                        if (file)
+                        {
                             const objectURL = URL.createObjectURL(file);
 
                             (editor as Editor).commands.insertContent(`<img src="${objectURL}" alt="pasted-image" />`);
 
-                            setTimeout(() => {
+                            setTimeout(() =>
+                            {
                                 URL.revokeObjectURL(objectURL);
                             }, 7200000);
                         }
@@ -97,20 +108,21 @@ const CustomEditor = forwardRef((props: Props, ref) => {
 
                 const pastedHTML = clipboardData.getData('text/html');
                 const preprocessHTML = preprocessWordHTML(pastedHTML)
-                if (preprocessHTML) {
+                if (preprocessHTML)
+                {
                     event.preventDefault();
                     const sanitizerConfig = {
-                        ADD_TAGS: ['table', 
-                        'thead', 
-                        'tbody', 
-                        'tfoot', 
-                        'tr', 
-                        'td', 
-                        'th', 
-                        'img', 
-                        'a', 
-                        'span', 
-                        'div', 'br', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+                        ADD_TAGS: ['table',
+                            'thead',
+                            'tbody',
+                            'tfoot',
+                            'tr',
+                            'td',
+                            'th',
+                            'img',
+                            'a',
+                            'span',
+                            'div', 'br', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
                         ],
                         ADD_ATTR: [
                             'style',
@@ -142,7 +154,8 @@ const CustomEditor = forwardRef((props: Props, ref) => {
     });
 
     useImperativeHandle(ref, () => ({
-        clearContents: () => {
+        clearContents: () =>
+        {
             editor?.commands.clearContent();
         },
     }));

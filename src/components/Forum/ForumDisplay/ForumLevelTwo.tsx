@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 import { TopicType } from "@/database/repository/Topic";
 import { useEffect, useState } from "react";
@@ -15,8 +16,9 @@ import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faUser } from "@fortawesome/free-solid-svg-icons";
 
-const ForumLevelTwo = ({ id }: { id: string }) => {
-    
+const ForumLevelTwo = ({ id }: { id: string }) =>
+{
+
     const [topic, setTopic] = useState<TopicType>({} as TopicType);
     const [threads, setThreads] = useState<ThreadType[]>([]);
 
@@ -26,8 +28,10 @@ const ForumLevelTwo = ({ id }: { id: string }) => {
     const isSubmit = useAppSelector((state) => state.submit.toggle);
     const user = useAppSelector((state) => state.user);
 
-    const fetchTopicAndThreads = async () => {
-        try {
+    const fetchTopicAndThreads = async () =>
+    {
+        try
+        {
             dispatch(loaderActions.turnOn());
             const topicActions = new FetchTopicById(id);
             const topic = await topicActions.execute();
@@ -36,17 +40,22 @@ const ForumLevelTwo = ({ id }: { id: string }) => {
             const threadActions = new FetchThreadsByTopicId({ topicId: id });
             const threads = await threadActions.execute();
             setThreads(threads);
-        } catch (error) {
+        } catch (error)
+        {
             logger.error("Error fetching topic:", error);
-        } finally {
+        } finally
+        {
             dispatch(loaderActions.turnOff());
         }
     }
 
-    const onCreateClicked = () => {
-        if(user.name === ""){
+    const onCreateClicked = () =>
+    {
+        if (user.name === "")
+        {
             router.push("/authentication/login");
-        }else{
+        } else
+        {
             dispatch(modalActions.addModal({
                 type: ModalName.CreateThread,
                 data: {
@@ -56,7 +65,8 @@ const ForumLevelTwo = ({ id }: { id: string }) => {
         }
     }
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         fetchTopicAndThreads();
     }, [isSubmit]);
 

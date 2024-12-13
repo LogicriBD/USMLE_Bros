@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { FetchTopics } from "@/actions/forum/FetchTopics";
@@ -11,7 +12,8 @@ import { faCaretDown, faCaretUp, faPlusCircle } from "@fortawesome/free-solid-sv
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 
-const ForumSideBar = () => {
+const ForumSideBar = () =>
+{
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dispatch = useAppDispatch();
 
@@ -19,24 +21,30 @@ const ForumSideBar = () => {
 
     const isSubmit = useAppSelector((state) => state.submit.toggle);
 
-    const fetchTopics = async () => {
-        try {
+    const fetchTopics = async () =>
+    {
+        try
+        {
             dispatch(loaderActions.turnOn())
             const topicActions = new FetchTopics();
             const data = await topicActions.execute();
             setTopics(data);
-        } catch (error: any) {
+        } catch (error: any)
+        {
             logger.log(error);
-        } finally {
+        } finally
+        {
             dispatch(loaderActions.turnOff());
         }
     }
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         fetchTopics();
     }, [isSubmit]);
 
-    const getChildTopics = (parentId: string) => {
+    const getChildTopics = (parentId: string) =>
+    {
         return topics.filter((topic) => topic.level === 1 && topic.parentId === parentId);
     };
 
@@ -65,7 +73,8 @@ const ForumSideBar = () => {
 
                 <li className="border-b border-gray-700 flex">
                     <button
-                        onClick={(() => {
+                        onClick={(() =>
+                        {
                             dispatch(modalActions.addModal({
                                 type: ModalName.CreateDiscussion,
                                 data: {}
@@ -87,7 +96,8 @@ const ForumSideBar = () => {
                             <ul key={index} className="pl-3 ">
                                 <li className="border-b border-gray-700 flex flex-col">
                                     <button
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             dispatch(modalActions.addModal({
                                                 type: ModalName.CreateDiscussion,
                                                 data: {
