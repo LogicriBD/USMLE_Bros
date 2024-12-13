@@ -8,7 +8,7 @@ if [[ -z "$PROJECT_ID" || -z "$IMAGE_NAME" || -z "$REGION" || -z "$PORT" ]]; the
     exit 1
 fi
 
-GCR_IMAGE="gcr.io/$PROJECT_ID/$IMAGE_NAME"
+GCR_IMAGE="gcr.io/$PROJECT_ID/$IMAGE_NAME:$TAG"
 
 echo "🔨 Building Docker image..."
 docker build -t $IMAGE_NAME --build-arg ENV_FILE=$ENV_FILE --build-arg APP_PORT=$PORT ../ || {
@@ -42,4 +42,4 @@ gcloud run deploy $IMAGE_NAME \
     exit 1
 }
 
-echo "Deployment completed successfully!"
+echo "✅ UAT Deployment completed successfully!"
