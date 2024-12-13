@@ -5,17 +5,19 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
+package-lock.json
 # testing
 /coverage
 
 # next.js
 /.next/
 /out/
-/.vscodea
+/.vscode
 
 # production
 /build
 /dist
+logs/activity.log
 
 # misc
 .DS_Store
@@ -26,9 +28,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# local env files
+.env*.local
+.env
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+logs/activity.log

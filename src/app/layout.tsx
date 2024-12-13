@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-css-tags */
+/* eslint-disable @next/next/no-script-component-in-head */
 import "./globals.css";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
@@ -45,7 +47,8 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>)
+{
   appStore.dispatch(loaderActions.authTurnOn());
   return (
     <html lang="en">
