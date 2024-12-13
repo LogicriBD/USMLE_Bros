@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./uat.conf
+source ./prod.conf
 
 if [[ -z "$PROJECT_ID" || -z "$IMAGE_NAME" || -z "$REGION" || -z "$PORT" ]]; then
     echo "Error: Missing necessary configuration in uat.conf"
