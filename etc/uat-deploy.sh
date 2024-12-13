@@ -1,16 +1,13 @@
 #!/bin/bash
 
-# Load configuration
 source ./uat.conf
 
-# Check if all necessary variables are set
 if [[ -z "$PROJECT_ID" || -z "$IMAGE_NAME" || -z "$REGION" || -z "$PORT" ]]; then
     echo "Error: Missing necessary configuration in uat.conf"
     echo "Required: PROJECT_ID, IMAGE_NAME, REGION, PORT"
     exit 1
 fi
 
-# Set the image path for Google Container Registry (GCR)
 GCR_IMAGE="gcr.io/$PROJECT_ID/$IMAGE_NAME"
 
 echo "Building Docker image..."
