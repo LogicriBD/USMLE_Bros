@@ -34,8 +34,7 @@ export class Authorization {
     for (const route of this.NotLoggedInRoutes) {
       if (pathname === "/") {
         return true;
-      }
-      if (pathname.includes(route)) {
+      } else if (pathname.includes(route)) {
         return true;
       }
     }
@@ -47,11 +46,14 @@ export class Authorization {
     const cookie = cookieStore.get("access");
 
     const token = cookie?.value;
-    if (token && this.isNotLoggedInRoute(this.request.nextUrl.pathname)) {
-      return NextResponse.redirect(
-        new URL("/home", this.request.url).toString()
-      );
-    } else if (!this.isProtectedRoute(this.request.nextUrl.pathname)) {
+    if (!this.isProtectedRoute(this.request.nextUrl.pathname)) {
+      if (this.isNotLoggedInRoute(this.request.nextUrl.pathname)) {
+        if (token) {
+          return NextResponse.redirect(
+            new URL("/home", this.request.url).toString()
+          );
+        }
+      }
       return NextResponse.next();
     } else {
       try {
