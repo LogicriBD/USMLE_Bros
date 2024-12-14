@@ -1,5 +1,5 @@
 import { ReceiveMessage, SendMessage } from "@/types/Message";
-import { DocumentData, QueryDocumentSnapshot, addDoc, collection, deleteDoc, doc, getDocs, limit, onSnapshot, orderBy, query, startAfter } from "firebase/firestore";
+import { DocumentData, QueryDocumentSnapshot, Timestamp, addDoc, collection, deleteDoc, doc, getDocs, limit, onSnapshot, orderBy, query, startAfter } from "firebase/firestore";
 import { ApiError } from "next/dist/server/api-utils";
 import { firestore } from "../config/firebaseApp";
 class ChatRepository {
@@ -10,6 +10,7 @@ class ChatRepository {
                 collection(firestore, "messages"),
                 {
                     ...message,
+                    expiry: Timestamp.fromMillis(new Date(message.time).getTime() + 86400000)
                 }
             )
         } catch (error: any) {
