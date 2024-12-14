@@ -81,13 +81,13 @@ body {
 }
 
 .ProseMirror h2 {
-  font-size: 1em !important;
+  font-size: 1.75em !important;
   font-weight: bold !important;
   margin-top: 0.33em !important;
   margin-bottom: 0.33em !important;
 }
 .ProseMirror h3 {
-  font-size: 0.5em  !important;
+  font-size: 1.5em  !important;
   font-weight: bold !important;
   margin-top: 0.15em !important;
   margin-bottom: 0.15em !important;
