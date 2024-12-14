@@ -200,7 +200,7 @@ const ChatView = () => {
                     </div>
 
                     {/* desktop version */}
-                    <div className="md:flex hidden flex-col items-center space-x-1 border-t p-2 bg-marrow-dark">
+                    <div className="md:flex hidden flex-col items-center space-x-1 border-t border-gray-500 p-2 bg-inherit">
                         {previewImage && (
                             <div className="w-full px-3 py-2rounded-lg flex flex-row justify-start items-center z-20">
                                 {(imageUploadLoading || !previewImageURL) ? (

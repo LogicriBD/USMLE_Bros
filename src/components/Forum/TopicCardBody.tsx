@@ -55,16 +55,6 @@ const TopicCardBody = (props: Props) => {
                         <span className="text-sm">{props.topic.description}</span>
                     </div>
                 </div>
-                {/* <div className="flex flex-row space-x-3 items-center justify-center pr-2">
-                    <div className="text-black flex flex-col space-y-1 items-center justify-center">
-                        <div className="text-xl">{props.topic.threads ?? 0}</div>
-                        <div className="text-sm">Threads</div>
-                    </div>
-                    <div className="text-black flex flex-col space-y-1 items-center justify-center">
-                        <div className="text-xl">{props.topic.messages ?? 0}</div>
-                        <div className="text-sm">Messages</div>
-                    </div>
-                </div> */}
             </div>
         </div>
     );
