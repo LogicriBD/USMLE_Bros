@@ -35,7 +35,7 @@ const Navbar = () =>
 
 
     return (
-        <nav className="md:bg-marrow bg-marrow-dark p-3 md:max-h-full max-h-[70px] w-full top-0 shadow-md md:shadow-none" style={{ zIndex: "1021" }}>
+        <nav className="tablet:bg-marrow bg-marrow-dark p-3 tablet:max-h-full max-h-[70px] w-full top-0 shadow-md tablet:shadow-none" style={{ zIndex: "1021" }}>
             <div className="w-full mx-auto flex justify-between items-center">
                 <div className="w-full cursor-pointer flex" >
                     <Image
@@ -46,13 +46,13 @@ const Navbar = () =>
                         className="cursor-pointer"
                         onClick={() => router.push("/")}
                     />
-                    <div className="hidden md:flex space-x-3 text-white justify-center items-center">
+                    <div className="hidden tablet:flex space-x-3 text-white justify-center items-center">
                         {
                             <NavbarItems />
                         }
                     </div>
                 </div>
-                <div className="hidden w-1/4 md:flex md:flex-grow gap-6 text-white justify-center items-center">
+                <div className="hidden w-1/4 tablet:flex tablet:flex-grow gap-6 text-white justify-center items-center">
                     {user.name && (<Active />)}
                     <div className="flex w-fit flex-grow tablet:text-lg text-sm font-bold">
                         {user.name}
@@ -61,13 +61,13 @@ const Navbar = () =>
                         <NavbarButtons />
                     }
                 </div>
-                <div className="md:hidden">
+                <div className="tablet:hidden">
                     <button onClick={() => setIsOpen(!isOpen)} className="text-black focus:outline-none">
                         <IoMdMenu className="text-cyan-400 text-2xl" />
                     </button>
                 </div>
             </div>
-            <div className={`md:hidden overflow-hidden
+            <div className={`tablet:hidden overflow-hidden
                                 ${isOpen ? " p-2 space-y-2 opacity-100 h-auto fixed left-0 w-screen bg-marrow-dark flex justify-center flex-col" : "opacity-0 h-0"} 
                                 transform transition-[height,opacity] duration-500 ease-in-out`} style={{ zIndex: "1021" }}>
                 {isOpen && (

@@ -24,7 +24,7 @@ const HomeSideBar = () =>
 
     return (
         <div className="w-full h-full flex flex-col">
-            <div className="hidden md:flex flex-col space-y-4 w-full h-full p-4">
+            <div className="hidden tablet:flex flex-col space-y-4 w-full h-full p-4">
                 <div className="flex flex-col space-y-4 justify-end">
                     <Filter />
                     <div>
@@ -37,7 +37,7 @@ const HomeSideBar = () =>
                 </div>
             </div>
 
-            <div className="md:hidden w-full bg-gray-800 h-full flex flex-col z-30 relative">
+            <div className="tablet:hidden w-full max-w-16 bg-gray-800 h-full flex flex-col z-30 relative">
                 <div className="flex justify-end p-4">
                     <FontAwesomeIcon
                         icon={faBars}
