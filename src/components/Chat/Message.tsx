@@ -54,7 +54,7 @@ const MessageUI = (props: Props) => {
                 </>
             ) : (
                 <div className="flex flex-col space-y-1 ">
-                    <div className="text-xs text-sky-900 text-start">{formatFirebaseDate(new Date(props.message.time))}</div>
+                    <div className="text-xs text-sky-900 text-start">{formatFirebaseDate(new Date(props.message.time), true)}</div>
                     <div
                         className={`flex flex-col max-w-3/4 ${isUserMessage ? "bg-sky-700 text-white" : "bg-gray-300 text-black"} 
                     rounded-lg p-3 space-y-1`}
