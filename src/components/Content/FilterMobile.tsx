@@ -26,7 +26,7 @@ const FilterMobile = () =>
                 }
             })
         }
-    }, [selectCategory])
+    }, [selectedCategory])
 
     if (loading)
     {

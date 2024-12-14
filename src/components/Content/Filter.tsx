@@ -41,7 +41,7 @@ const Filter = () =>
                 }
             })
         }
-    }, [selectCategory])
+    }, [selectedCategory])
 
     const toggleStep = (index: number) =>
     {
