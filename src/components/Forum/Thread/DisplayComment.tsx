@@ -13,7 +13,7 @@ const DisplayComment = (props: Props) => {
             key={props.comment.id}
             className="flex flex-col space-y-1 bg-gray-100 p-3 rounded-md shadow-sm"
         >
-            <div className="flex justify-between items-center text-sm text-gray-500">
+            <div className="flex justify-between items-center md:text-sm text-xs text-gray-500">
                 <div className="flex items-center space-x-2">
                     <FontAwesomeIcon
                         icon={faUser}

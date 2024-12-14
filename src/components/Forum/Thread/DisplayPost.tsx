@@ -62,15 +62,15 @@ const DisplayPost = (props: Props) => {
 
     return (
         <div className="w-full bg-white rounded-lg shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-            <div className="flex justify-between items-center p-4 border-b border-gray-100 bg-gray-100 rounded-t-lg">
+            <div className="flex justify-between items-center py-4 px-2 border-b border-gray-100 bg-gray-100 rounded-t-lg">
                 <div className="flex items-center space-x-2 text-gray-600">
                     <FontAwesomeIcon
                         icon={faUser}
                         className="text-teal-600 text-lg"
                     />
-                    <span className="font-medium text-sm">{props.post.userName}</span>
+                    <span className="font-medium md:text-sm text-xs">{props.post.userName}</span>
                 </div>
-                <div className="flex items-center space-x-3 text-gray-500 text-sm">
+                <div className="flex items-center space-x-3 text-gray-500 md:text-sm text-xs">
                     <span>
                         <FontAwesomeIcon icon={faClock} className="text-teal-600 mr-1" />
                         <span>{formatFirebaseDate(props.post.createdAt, true)}</span>
@@ -79,7 +79,7 @@ const DisplayPost = (props: Props) => {
                         {user.id !== "" && user.role === Roles.Admin && (
                             <FontAwesomeIcon
                                 icon={faTrash}
-                                className="cursor-pointer text-xl hover:scale-125 duration-300 transition"
+                                className="cursor-pointer md:text-xl text-lg hover:scale-125 duration-300 transition"
                                 onClick={deletePost}
                             />
                         )}
