@@ -187,7 +187,7 @@ const CustomEditor = forwardRef((props: Props, ref) =>
     }));
 
     return (
-        <div className="border bg-white rounded-lg shadow-sm w-full">
+        <div className="border bg-white rounded-lg shadow-sm w-full flex flex-col">
             <Toolbar editor={editor} />
             <div className="flex flex-row w-full">
                 <div className="w-[100px] md:w-[300px] bg-marrow-dark text-sky-200 p-2">
@@ -202,7 +202,7 @@ const CustomEditor = forwardRef((props: Props, ref) =>
                         ))}
                     </ul>
                 </div>
-                <div className="p-4 flex w-fit max-w-full">
+                <div className="p-4 flex w-fit min-w-full">
                     <EditorContent
                         content={props.value}
                         editor={editor}
