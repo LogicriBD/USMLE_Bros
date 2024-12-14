@@ -14,7 +14,9 @@ import TableHeader from '@tiptap/extension-table-header';
 import DOMPurify from 'dompurify';
 import Toolbar from './toolbar';
 import ImageResize from 'tiptap-extension-resize-image';
-import { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
 function preprocessWordHTML(inputHtml)
 {
     const parser = new DOMParser();
@@ -36,10 +38,11 @@ function preprocessWordHTML(inputHtml)
 type Props = {
     value: string;
     onChange: (content: any) => void;
+    sections?: string[];
 }
 const CustomEditor = forwardRef((props: Props, ref) =>
 {
-
+    const [sections, setSections] = useState<string[]>(props.sections || []);
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -76,7 +79,29 @@ const CustomEditor = forwardRef((props: Props, ref) =>
         content: props.value,
         onUpdate: ({ editor }) =>
         {
-            props.onChange(editor.getHTML());
+            const value = editor.getHTML();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(value, "text/html");
+            const h1Elements = doc.querySelectorAll("h1");
+            setSections([]);
+            h1Elements.forEach((h1, index) =>
+            {
+                const content = h1.textContent?.trim() || "";
+                setSections((sections) => [...sections, content]);
+                const anchor = doc.createElement("a");
+                anchor.name = content.replace(/\s+/g, "-").toLowerCase() + "_" + index + "_section";
+                h1.before(anchor);
+                h1.className = "text-3xl font-bold";
+            });
+
+            const tableElements = doc.querySelectorAll("table");
+            tableElements.forEach((table) =>
+            {
+                table.classList.add("flex", "w-full");
+            });
+
+            const updatedHTML = doc.body.innerHTML;
+            props.onChange(updatedHTML);
         },
         editorProps: {
             handlePaste(view, event)
@@ -134,7 +159,8 @@ const CustomEditor = forwardRef((props: Props, ref) =>
                             'width',
                             'height',
                             'alt',
-                            'align'
+                            'align',
+                            'name'
                         ],
                         KEEP_CONTENT: true,
                     };
@@ -161,14 +187,28 @@ const CustomEditor = forwardRef((props: Props, ref) =>
     }));
 
     return (
-        <div className="border bg-white rounded-lg shadow-sm">
+        <div className="border bg-white rounded-lg shadow-sm w-full">
             <Toolbar editor={editor} />
-            <div className="p-2">
-                <EditorContent
-                    content={props.value}
-                    editor={editor}
-                    className="prose overflow-x-auto"
-                />
+            <div className="flex flex-row w-full">
+                <div className="w-[100px] md:w-[300px] bg-marrow-dark text-sky-200 p-2">
+                    <div className="font-bold text-lg ms-2">Sections</div>
+                    <ul className="pl-4">
+                        {sections.map((section, index) => (
+                            <li key={index} className='break-words text-white py-2'>
+                                <a href={`#${section.replace(/\s+/g, "-").toLowerCase()}_${index}_section`}>
+                                    <FontAwesomeIcon icon={index !== 0 ? faLock : faUnlock} className='mr-2' />
+                                    {section}</a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="p-4 flex w-fit max-w-full">
+                    <EditorContent
+                        content={props.value}
+                        editor={editor}
+                        className="prose overflow-x-scroll"
+                    />
+                </div>
             </div>
         </div>
     )

@@ -37,7 +37,6 @@ const ContentCard = (props: Props) =>
       </div>
       <div className="p-4">
         <p className="text-gray-600 text-xs mb-1">{formatFirebaseDate(props.createdAt)}</p>
-        {props.description && <p className="text-gray-500 text-sm mb-2">by {props.description}</p>}
         <h3 className="text-lg font-semibold text-gray-800 mb-2 hover:text-indigo-700 transition-colors duration-300">
           {props.title}
         </h3>

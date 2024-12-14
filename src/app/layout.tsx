@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-script-component-in-head */
 /* eslint-disable @next/next/no-css-tags */
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
@@ -12,6 +13,7 @@ import Loader from "../components/Loader/Loader";
 import { appStore } from "../context/store/redux-store";
 import { loaderActions } from "../context/store/slices/loader-slice";
 import Script from "next/script";
+import Head from "next/head";
 const AD_CLIENT = process.env.GOOGLE_ADSENSE_CLIENT;
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -57,7 +59,7 @@ export default function RootLayout({
   appStore.dispatch(loaderActions.authTurnOn());
   return (
     <html lang="en">
-      <head>
+      <Head>
         <meta charSet="utf-8" />
         <Script
           id="google-adsense"
@@ -68,7 +70,7 @@ export default function RootLayout({
         </Script>
         <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
         <link rel="stylesheet" href="/_next/static/css/app/layout.css" />
-      </head>
+      </Head>
       <body
         className={`${openSans.className} antialiased`}
       >

@@ -18,6 +18,9 @@ const nextConfig = {
   },
   output: "standalone",
   reactStrictMode: false,
+  images: {
+    domains: ["firebasestorage.googleapis.com", "res.cloudinary.com"],
+  },
 };
 
 export default nextConfig;

@@ -48,9 +48,9 @@ export const MobileSideBarContent = ({ sections }: { sections: ISection[] }) =>
     }
 
     return (
-        <div className={`lg:hidden ${!show ? "sm:w-[100px] w-[50px]" : "w-screen z-5"} block h-full min-h-full bg-marrow-dark flex flex-col justify-start items-start px-2 sm:px-4 py-2`}>
+        <div className={`lg:hidden ${!show ? "sm:w-[100px] w-[50px] bg-white" : "w-full min-w-full z-5 bg-marrow-dark"} block h-full min-h-full flex flex-col justify-start items-start px-2 sm:px-4 py-2`}>
             <div className="w-full flex flex-row justify-between items-center">
-                <button onClick={() => setShow(!show)} className="text-cyan-300 bg-transparent mb-6 px-2 py-1 hover:bg-gray-200 sm:text-md text-sm"><FontAwesomeIcon icon={faBars} /></button>
+                <button onClick={() => setShow(!show)} className="text-cyan-300 bg-marrow-dark border border-2 border-sky-200 rounded-full mb-6 px-2 py-1 hover:scale-105 sm:text-md text-sm"><FontAwesomeIcon icon={faBars} /></button>
                 {show && (<button onClick={() => setShow(false)} className="text-cyan-300 bg-transparent mb-6 px-2 py-1 hover:bg-gray-200 sm:text-md text-sm"><FontAwesomeIcon icon={faClose} /></button>)}
             </div>
             {show && sections.map((section, index) => (

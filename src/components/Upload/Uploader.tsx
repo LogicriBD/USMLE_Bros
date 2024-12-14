@@ -5,9 +5,7 @@ import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory
 import { ContentMetaData } from "@/database/repository/Content";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
-import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
-import { ModalName } from "@/utils/enums/ModalEnum";
 import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 import { logger } from "@/utils/Logger";
 import { faEdit, faEye, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import SearchBar from "../Content/SearchBar";
+import { useRouter } from "next/navigation";
 
 
 const Uploader = () =>
@@ -23,6 +22,7 @@ const Uploader = () =>
     const selectedCategory = useAppSelector((state) => state.category.selectedCategory);
     const isSubmit = useAppSelector((state) => state.submit.toggle);
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const [contentMetadata, setContentMetadata] = useState<ContentMetaData[]>([]);
     const [searchedContents, setSearchedContents] = useState<ContentMetaData[]>([]);
@@ -90,14 +90,18 @@ const Uploader = () =>
 
     const openEditOption = (metadata: ContentMetaData) =>
     {
-        dispatch(modalActions.updateModalType(ModalName.CreateContent));
-        dispatch(modalActions.updateModalData(metadata));
+        if (selectedCategory)
+        {
+            router.push(`/admin/content/${selectedCategory.id}/${selectedCategory.name}` + "?id=" + metadata.id + "&title=" + metadata.title + "&imageUrl=" + metadata.imageUrl + "&categoryId=" + metadata.categoryId);
+        }
     }
 
     const openCreateOption = () =>
     {
-        dispatch(modalActions.updateModalData(null));
-        dispatch(modalActions.updateModalType(ModalName.CreateContent));
+        if (selectedCategory)
+        {
+            router.push(`/admin/content/${selectedCategory.id}/${selectedCategory.name}`);
+        }
     }
 
     return selectedCategory ? (
