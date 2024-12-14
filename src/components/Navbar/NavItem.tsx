@@ -16,9 +16,7 @@ export const InactiveModalItem = "text-white bg-sky-400 hover:bg-sky-500 hover:s
 const NavbarItem = ({ url, children, cached, isButton }: { url?: string, children: React.ReactNode, opensModal?: boolean, modalType?: ModalName, cached?: boolean, isButton?: boolean }) =>
 {
     const dispatch = useAppDispatch();
-    const currentModal = useAppSelector((state) => state.modal.type);
     const pathname = usePathname();
-    console.log(pathname)
     const navigate = useNavigate();
     const router = useRouter();
     const [active, setActive] = useState(false);
@@ -43,7 +41,7 @@ const NavbarItem = ({ url, children, cached, isButton }: { url?: string, childre
 
     useEffect(() =>
     {
-        if (pathname === url)
+        if (pathname.includes(url!))
         {
             setClassName(isButton ? ActiveModalItem : ActiveNavItem);
             setActive(true);
@@ -59,7 +57,7 @@ const NavbarItem = ({ url, children, cached, isButton }: { url?: string, childre
             setActive(false);
             dispatch(loaderActions.turnOff())
         }
-    }, [pathname, currentModal]);
+    }, [pathname, url]);
 
     return (
         <div

@@ -13,6 +13,7 @@ export class Authorization {
   private redirectUrl: string;
   private isAdminRoute: boolean;
   private ProtectedRoutes: string[] = ["/admin", "/chat", "/content"];
+  private NotLoggedInRoutes: string[] = ["/authentication"];
   constructor(private request: NextRequest) {
     this.redirectUrl = request.nextUrl.pathname.includes("/admin")
       ? "/access-denied"
@@ -29,14 +30,30 @@ export class Authorization {
     return false;
   }
 
+  isNotLoggedInRoute(pathname: string) {
+    for (const route of this.NotLoggedInRoutes) {
+      if (pathname === "/") {
+        return true;
+      }
+      if (pathname.includes(route)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   async authorize(): Promise<NextResponse> {
-    if (!this.isProtectedRoute(this.request.nextUrl.pathname)) {
+    const cookieStore = await cookies();
+    const cookie = cookieStore.get("access");
+
+    const token = cookie?.value;
+    if (token && this.isNotLoggedInRoute(this.request.nextUrl.pathname)) {
+      return NextResponse.redirect(
+        new URL("/home", this.request.url).toString()
+      );
+    } else if (!this.isProtectedRoute(this.request.nextUrl.pathname)) {
       return NextResponse.next();
     } else {
-      const cookieStore = await cookies();
-      const cookie = cookieStore.get("access");
-
-      const token = cookie?.value;
       try {
         const fetchHandler = new FetchHandler<AuthorizationRequest>();
         const response = await fetchHandler.postRequest(routes.auth.verify, {
