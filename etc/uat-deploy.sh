@@ -42,4 +42,4 @@ gcloud run deploy $IMAGE_NAME \
     exit 1
 }
 
-echo "✅ UAT Deployment completed successfully!"
+echo "✅ $TAG Deployment completed successfully!"
