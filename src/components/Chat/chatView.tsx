@@ -101,7 +101,7 @@ const ChatView = () => {
                 setLoading(true);
 
                 const messageContent = user.role === Roles.Admin ? LinkMessage(text) : text;
-                let message:SendMessage = {
+                const message:SendMessage = {
                     text: messageContent,
                     userId: user.id,
                     userName: user.name,

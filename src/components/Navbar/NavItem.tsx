@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
+import { useAppDispatch } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { useNavigate } from "@/src/hooks/useNavigate";
 import { ModalName } from "@/utils/enums/ModalEnum";
