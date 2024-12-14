@@ -190,7 +190,7 @@ const CustomEditor = forwardRef((props: Props, ref) =>
         <div className="border bg-white rounded-lg shadow-sm w-full flex flex-col">
             <Toolbar editor={editor} />
             <div className="flex flex-row w-full">
-                <div className="w-[100px] md:w-[300px] bg-marrow-dark text-sky-200 p-2">
+                <div className="w-1/3 md:w-1/5 lg:w-1/6 bg-marrow-dark text-sky-200 p-2">
                     <div className="font-bold text-lg ms-2">Sections</div>
                     <ul className="pl-4">
                         {sections.map((section, index) => (
@@ -202,11 +202,11 @@ const CustomEditor = forwardRef((props: Props, ref) =>
                         ))}
                     </ul>
                 </div>
-                <div className="p-4 flex w-full">
+                <div className="p-4 flex md:w-4/5 w-2/3 lg:5/6">
                     <EditorContent
                         content={props.value}
                         editor={editor}
-                        className="prose overflow-x-auto w-full h-full"
+                        className="prose h-full"
                     />
                 </div>
             </div>
