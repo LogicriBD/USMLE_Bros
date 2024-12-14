@@ -37,20 +37,19 @@ const HomeSideBar = () =>
                 </div>
             </div>
 
-            <div className="tablet:hidden w-full max-w-16 bg-gray-800 h-full flex flex-col z-30 relative">
-                <div className="flex justify-end p-4">
+            <div className="tablet:hidden w-full max-w-16 bg-transparent h-full flex flex-col z-30 relative">
+                <div className="flex justify-end p-4 border rounded-full bg-marrow-dark text-sky-200 my-4" onClick={toggleSidebar}>
                     <FontAwesomeIcon
                         icon={faBars}
-                        onClick={toggleSidebar}
                         className="text-white cursor-pointer"
                     />
                 </div>
 
                 <div
-                    className={`fixed left-0 w-screen h-full bg-gray-800 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
+                    className={`fixed left-0 w-screen h-full bg-transparent transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
                         } transition-transform duration-300 ease-in-out z-30`}
                 >
-                    <div className="flex flex-col p-4 space-y-4 h-full">
+                    <div className="flex flex-col p-4 space-y-4 h-full bg-marrow-dark">
                         <div className='flex justify-between px-2'>
                             <h2 className="text-white font-bold">Menu</h2>
                             <FontAwesomeIcon

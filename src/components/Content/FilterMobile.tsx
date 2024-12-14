@@ -4,12 +4,20 @@ import SpinLoading from "../Spinner";
 import { useEffect, useState } from "react";
 import { ContentMetaData } from "@/database/repository/Content";
 import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory";
+import { useNavigate } from "@/src/hooks/useNavigate";
 
 const FilterMobile = () =>
 {
 
     const { stepBasedCategories, selectedCategory, selectCategory, loading } = useCategories();
     const [contents, setContents] = useState<ContentMetaData[]>([]);
+    const navigate = useNavigate();
+
+    const handleNavigate = (id: string | undefined) =>
+    {
+        if (!id) return;
+        navigate(`/content/${id}`);
+    }
 
     useEffect(() =>
     {
@@ -53,7 +61,7 @@ const FilterMobile = () =>
                                     {category.name}
                                 </div>
                                 {selectedCategory?.id === category.id && contents.length > 0 && contents.map((content, index) => (
-                                    <div key={index} className="text-white text-sm font-semibold px-4 py-2">
+                                    <div key={index} className="text-white text-sm font-semibold px-4 py-2 cursor-pointer" onClick={() => handleNavigate(content.id)}>
                                         {content.title}
                                     </div>)
                                 )}
