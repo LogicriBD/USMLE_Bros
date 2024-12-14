@@ -1,13 +1,9 @@
-import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
+import { cloudinaryApp } from "@/database/config/cloudinaryApp";
+import { StorageService } from "@/types/StorageService";
+import { UploadApiResponse } from "cloudinary";
 import { ApiError } from "next/dist/server/api-utils";
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-class StorageServiceImpl {
+class CloudinaryStorageService implements StorageService {
   /**
    * Upload file to Cloudinary
    * @param {File} file - The file to upload
@@ -25,7 +21,7 @@ class StorageServiceImpl {
         .then((arrayBuffer) => {
           const fileBuffer = Buffer.from(arrayBuffer);
 
-          const uploadStream = cloudinary.uploader.upload_stream(
+          const uploadStream = cloudinaryApp.uploader.upload_stream(
             { resource_type: "auto" },
             (error, result) => {
               if (error) {
@@ -60,7 +56,7 @@ class StorageServiceImpl {
    * @returns {string} - The optimized URL
    */
   getUrlByFileKey = (fileKey: string) => {
-    const optimizeUrl = cloudinary.url(fileKey, {
+    const optimizeUrl = cloudinaryApp.url(fileKey, {
       fetch_format: "auto",
       quality: "auto",
     });
@@ -68,4 +64,4 @@ class StorageServiceImpl {
   };
 }
 
-export const StorageService = new StorageServiceImpl();
+export const CloudinaryClient = new CloudinaryStorageService();
