@@ -202,11 +202,11 @@ const CustomEditor = forwardRef((props: Props, ref) =>
                         ))}
                     </ul>
                 </div>
-                <div className="p-4 flex w-fit min-w-full">
+                <div className="p-4 flex w-full">
                     <EditorContent
                         content={props.value}
                         editor={editor}
-                        className="prose overflow-x-scroll"
+                        className="prose overflow-x-auto w-full h-full"
                     />
                 </div>
             </div>
