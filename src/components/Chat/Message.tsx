@@ -9,6 +9,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { DeleteMessage } from "@/actions/chat/deleteMessage";
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
+import Image from "next/image";
 
 type Props = {
     message: ReceiveMessage;
@@ -76,7 +77,14 @@ const MessageUI = (props: Props) => {
                         )}
                         {props.message.imageUrl && (
                             <div className="p-2 max-w-lg max-h-lg">
-                                <img src={props.message.imageUrl} alt="message" className="w-fit h-fit object-cover" />
+                                <Image
+                                    src={props.message.imageUrl}
+                                    alt="message"
+                                    className="w-fit h-fit object-cover"
+                                    width={500}
+                                    height={500}
+                                    style={{ width: '100%', height: 'auto' }}
+                                />
                             </div>
                         )}
                     </div>
