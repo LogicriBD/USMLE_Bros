@@ -15,17 +15,14 @@ type Props = {
     user: UserData;
 }
 
-const MessageUI = (props: Props) =>
-{
+const MessageUI = (props: Props) => {
     const isUserMessage = props.message.userId === props.user.id;
 
     const [loading, setLoading] = useState<boolean>(false);
 
     const options = {
-        replace: (node) =>
-        {
-            if (node.name === 'a')
-            {
+        replace: (node) => {
+            if (node.name === 'a') {
                 const { href } = node.attribs;
                 return (
                     <A href={href}>
@@ -36,18 +33,14 @@ const MessageUI = (props: Props) =>
         },
     }
 
-    const deleteMessage = async () =>
-    {
-        try
-        {
+    const deleteMessage = async () => {
+        try {
             setLoading(true);
             const deleteAction = new DeleteMessage({ messageId: props.message.id });
             await deleteAction.execute();
-        } catch (error: any)
-        {
+        } catch (error: any) {
             console.error(error);
-        } finally
-        {
+        } finally {
             setLoading(false);
         }
     }
@@ -76,9 +69,16 @@ const MessageUI = (props: Props) =>
                             )}
                         </div>
 
-                        <div className="text-sm break-words tablet:max-w-2xl md:max-w-xl max-w-full">
-                            {parse(props.message.text, options)}
-                        </div>
+                        {props.message.text && (
+                            <div className="text-sm break-words tablet:max-w-2xl md:max-w-xl max-w-full">
+                                {parse(props.message.text, options)}
+                            </div>
+                        )}
+                        {props.message.imageUrl && (
+                            <div className="p-2 max-w-lg max-h-lg">
+                                <img src={props.message.imageUrl} alt="message" className="w-fit h-fit object-cover" />
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

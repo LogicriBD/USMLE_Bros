@@ -4,17 +4,22 @@
 import { sendMessage } from "@/actions/chat/sendMessage";
 import { Chat } from "@/database/repository/Chat";
 import { useAppSelector } from "@/src/context/store/hooks";
-import { ReceiveMessage } from "@/types/Message";
+import { ReceiveMessage, SendMessage } from "@/types/Message";
 import { logger } from "@/utils/Logger";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import MessageUI from "./Message";
 import LinkMessage from "@/utils/helpers/LinkParser";
 import { Roles } from "@/utils/enums/Roles";
 import { useInView } from "react-intersection-observer";
 import { Spinner } from "react-bootstrap";
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
-const ChatView = () =>
-{
+import { Button } from "../CustomStyle/CustomComponents";
+import { ImageIcon } from "lucide-react";
+import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { routes } from "@/src/api/Routes";
+const ChatView = () => {
     const user = useAppSelector((state) => state.user);
 
     const [text, setText] = useState<string>("");
@@ -23,49 +28,114 @@ const ChatView = () =>
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [lastVisible, setLastVisible] = useState<null | QueryDocumentSnapshot<DocumentData>>(null);
     const { ref, inView } = useInView();
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const handleSendMessage = async () =>
+    const [previewImage, setPreviewImage] = useState<File | null>(null);
+    const [previewImageURL, setPreviewImageURL] = useState<string | null>(null);
+
+    const [imageUploadLoading, setImageUploadLoading] = useState<boolean>(false);
+
+    const handleInputClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    }
+
+    const handleClearPreview = () => {
+        setPreviewImage(null);
+        setPreviewImageURL(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+
+    const handleImageUpload = () => {
+        if (fileInputRef.current && fileInputRef.current.files) {
+            const file = fileInputRef.current.files[0];
+            if (file) {
+                try {
+                    setImageUploadLoading(true);
+                    const validImageTypes = ["image/jpeg", "image/png", "image/webp"];
+                    if (validImageTypes.includes(file.type)) {
+                        const objectUrl = URL.createObjectURL(file);
+                        setPreviewImage(file);
+                        setPreviewImageURL(objectUrl);
+                    }
+                } catch (error: any) {
+                    logger.log(error);
+                } finally {
+                    setImageUploadLoading(false);
+                }
+            }
+        }
+    }
+
+    const uploadImage = async () =>
     {
+        const f = new FormData();
+        if (previewImage)
+        {
+            f.append("file", previewImage);
+        }else{
+            return "";
+        }
+
         try
         {
-            if (text !== "")
-            {
+            const response = await fetch(routes.content.upload, {
+                method: "POST",
+                body: f,
+            });
+            const data = await response.json();
+            console.log("Image Uploaded:", data.file.url);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            return data.file.url as string;
+        } catch (error)
+        {
+            console.error("Error uploading image:", error);
+            return "";
+        }
+    }
+
+    const handleSendMessage = async () => {
+        try {
+            if (text !== "" || previewImage !== null) {
                 setLoading(true);
 
                 const messageContent = user.role === Roles.Admin ? LinkMessage(text) : text;
+                let message:SendMessage = {
+                    text: messageContent,
+                    userId: user.id,
+                    userName: user.name,
+                    time: new Date().toISOString()
+                }
 
+                if (previewImage) {
+                    const imageUrl = await uploadImage();
+                    message.imageUrl = imageUrl;
+                    setPreviewImage(null);
+                    setPreviewImageURL(null);
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                }
                 const sendAction = new sendMessage({
-                    message: {
-                        text: messageContent,
-                        userId: user.id,
-                        userName: user.name,
-                        time: new Date().toISOString()
-                    }
+                    message: message
                 });
                 await sendAction.execute();
             }
-        } catch (error: any)
-        {
+        } catch (error: any) {
             logger.error(error);
-        } finally
-        {
+        } finally {
             setLoading(false);
             setText("");
         }
     }
 
-    const fetchOlderMessages = useCallback(async () =>
-    {
+    const fetchOlderMessages = useCallback(async () => {
         logger.log("fetching older messages");
 
         if (!hasMore) return;
-        await Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) =>
-        {
-            if (olderMessages.length === 0)
-            {
+        await Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) => {
+            if (olderMessages.length === 0) {
                 setHasMore(false);
-            } else
-            {
+            } else {
                 setHasMore(true);
                 setMessages((prevMessages) => [
                     ...prevMessages,
@@ -76,18 +146,15 @@ const ChatView = () =>
         }, lastVisible);
     }, [hasMore, lastVisible]);
 
-    const handleNewMessages = ((newMessages: ReceiveMessage[]) =>
-    {
+    const handleNewMessages = ((newMessages: ReceiveMessage[]) => {
         setMessages((prevMessages) => [
             ...newMessages.filter((msg) => !prevMessages.some((m) => m.id === msg.id)),
             ...prevMessages,
         ]);
     });
 
-    useEffect(() =>
-    {
-        const unsubscribe = Chat.fetchNewMessages((newMessages: ReceiveMessage[], newLastVisible) =>
-        {
+    useEffect(() => {
+        const unsubscribe = Chat.fetchNewMessages((newMessages: ReceiveMessage[], newLastVisible) => {
             console.log("fetching new messages");
             handleNewMessages(newMessages);
             setLastVisible(newLastVisible);
@@ -96,10 +163,8 @@ const ChatView = () =>
         return () => unsubscribe();
     }, []);
 
-    useEffect(() =>
-    {
-        if (inView && hasMore)
-        {
+    useEffect(() => {
+        if (inView && hasMore) {
             fetchOlderMessages();
         }
     }, [inView, hasMore]);
@@ -135,47 +200,97 @@ const ChatView = () =>
                     </div>
 
                     {/* desktop version */}
-                    <div className="md:flex hidden items-center p-4 border-t bg-marrow-dark">
-                        <input
-                            type="text"
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            onKeyDown={(e) =>
-                            {
-                                if (e.key === "Enter")
-                                {
-                                    e.preventDefault();
-                                    handleSendMessage();
-                                }
-                            }}
-                            placeholder="Type a message..."
-                            className="flex-grow p-2 border rounded-md"
-                        />
-                        <button
-                            onClick={handleSendMessage}
-                            disabled={loading}
-                            className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300"
-                        >
-                            {loading ? "Sending..." : "Send"}
-                        </button>
+                    <div className="md:flex hidden flex-col items-center space-x-1 border-t p-2 bg-marrow-dark">
+                        {previewImage && (
+                            <div className="w-full px-3 py-2rounded-lg flex flex-row justify-start items-center z-20">
+                                {(imageUploadLoading || !previewImageURL) ? (
+                                    <div className="w-24 h-24 bg-gray-50 flex items-center justify-center">
+                                        <Spinner animation="border" variant="primary" size="sm" />
+                                    </div>
+                                ) : (
+                                    <div className="relative max-w-xs max-h-xs flex p-0 ">
+                                        <FontAwesomeIcon
+                                            icon={faTimesCircle}
+                                            className="absolute top-0 right-0 text-white bg-black text-lg cursor-pointer rounded-full border-2 border-gray-800"
+                                            onClick={handleClearPreview}
+                                        />
+                                        <Image
+                                            src={previewImageURL}
+                                            alt="Preview"
+                                            className="object-cover rounded-md"
+                                            width={150}
+                                            height={150}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        <div className="flex flex-row space-x-1 w-full items-center p-3">
+                            <input
+                                type="text"
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        handleSendMessage();
+                                    }
+                                }}
+                                placeholder="Type a message..."
+                                className="flex-grow p-2 border rounded-md"
+                            />
+                            {user.role === Roles.Admin && (
+                                <Button variant="secondary" title='Image' size="default" onClick={handleInputClick}>
+                                    <ImageIcon className="h-4 w-4 text-white" />
+                                    <input
+                                        id="file-upload"
+                                        type="file"
+                                        className="hidden"
+                                        ref={fileInputRef}
+                                        onChange={handleImageUpload}
+                                    />
+                                </Button>
+                            )}
+                            <button
+                                onClick={handleSendMessage}
+                                disabled={loading}
+                                className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold text-md rounded-xl px-4 py-2 transition duration-300"
+                            >
+                                {loading ? "Sending..." : "Send"}
+                            </button>
+                        </div>
                     </div>
 
                     {/* mobile version */}
-                    <div className="flex md:hidden items-center p-2 border-t bg-marrow-dark">
-                        <input
-                            type="text"
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            placeholder="Type a message..."
-                            className="flex-grow p-2 border rounded-full"
-                        />
-                        <button
-                            onClick={handleSendMessage}
-                            disabled={loading}
-                            className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold md:text-md text-sm rounded-md px-2 py-2 transition duration-300"
-                        >
-                            {loading ? "Sending..." : "Send"}
-                        </button>
+                    <div className="flex md:hidden flex-col items-center space-x-1 border-t bg-marrow-dark">
+                        <div className="w-full flex flex-row space-x-1 p-2">
+                            <input
+                                type="text"
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                                placeholder="Type a message..."
+                                className="flex-grow p-2 border rounded-full"
+                            />
+                            {user.role === Roles.Admin && (
+                                <Button variant="secondary" title='Image' size="sm" onClick={handleInputClick}>
+                                    <ImageIcon className="h-4 w-4 text-white" />
+                                    <input
+                                        id="file-upload"
+                                        type="file"
+                                        className="hidden"
+                                        ref={fileInputRef}
+                                        onChange={handleImageUpload}
+                                    />
+                                </Button>
+                            )}
+                            <button
+                                onClick={handleSendMessage}
+                                disabled={loading}
+                                className="ml-2 mr-1 my-2 text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold md:text-md text-sm rounded-md px-2 py-2 transition duration-300"
+                            >
+                                {loading ? "Sending..." : "Send"}
+                            </button>
+                        </div>
                     </div>
                 </>
             )}
