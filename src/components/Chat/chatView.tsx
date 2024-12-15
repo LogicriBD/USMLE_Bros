@@ -72,18 +72,15 @@ const ChatView = () => {
         }
     }
 
-    const uploadImage = async () =>
-    {
+    const uploadImage = async () => {
         const f = new FormData();
-        if (previewImage)
-        {
+        if (previewImage) {
             f.append("file", previewImage);
-        }else{
+        } else {
             return "";
         }
 
-        try
-        {
+        try {
             const response = await fetch(routes.content.upload, {
                 method: "POST",
                 body: f,
@@ -92,8 +89,7 @@ const ChatView = () => {
             console.log("Image Uploaded:", data.file.url);
             if (fileInputRef.current) fileInputRef.current.value = "";
             return data.file.url as string;
-        } catch (error)
-        {
+        } catch (error) {
             console.error("Error uploading image:", error);
             return "";
         }
@@ -105,7 +101,7 @@ const ChatView = () => {
                 setLoading(true);
 
                 const messageContent = user.role === Roles.Admin ? LinkMessage(text) : text;
-                const message:SendMessage = {
+                const message: SendMessage = {
                     text: messageContent,
                     userId: user.id,
                     userName: user.name,
@@ -174,8 +170,7 @@ const ChatView = () => {
     }, [inView, hasMore]);
 
     useEffect(() => {
-        if(isDeleted && deleteMessageId !== "")
-        {
+        if (isDeleted && deleteMessageId !== "") {
             setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== deleteMessageId));
             dispatch(deleteActions.resetDelete());
         }
@@ -274,8 +269,32 @@ const ChatView = () => {
                     </div>
 
                     {/* mobile version */}
-                    <div className="flex md:hidden flex-col items-center space-x-1 border-t bg-marrow-dark">
-                        <div className="w-full flex flex-row space-x-1 p-2">
+                    <div className="flex md:hidden flex-col items-center space-x-1 border-t border-gray-600 bg-inherit">
+                        {previewImage && (
+                            <div className="w-full px-3 py-2rounded-lg flex flex-row justify-start items-center z-20">
+                                {(imageUploadLoading || !previewImageURL) ? (
+                                    <div className="w-24 h-24 bg-gray-50 flex items-center justify-center">
+                                        <Spinner animation="border" variant="primary" size="sm" />
+                                    </div>
+                                ) : (
+                                    <div className="relative max-w-xs max-h-xs flex p-0 ">
+                                        <FontAwesomeIcon
+                                            icon={faTimesCircle}
+                                            className="absolute top-0 right-0 text-white bg-black text-lg cursor-pointer rounded-full border-2 border-gray-800"
+                                            onClick={handleClearPreview}
+                                        />
+                                        <Image
+                                            src={previewImageURL}
+                                            alt="Preview"
+                                            className="object-cover rounded-md"
+                                            width={150}
+                                            height={150}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        <div className="w-full flex flex-row items-center space-x-1 p-2">
                             <input
                                 type="text"
                                 value={text}
