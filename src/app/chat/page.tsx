@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     description: "Chat with your fellow USMLE bros and get your queries solved",
     authors: [{
         name: "USMLE Bros",
-        url: "https://usmle-bros.vercel.app/",
+        url: "https://usmlebros.com/",
     }, {
         name: "RobustTech BD",
         url: "https://robustechbd.com/"

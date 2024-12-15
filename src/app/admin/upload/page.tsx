@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     description: "Add contents on USMLE Bros as Admin that has a wide range of categories to add content to",
     authors: [{
         name: "USMLE Bros",
-        url: "https://usmle-bros.vercel.app/",
+        url: "https://usmlebros.com/",
     }, {
         name: "RobustTech BD",
         url: "https://robustechbd.com/"

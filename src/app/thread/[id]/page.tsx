@@ -21,7 +21,7 @@ export async function generateMetadata({ params, searchParams }: Props,
         description: `Learn about ${thread.title}, containing information about ${thread.description} by ${thread.createdBy} on ${thread.createdAt}`,
         authors: [{
             name: "USMLE Bros",
-            url: "https://usmle-bros.vercel.app/",
+            url: "https://usmlebros.com/",
         }, {
             name: "RobustTech BD",
             url: "https://robustechbd.com/"

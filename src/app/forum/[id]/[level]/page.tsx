@@ -24,7 +24,7 @@ export async function generateMetadata({ params, searchParams }: ForumProps,
         description: `Learn about ${topic.title} for level ${level}, containing information about ${topic.description}`,
         authors: [{
             name: "USMLE Bros",
-            url: "https://usmle-bros.vercel.app/",
+            url: "https://usmlebros.com/",
         }, {
             name: "RobustTech BD",
             url: "https://robustechbd.com/"

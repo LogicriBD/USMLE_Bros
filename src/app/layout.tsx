@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   description: "USMLE Bros is a platform for medical students to share and learn from each other.",
   authors: [{
     name: "USMLE Bros",
-    url: "https://usmle-bros.vercel.app/",
+    url: "https://usmlebros.com/",
   }, {
     name: "RobustTech BD",
     url: "https://robustechbd.com/"

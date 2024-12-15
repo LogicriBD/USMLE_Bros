@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     description: "Manage Users by Switching Roles and Deleting User Accounts for Monitoring",
     authors: [{
         name: "USMLE Bros",
-        url: "https://usmle-bros.vercel.app/",
+        url: "https://usmlebros.com/",
     }, {
         name: "RobustTech BD",
         url: "https://robustechbd.com/"
