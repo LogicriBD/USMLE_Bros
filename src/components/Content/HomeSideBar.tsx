@@ -27,7 +27,7 @@ const HomeSideBar = () =>
             <div className="hidden tablet:flex flex-col space-y-4 w-full h-full p-4">
                 <div className="flex flex-col space-y-4 justify-end">
                     <Filter />
-                    <div>
+                    <div className='w-full flex items-center justify-center'>
                         <AdBanner
                             dataAdSlot={process.env.DATA_AD_SLOT_DISPLAY_AD}
                             dataAdFormat="auto"

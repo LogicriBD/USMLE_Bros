@@ -4,6 +4,7 @@ import { formatFirebaseDate } from "@/utils/helpers/DateFormatter";
 import { Image } from "react-bootstrap";
 import ParseHTMLContent from "../Content/ParseHTMLContent";
 import { FetchBlogByMetadata } from "@/actions/blog/FetchBlogByMetadata";
+import AdBanner from "../Ads/AdBanner";
 
 type Props = {
     id: string;
@@ -55,6 +56,13 @@ const BlogFullView = async (props:Props) => {
                             {blogMetadata?.createdAt && formatFirebaseDate(blogMetadata.createdAt, true)}
                         </div>
                     </div>
+                </div>
+                <div className="w-full flex items-center justify-center p-2">
+                    <AdBanner 
+                        dataAdSlot={process.env.DATA_AD_SLOT_DISPLAY_AD}
+                        dataAdFormat="auto"
+                        dataFullWidthResponsive={true}
+                    />
                 </div>
                 <div className="w-full py-4 px-3 h-full bg-opacity-50 bg-white text-black">
                     <ParseHTMLContent id={props.id} content={blog.content} />

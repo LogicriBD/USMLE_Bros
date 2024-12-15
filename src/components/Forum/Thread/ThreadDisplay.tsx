@@ -14,6 +14,7 @@ import CreatePost from "./CreatePost";
 import { motion } from "framer-motion";
 import { Post, PostType } from "@/database/repository/Post";
 import DisplayPost from "./DisplayPost";
+import AdBanner from "../../Ads/AdBanner";
 const ThreadDisplay = ({ id }: { id: string }) =>
 {
     const [thread, setThread] = useState<ThreadType>({} as ThreadType);
@@ -97,6 +98,13 @@ const ThreadDisplay = ({ id }: { id: string }) =>
                         Add New Post
                     </button>
                 </span>
+            </div>
+            <div className="w-full p-2 flex items-center justify-center">
+                <AdBanner
+                    dataAdSlot={process.env.DATA_AD_SLOT_DISPLAY_AD}
+                    dataAdFormat="auto"
+                    dataFullWidthResponsive={true}
+                />
             </div>
             {canCreate && (
                 <motion.div

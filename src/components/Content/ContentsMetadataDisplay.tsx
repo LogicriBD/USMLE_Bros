@@ -8,6 +8,7 @@ import { useCategories } from "@/src/hooks/categories/useCategories";
 import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory";
 import Error from "../Error";
 import SearchBar from "./SearchBar";
+import AdBanner from "../Ads/AdBanner";
 
 const ContentsMetadataDisplay = () =>
 {
@@ -65,9 +66,16 @@ const ContentsMetadataDisplay = () =>
     }
 
     return (
-        <div className="w-full h-full max-h-full flex flex-col pt-4 ">
+        <div className="w-full h-full max-h-full flex flex-col pt-4 space-y-2">
             <div className="flex justify-start w-full pb-6">
                 <SearchBar searchText={searchText} setSearchText={handleSearch} />
+            </div>
+            <div className="tablet:hidden flex w-full items-center justify-center p-2">
+                <AdBanner
+                    dataAdSlot={process.env.DATA_AD_SLOT_DISPLAY_AD}
+                    dataAdFormat="auto"
+                    dataFullWidthResponsive={true}
+                />
             </div>
             <div className="grid h-full overflow-y-auto scrollbar-thin max-h-full justify-items-start p-2 md:p-4 2xl:grid-cols-4 xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2 pt-2">
                 <Error error={error} />
