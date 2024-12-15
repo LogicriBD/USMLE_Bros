@@ -3,7 +3,7 @@
 
 import { sendMessage } from "@/actions/chat/sendMessage";
 import { Chat } from "@/database/repository/Chat";
-import { useAppSelector } from "@/src/context/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { ReceiveMessage, SendMessage } from "@/types/Message";
 import { logger } from "@/utils/Logger";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -19,8 +19,12 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { routes } from "@/src/api/Routes";
+import { deleteActions } from "@/src/context/store/slices/delete-slice";
 const ChatView = () => {
     const user = useAppSelector((state) => state.user);
+    const isDeleted = useAppSelector((state) => state.deleteMessage.isDeleted);
+    const deleteMessageId = useAppSelector((state) => state.deleteMessage.messageId);
+    const dispatch = useAppDispatch();
 
     const [text, setText] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -168,6 +172,14 @@ const ChatView = () => {
             fetchOlderMessages();
         }
     }, [inView, hasMore]);
+
+    useEffect(() => {
+        if(isDeleted && deleteMessageId !== "")
+        {
+            setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== deleteMessageId));
+            dispatch(deleteActions.resetDelete());
+        }
+    }, [isDeleted]);
 
     return (
         <div className="flex flex-col w-full h-full max-h-full">

@@ -10,6 +10,8 @@ import { DeleteMessage } from "@/actions/chat/deleteMessage";
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Image from "next/image";
+import { useAppDispatch } from "@/src/context/store/hooks";
+import { deleteActions } from "@/src/context/store/slices/delete-slice";
 
 type Props = {
     message: ReceiveMessage;
@@ -20,6 +22,8 @@ const MessageUI = (props: Props) => {
     const isUserMessage = props.message.userId === props.user.id;
 
     const [loading, setLoading] = useState<boolean>(false);
+
+    const dispatch = useAppDispatch();
 
     const options = {
         replace: (node) => {
@@ -39,6 +43,7 @@ const MessageUI = (props: Props) => {
             setLoading(true);
             const deleteAction = new DeleteMessage({ messageId: props.message.id });
             await deleteAction.execute();
+            dispatch(deleteActions.deleteMessage({ messageId: props.message.id, isDeleted: true }));
         } catch (error: any) {
             console.error(error);
         } finally {

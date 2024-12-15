@@ -6,6 +6,7 @@ import { loaderReducer } from "./slices/loader-slice";
 import { categoryReducer } from "./slices/category-slice";
 import { submitReducer } from "./slices/submit-slice";
 import { blogReducer } from "./slices/blog-slice";
+import { deleteReducer } from "./slices/delete-slice";
 
 const appReducer = combineReducers({
   modal: modalReducer,
@@ -15,6 +16,7 @@ const appReducer = combineReducers({
   category: categoryReducer,
   submit: submitReducer,
   blog: blogReducer,
+  deleteMessage: deleteReducer,
 });
 
 export const appStore = configureStore({
