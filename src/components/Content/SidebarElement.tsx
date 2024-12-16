@@ -26,7 +26,7 @@ const SidebarElement = ({ section, onClick }: { section: ISection, onClick: (id:
   return (
     <div
       className={`w-full cursor-pointer ${section.locked ? "text-sky-300" : "text-white"
-        } text-lg flex py-2 my-2`}
+        } text-lg flex py-2 px-3 my-2`}
       onClick={() => goToLogin()}
     >
       <div

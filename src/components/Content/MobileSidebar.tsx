@@ -11,12 +11,10 @@ import { useParams } from "next/navigation";
 import { useAppDispatch } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 
-export const MobileSidebarError = ({ error }: { error: string }) =>
-{
+export const MobileSidebarError = ({ error }: { error: string }) => {
     const [show, setShow] = useState(false);
     const dispatch = useAppDispatch();
-    useEffect(() =>
-    {
+    useEffect(() => {
         dispatch(loaderActions.turnOff());
     }, [])
 
@@ -29,29 +27,47 @@ export const MobileSidebarError = ({ error }: { error: string }) =>
 }
 
 
-export const MobileSideBarContent = ({ sections }: { sections: ISection[] }) =>
-{
+export const MobileSideBarContent = ({ sections }: { sections: ISection[] }) => {
     const [show, setShow] = useState(false);
     const router = useRouter();
     const metadataId = useParams().id as string;
 
     const dispatch = useAppDispatch();
-    useEffect(() =>
-    {
+    useEffect(() => {
         dispatch(loaderActions.turnOff());
     }, [])
 
-    const onClick = (id: string) =>
-    {
+    const onClick = (id: string) => {
         setShow(false);
         router.push(`/content/${metadataId}#${id}`);
     }
 
     return (
-        <div className={`lg:hidden ${!show ? "sm:w-[100px] w-[50px] bg-white" : "w-full min-w-full z-5 bg-marrow-dark"} block h-full min-h-full flex flex-col justify-start items-start px-2 sm:px-4 py-2`}>
-            <div className="w-full flex flex-row justify-between items-center">
-                <button onClick={() => setShow(!show)} className="text-cyan-300 bg-marrow-dark border border-2 border-sky-200 rounded-full mb-6 px-2 py-1 hover:scale-105 sm:text-md text-sm"><FontAwesomeIcon icon={faBars} /></button>
-                {show && (<button onClick={() => setShow(false)} className="text-cyan-300 bg-transparent mb-6 px-2 py-1 hover:bg-gray-200 sm:text-md text-sm"><FontAwesomeIcon icon={faClose} /></button>)}
+        <div className={`lg:hidden ${!show ? "w-0 bg-white" : "w-full min-w-full z-5 bg-marrow-dark"} block h-full min-h-full relative flex-col justify-start items-start py-2`}>
+            {!show && (
+                <button
+                    onClick={() => setShow(true)}
+                    className="relative top-0 left-0 bg-marrow-dark border text-white font-bold text-lg border-sky-200 rounded-full mb-6 ml-2 px-3 py-2 hover:scale-105 "
+                >
+                    <FontAwesomeIcon icon={faBars} />
+                </button>
+            )}
+            <div className="w-full flex flex-row justify-between px-2 items-center">
+                {show && (
+                    <>
+                        <button
+                            onClick={() => setShow(false)}
+                            className="bg-marrow-dark text-white font-bold text-lg rounded-full mb-6 px-3 py-2 hover:scale-105"
+                        >
+                            <FontAwesomeIcon icon={faBars} />
+                        </button>
+
+                        <button onClick={() => setShow(false)} className="text-white bg-transparent mb-6 px-2 py-1 hover:bg-gray-200 text-lg">
+                            <FontAwesomeIcon icon={faClose} />
+                        </button>
+                    </>
+                )}
+
             </div>
             {show && sections.map((section, index) => (
                 <SidebarElement section={section} key={index} onClick={onClick} />
