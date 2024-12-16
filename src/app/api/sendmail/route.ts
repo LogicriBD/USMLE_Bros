@@ -1,5 +1,6 @@
 import { Newsletter } from "@/utils/emails/Newsletter";
 import { EmailService } from "@/utils/EmailService";
+import { logger } from "@/utils/Logger";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    logger.log.error(error);
+    logger.error(error);
     return NextResponse.json(
       { message: "Failed to send email" },
       { status: 500 }

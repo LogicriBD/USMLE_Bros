@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { firestore } from "@/database/config/adminApp";
+import { logger } from "@/utils/Logger";
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    logger.log.error("Error deleting messages:", error);
+    logger.error("Error deleting messages:", error);
     return NextResponse.json(
       { error: "Failed to delete messages" },
       { status: 500 }
