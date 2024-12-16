@@ -1,19 +1,21 @@
 "use client"
-import { useNavigate } from "@/src/hooks/useNavigate";
+import { useAppDispatch } from "@/src/context/store/hooks";
+import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ISection } from "@/types/Content"
+import { ModalName } from "@/utils/enums/ModalEnum";
 import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SidebarElement = ({ section, onClick }: { section: ISection, onClick: (id: string) => void }) =>
 {
 
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch()
 
   const goToLogin = () =>
   {
     if (section.locked)
     {
-      navigate("/authentication/login");
+      dispatch(modalActions.updateModalType(ModalName.AuthModal));
     }
     else
     {

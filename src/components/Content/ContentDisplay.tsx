@@ -4,8 +4,7 @@ import { ContentsFetchById } from "@/actions/content/ContentFetchById";
 import ParseHTMLContent from "@/src/components/Content/ParseHTMLContent";
 import { ServerAuthContext } from "@/src/context/ServerAuthContext";
 import { ContentData } from "@/database/repository/Content";
-import { IoIosLock } from "react-icons/io";
-import Link from "next/link";
+import ProtectedContent from "./ProtectedContent";
 export const dynamic = 'force-dynamic';
 
 
@@ -60,14 +59,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
                         className="py-2 w-full">
                         <ParseHTMLContent id={contents[0].id} content={contents[0].content} />
                     </div>
-                    <Link href="/authentication/login" style={{
-                        all: "unset",
-                    }}>
-                        <div className="w-full h-[600px] bg-marrow flex flex-col justify-center items-center rounded-lg cursor-pointer">
-                            <IoIosLock className="text-8xl text-cyan-200" />
-                            <p className="text-white text-3xl font-bold font-semibold">Login to view more content</p>
-                        </div>
-                    </Link>
+                    <ProtectedContent />
                 </div>
             </div>
         )
