@@ -10,6 +10,7 @@ import { createBlog } from "@/actions/blog/CreateBlog";
 import { BlogType } from "@/utils/enums/Blog";
 import { Blog, BlogData, BlogMetadata } from "@/database/repository/Blog";
 import CustomEditor from "../Upload/CustomEditor";
+import { logger } from "@/utils/Logger";
 
 const BlogUploader = () =>
 {
@@ -117,7 +118,7 @@ const BlogUploader = () =>
             }
         } catch (error)
         {
-            logger.loglog.error("Error creating blog:", error);
+            logger.error("Error creating blog:", error);
         } finally
         {
             dispatch(loaderActions.turnOff());
@@ -139,12 +140,12 @@ const BlogUploader = () =>
                 body: f,
             });
             const data = await response.json();
-            logger.loglog.log("Image Uploaded:", data.file.url);
+            logger.log("Image Uploaded:", data.file.url);
             if (fileInputRef.current) fileInputRef.current.value = "";
             return data.file.url as string;
         } catch (error)
         {
-            logger.loglog.error("Error uploading image:", error);
+            logger.error("Error uploading image:", error);
             return "";
         }
     }
@@ -185,11 +186,11 @@ const BlogUploader = () =>
                         body: formData,
                     });
                     const data = await response.json();
-                    logger.loglog.log("Image Uploaded:", data.file.url);
+                    logger.log("Image Uploaded:", data.file.url);
                     imgTag.setAttribute('src', data.file.url);
                 } catch (error)
                 {
-                    logger.loglog.error('Error uploading image:', error);
+                    logger.error('Error uploading image:', error);
                 }
             }
         }

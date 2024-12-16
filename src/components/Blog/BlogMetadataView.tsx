@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import BlogCard from "./BlogCard";
 import AdBanner from "../Ads/AdBanner";
+import { logger } from "@/utils/Logger";
 
 const BlogMetadataView = () =>
 {
@@ -26,7 +27,7 @@ const BlogMetadataView = () =>
             setBlogMetadata(blogData);
         } catch (err: any)
         {
-            logger.log.log(err);
+            logger.log(err);
         } finally
         {
             dispatch(loaderActions.turnOff());
