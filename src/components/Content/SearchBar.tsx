@@ -11,7 +11,7 @@ const SearchBar = ({ searchText, setSearchText }: ISearchBar) =>
 {
 
     return (
-        <div className="w-full px-4 flex items-center">
+        <div className="w-full pr-4 tablet:pl-4 pl-14 flex items-center">
             <div className="relative w-full">
                 <input
                     type="text"

@@ -38,7 +38,9 @@ const HomeSideBar = () =>
             </div>
 
             <div className="tablet:hidden w-full max-w-16 bg-transparent h-full flex flex-col z-30 relative">
-                <div className="w-fit flex justify-end p-2 border border-cyan-300 rounded-full bg-marrow-dark text-cyan-300 my-4 ms-2 text-white cursor-pointer" onClick={toggleSidebar}>
+                <div className="w-fit absolute top-6 left-2 justify-end py-2 px-3 border border-cyan-300 rounded-full bg-marrow-dark text-white text-lg font-bold cursor-pointer" 
+                    onClick={toggleSidebar}
+                >
                     <FontAwesomeIcon
                         icon={faBars}
                     />

@@ -77,7 +77,7 @@ const ContentsMetadataDisplay = () =>
                     dataFullWidthResponsive={true}
                 />
             </div>
-            <div className="grid h-full overflow-y-auto scrollbar-thin max-h-full justify-items-start p-2 md:p-4 2xl:grid-cols-4 xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2 pt-2">
+            <div className="grid h-full overflow-y-auto scrollbar-thin max-h-full justify-items-center p-2 md:p-4 2xl:grid-cols-4 xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2 pt-2">
                 <Error error={error} />
 
                 {searchedContents.map((content, index) => (
