@@ -12,7 +12,7 @@ type AuthorizationRequest = {
 export class Authorization {
   private redirectUrl: string;
   private isAdminRoute: boolean;
-  private ProtectedRoutes: string[] = ["/admin", "/chat"];
+  private ProtectedRoutes: string[] = ["/admin", "/chat", "/content"];
   constructor(private request: NextRequest) {
     this.redirectUrl = request.nextUrl.pathname.includes("/admin")
       ? "/access-denied"
@@ -59,9 +59,11 @@ export class Authorization {
         });
         if (!this.isAdminRoute) {
           if (!response.success) {
-            return NextResponse.redirect(
-              new URL(this.redirectUrl, this.request.url).toString()
-            );
+            if (!this.request.nextUrl.pathname.includes("/content")) {
+              return NextResponse.redirect(
+                new URL(this.redirectUrl, this.request.url).toString()
+              );
+            }
           }
           return NextResponse.next();
         } else {
