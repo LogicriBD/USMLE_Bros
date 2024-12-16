@@ -117,7 +117,7 @@ const BlogUploader = () =>
             }
         } catch (error)
         {
-            console.error("Error creating blog:", error);
+            logger.loglog.error("Error creating blog:", error);
         } finally
         {
             dispatch(loaderActions.turnOff());
@@ -139,12 +139,12 @@ const BlogUploader = () =>
                 body: f,
             });
             const data = await response.json();
-            console.log("Image Uploaded:", data.file.url);
+            logger.loglog.log("Image Uploaded:", data.file.url);
             if (fileInputRef.current) fileInputRef.current.value = "";
             return data.file.url as string;
         } catch (error)
         {
-            console.error("Error uploading image:", error);
+            logger.loglog.error("Error uploading image:", error);
             return "";
         }
     }
@@ -185,11 +185,11 @@ const BlogUploader = () =>
                         body: formData,
                     });
                     const data = await response.json();
-                    console.log("Image Uploaded:", data.file.url);
+                    logger.loglog.log("Image Uploaded:", data.file.url);
                     imgTag.setAttribute('src', data.file.url);
                 } catch (error)
                 {
-                    console.error('Error uploading image:', error);
+                    logger.loglog.error('Error uploading image:', error);
                 }
             }
         }

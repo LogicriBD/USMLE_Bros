@@ -3,11 +3,13 @@ import { ThreadType } from "@/database/repository/Thread";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
+import { logger } from "@/utils/Logger";
 import { closeModal } from "@/utils/Modal";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const CreateThreadModal = () => {
+const CreateThreadModal = () =>
+{
 
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -16,9 +18,12 @@ const CreateThreadModal = () => {
     const data = useAppSelector((state) => state.modal.data);
     const user = useAppSelector((state) => state.user);
 
-    const handleSubmit = async () => {
-        try {
-            if (name === "") {
+    const handleSubmit = async () =>
+    {
+        try
+        {
+            if (name === "")
+            {
                 return;
             }
             dispatch(loaderActions.turnOn());
@@ -35,9 +40,11 @@ const CreateThreadModal = () => {
             const threadActions = new CreateThread({ thread: thread });
             await threadActions.execute();
             dispatch(submitActions.toggleSubmit())
-        } catch (error) {
-            console.log(error);
-        } finally {
+        } catch (error)
+        {
+            logger.log(error);
+        } finally
+        {
             dispatch(loaderActions.turnOff());
             closeModal();
         }

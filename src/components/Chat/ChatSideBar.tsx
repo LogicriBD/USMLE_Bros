@@ -7,21 +7,26 @@ import { useEffect, useState } from "react";
 import Spinner from "../Spinner";
 import { UserFetchAll } from "@/actions/user/UserFetchAll";
 import { UserData } from "@/database/repository/User";
-type Props ={
+import { logger } from "@/utils/Logger";
+type Props = {
     users: UserData[];
 }
-const MobileSideBarContents = (props:Props) => {
+const MobileSideBarContents = (props: Props) =>
+{
     const currentUser = useAppSelector((state) => state.user);
 
     const [searchText, setSearchText] = useState<string>('');
     const [searchedUsers, setSearchedUsers] = useState<UserData[]>(props.users);
 
-    const handleSearch = (e: any) => {
+    const handleSearch = (e: any) =>
+    {
         const searchText = e.target.value;
-        if (searchText === '') {
+        if (searchText === '')
+        {
             setSearchedUsers(props.users);
         }
-        else {
+        else
+        {
             const searched = props.users.filter(user => user.name.toLowerCase().includes(searchText.toLowerCase()));
             setSearchedUsers(searched);
         }
@@ -40,8 +45,10 @@ const MobileSideBarContents = (props:Props) => {
             </div>
             <div className="w-full h-full px-2 pt-2 pb-24 flex flex-col space-y-2 overflow-y-auto">
                 <UserCard user={currentUser} isActive={false} />
-                {searchedUsers.map((user) => {
-                    if (user.id !== currentUser.id) {
+                {searchedUsers.map((user) =>
+                {
+                    if (user.id !== currentUser.id)
+                    {
                         return <UserCard key={user.id} user={user} isActive={false} />;
                     }
                     return null;
@@ -51,18 +58,22 @@ const MobileSideBarContents = (props:Props) => {
     )
 }
 
-const DesktopSideBarContents = (props:Props) => {
+const DesktopSideBarContents = (props: Props) =>
+{
     const currentUser = useAppSelector((state) => state.user);
 
     const [searchText, setSearchText] = useState<string>('');
     const [searchedUsers, setSearchedUsers] = useState<UserData[]>(props.users);
 
-    const handleSearch = (e: any) => {
+    const handleSearch = (e: any) =>
+    {
         const searchText = e.target.value;
-        if (searchText === '') {
+        if (searchText === '')
+        {
             setSearchedUsers(props.users);
         }
-        else {
+        else
+        {
             const searched = props.users.filter(user => user.name.toLowerCase().includes(searchText.toLowerCase()));
             setSearchedUsers(searched);
         }
@@ -81,8 +92,10 @@ const DesktopSideBarContents = (props:Props) => {
             </div>
             <div className="w-full h-full p-2 flex flex-col space-y-2 overflow-y-auto">
                 <UserCard user={currentUser} isActive={false} />
-                {searchedUsers.map((user) => {
-                    if (user.id !== currentUser.id) {
+                {searchedUsers.map((user) =>
+                {
+                    if (user.id !== currentUser.id)
+                    {
                         return <UserCard key={user.id} user={user} isActive={false} />;
                     }
                     return null;
@@ -95,8 +108,9 @@ type SearchProps = {
     searchText: string;
     setSearchText: (e: any) => void;
 }
-const ChatSearchBar = (props: SearchProps) => {
-    return(
+const ChatSearchBar = (props: SearchProps) =>
+{
+    return (
         <div className="w-full  flex items-center">
             <div className="relative w-full">
                 <input
@@ -115,30 +129,37 @@ const ChatSearchBar = (props: SearchProps) => {
     )
 }
 
-const ChatSideBar = () => {
+const ChatSideBar = () =>
+{
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [users, setUsers] = useState<UserData[]>([]);
     const isSubmit = useAppSelector((state) => state.submit.toggle);
-    const toggleSidebar = () => {
+    const toggleSidebar = () =>
+    {
         setIsOpen(!isOpen);
     };
- 
-    const fetchUsers = async () => {
-        try{
+
+    const fetchUsers = async () =>
+    {
+        try
+        {
             setLoading(true);
             const userAction = new UserFetchAll();
             const res = await userAction.execute();
             setUsers(res);
-        }catch(error){
-            console.log(error);
-        }finally{
+        } catch (error)
+        {
+            logger.log(error);
+        } finally
+        {
             setLoading(false);
         }
     }
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         fetchUsers();
     }, [isSubmit])
 
@@ -151,7 +172,7 @@ const ChatSideBar = () => {
                     <DesktopSideBarContents users={users} />
                 )}
             </div>
-            <div 
+            <div
                 onClick={toggleSidebar}
                 className="lg:hidden bg-marrow-dark w-full h-full flex flex-col z-30 relative">
                 <div className="flex justify-end p-4">
@@ -172,8 +193,8 @@ const ChatSideBar = () => {
                                 className="text-center text-white cursor-pointer text-xl"
                             />
                         </div>
-                        <div 
-                            onClick={(e:any) => e.stopPropagation()}
+                        <div
+                            onClick={(e: any) => e.stopPropagation()}
                             className="w-full h-full flex flex-col">
                             {loading ? (
                                 <Spinner invert={false} />

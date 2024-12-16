@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    console.error("Error deleting messages:", error);
+    logger.log.error("Error deleting messages:", error);
     return NextResponse.json(
       { error: "Failed to delete messages" },
       { status: 500 }

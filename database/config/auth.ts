@@ -45,7 +45,7 @@ export const logout = async () => {
     const response = await signOut(auth);
     return response;
   } catch (error) {
-    console.log("Error logging out", error);
+
     return error;
   }
 };

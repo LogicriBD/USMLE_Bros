@@ -12,13 +12,15 @@ import { Spinner } from "react-bootstrap";
 import Image from "next/image";
 import { useAppDispatch } from "@/src/context/store/hooks";
 import { deleteActions } from "@/src/context/store/slices/delete-slice";
+import { logger } from "@/utils/Logger";
 
 type Props = {
     message: ReceiveMessage;
     user: UserData;
 }
 
-const MessageUI = (props: Props) => {
+const MessageUI = (props: Props) =>
+{
     const isUserMessage = props.message.userId === props.user.id;
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -26,8 +28,10 @@ const MessageUI = (props: Props) => {
     const dispatch = useAppDispatch();
 
     const options = {
-        replace: (node) => {
-            if (node.name === 'a') {
+        replace: (node) =>
+        {
+            if (node.name === 'a')
+            {
                 const { href } = node.attribs;
                 return (
                     <A href={href}>
@@ -38,15 +42,19 @@ const MessageUI = (props: Props) => {
         },
     }
 
-    const deleteMessage = async () => {
-        try {
-            setLoading(true);
+    const deleteMessage = async () =>
+    {
+        try
+        {
+            logger.log(true);
             const deleteAction = new DeleteMessage({ messageId: props.message.id });
             await deleteAction.execute();
             dispatch(deleteActions.deleteMessage({ messageId: props.message.id, isDeleted: true }));
-        } catch (error: any) {
-            console.error(error);
-        } finally {
+        } catch (error: any)
+        {
+            logger.error(error);
+        } finally
+        {
             setLoading(false);
         }
     }

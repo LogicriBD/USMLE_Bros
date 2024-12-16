@@ -68,9 +68,9 @@ class ThreadRepository {
             await updateDoc(threadRef, {
                 updatedAt: createdAt,
             });
-            console.log("Thread updated successfully!");
+            logger.log("Thread updated successfully!");
         } catch (error) {
-            console.error("Error updating thread:", error);
+            logger.error("Error updating thread:", error);
         }
 
     }

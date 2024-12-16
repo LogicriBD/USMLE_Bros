@@ -55,7 +55,7 @@ const NavbarItem = ({ url, children, cached, isButton, opensModal, modalType }: 
 
     useEffect(() =>
     {
-        if (pathname.includes(url!))
+        if (pathname===url)
         {
             setClassName(isButton ? ActiveModalItem : ActiveNavItem);
             setActive(true);

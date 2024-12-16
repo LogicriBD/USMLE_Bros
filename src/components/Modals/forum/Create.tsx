@@ -3,20 +3,25 @@ import { TopicType } from "@/database/repository/Topic";
 import { useAppDispatch, useAppSelector } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
 import { submitActions } from "@/src/context/store/slices/submit-slice";
+import { logger } from "@/utils/Logger";
 import { closeModal } from "@/utils/Modal";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const CreateModal = () => {
+const CreateModal = () =>
+{
 
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const data = useAppSelector((state) => state.modal.data);
     const dispatch = useAppDispatch();
 
-    const handleSubmit = async () => {
-        try{
-            if(name === "" || description === ""){
+    const handleSubmit = async () =>
+    {
+        try
+        {
+            if (name === "" || description === "")
+            {
                 return;
             }
             dispatch(loaderActions.turnOn());
@@ -26,12 +31,14 @@ const CreateModal = () => {
                 level: data.level ? data.level : 0,
                 description: description
             }
-            const topicActions = new CreateTopic({topic:topic});
+            const topicActions = new CreateTopic({ topic: topic });
             await topicActions.execute();
             dispatch(submitActions.toggleSubmit())
-        }catch(error){
-            console.log(error);
-        }finally{
+        } catch (error)
+        {
+            logger.log(error);
+        } finally
+        {
             dispatch(loaderActions.turnOff());
             closeModal();
         }
@@ -46,7 +53,7 @@ const CreateModal = () => {
             animation
         >
             <Modal.Header closeButton>
-                <Modal.Title>Create New {data.level === 2 ?  "Sub Topic" : "Discussion"} {data.parentId && "Under This"}</Modal.Title>
+                <Modal.Title>Create New {data.level === 2 ? "Sub Topic" : "Discussion"} {data.parentId && "Under This"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="w-full flex flex-col space-y-2">

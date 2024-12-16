@@ -9,10 +9,15 @@ import { ContentFetchByCategory } from "@/actions/content/ContentFetchByCategory
 import Error from "../Error";
 import SearchBar from "./SearchBar";
 import AdBanner from "../Ads/AdBanner";
+import { ContentFetchAll } from "@/actions/content/ContentFetchAll";
+import { useSearchParams } from "next/navigation";
+import { modalActions } from "@/src/context/store/slices/modal-slice";
+import { ModalName } from "@/utils/enums/ModalEnum";
 
 const ContentsMetadataDisplay = () =>
 {
     const dispatch = useAppDispatch();
+    const query = useSearchParams();
     const { selectedCategory } = useCategories();
     const [searchedContents, setSearchedContents] = useState<any[]>([]);
     const [contents, setContents] = useState<any[]>([]);
@@ -24,12 +29,19 @@ const ContentsMetadataDisplay = () =>
         dispatch(loaderActions.turnOn());
         try
         {
-            if (selectedCategory)
+            if (selectedCategory && selectedCategory.id)
             {
                 const contentFetchByCategoryId = new ContentFetchByCategory({
                     categoryId: selectedCategory.id
                 });
                 const fetchedContents = await contentFetchByCategoryId.execute();
+                setContents(fetchedContents);
+                setSearchedContents(fetchedContents);
+            }
+            else
+            {
+                const contentFetchAll = new ContentFetchAll();
+                const fetchedContents = await contentFetchAll.execute();
                 setContents(fetchedContents);
                 setSearchedContents(fetchedContents);
             }
@@ -47,6 +59,14 @@ const ContentsMetadataDisplay = () =>
 
     useEffect(() =>
     {
+        if (query)
+        {
+            const login = query.get('login');
+            if (login === 'true')
+            {
+                dispatch(modalActions.updateModalType(ModalName.AuthModal))
+            }
+        }
         fetchContents();
     }, [selectedCategory])
 

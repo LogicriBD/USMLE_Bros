@@ -9,7 +9,7 @@
 //             const posts = await Post.FetchPostsByThreadId(this.threadId);
 //             return posts;
 //         }catch(error:any){
-//             console.error("Error fetching posts:", error);
+//             logger.log.error("Error fetching posts:", error);
 //             return [];
 //         }
 //     }

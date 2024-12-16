@@ -16,7 +16,8 @@ import { useEffect, useState } from "react";
  */
 export const useCategories = (
   dependency: any[] = [],
-  unmountCallback?: () => void
+  unmountCallback?: () => void,
+  presetSelectedCategory?: boolean
 ) => {
   const dispatch = useAppDispatch();
   const selectedCategory = useAppSelector(
@@ -31,7 +32,6 @@ export const useCategories = (
 
   const fetchCategories = async () => {
     try {
-      console.log("Comes Here");
       setStepBasedCategories([]);
       const stepAction = new StepFetchAll();
       const steps = await stepAction.execute();
@@ -50,7 +50,7 @@ export const useCategories = (
       setCategories(categoriesFlat);
       if (categories.length > 0) {
         dispatch(categoryActions.setCategories(categoriesFlat));
-        if (!selectedCategory) {
+        if (!selectedCategory && presetSelectedCategory) {
           dispatch(categoryActions.setSelectedCategory(categoriesFlat[0]));
         }
       }

@@ -20,7 +20,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { routes } from "@/src/api/Routes";
 import { deleteActions } from "@/src/context/store/slices/delete-slice";
-const ChatView = () => {
+const ChatView = () =>
+{
     const user = useAppSelector((state) => state.user);
     const isDeleted = useAppSelector((state) => state.deleteMessage.isDeleted);
     const deleteMessageId = useAppSelector((state) => state.deleteMessage.messageId);
@@ -39,65 +40,83 @@ const ChatView = () => {
 
     const [imageUploadLoading, setImageUploadLoading] = useState<boolean>(false);
 
-    const handleInputClick = () => {
-        if (fileInputRef.current) {
+    const handleInputClick = () =>
+    {
+        if (fileInputRef.current)
+        {
             fileInputRef.current.click();
         }
     }
 
-    const handleClearPreview = () => {
+    const handleClearPreview = () =>
+    {
         setPreviewImage(null);
         setPreviewImageURL(null);
         if (fileInputRef.current) fileInputRef.current.value = "";
     }
 
-    const handleImageUpload = () => {
-        if (fileInputRef.current && fileInputRef.current.files) {
+    const handleImageUpload = () =>
+    {
+        if (fileInputRef.current && fileInputRef.current.files)
+        {
             const file = fileInputRef.current.files[0];
-            if (file) {
-                try {
+            if (file)
+            {
+                try
+                {
                     setImageUploadLoading(true);
                     const validImageTypes = ["image/jpeg", "image/png", "image/webp"];
-                    if (validImageTypes.includes(file.type)) {
+                    if (validImageTypes.includes(file.type))
+                    {
                         const objectUrl = URL.createObjectURL(file);
                         setPreviewImage(file);
                         setPreviewImageURL(objectUrl);
                     }
-                } catch (error: any) {
+                } catch (error: any)
+                {
                     logger.log(error);
-                } finally {
+                } finally
+                {
                     setImageUploadLoading(false);
                 }
             }
         }
     }
 
-    const uploadImage = async () => {
+    const uploadImage = async () =>
+    {
         const f = new FormData();
-        if (previewImage) {
+        if (previewImage)
+        {
             f.append("file", previewImage);
-        } else {
+        } else
+        {
             return "";
         }
 
-        try {
+        try
+        {
             const response = await fetch(routes.content.upload, {
                 method: "POST",
                 body: f,
             });
             const data = await response.json();
-            console.log("Image Uploaded:", data.file.url);
+            logger.log("Image Uploaded:", data.file.url);
             if (fileInputRef.current) fileInputRef.current.value = "";
             return data.file.url as string;
-        } catch (error) {
-            console.error("Error uploading image:", error);
+        } catch (error)
+        {
+            logger.error("Error uploading image:", error);
             return "";
         }
     }
 
-    const handleSendMessage = async () => {
-        try {
-            if (text !== "" || previewImage !== null) {
+    const handleSendMessage = async () =>
+    {
+        try
+        {
+            if (text !== "" || previewImage !== null)
+            {
                 setLoading(true);
 
                 const messageContent = user.role === Roles.Admin ? LinkMessage(text) : text;
@@ -108,7 +127,8 @@ const ChatView = () => {
                     time: new Date().toISOString()
                 }
 
-                if (previewImage) {
+                if (previewImage)
+                {
                     const imageUrl = await uploadImage();
                     message.imageUrl = imageUrl;
                     setPreviewImage(null);
@@ -120,22 +140,28 @@ const ChatView = () => {
                 });
                 await sendAction.execute();
             }
-        } catch (error: any) {
+        } catch (error: any)
+        {
             logger.error(error);
-        } finally {
+        } finally
+        {
             setLoading(false);
             setText("");
         }
     }
 
-    const fetchOlderMessages = useCallback(async () => {
+    const fetchOlderMessages = useCallback(async () =>
+    {
         logger.log("fetching older messages");
 
         if (!hasMore) return;
-        await Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) => {
-            if (olderMessages.length === 0) {
+        await Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) =>
+        {
+            if (olderMessages.length === 0)
+            {
                 setHasMore(false);
-            } else {
+            } else
+            {
                 setHasMore(true);
                 setMessages((prevMessages) => [
                     ...prevMessages,
@@ -146,16 +172,19 @@ const ChatView = () => {
         }, lastVisible);
     }, [hasMore, lastVisible]);
 
-    const handleNewMessages = ((newMessages: ReceiveMessage[]) => {
+    const handleNewMessages = ((newMessages: ReceiveMessage[]) =>
+    {
         setMessages((prevMessages) => [
             ...newMessages.filter((msg) => !prevMessages.some((m) => m.id === msg.id)),
             ...prevMessages,
         ]);
     });
 
-    useEffect(() => {
-        const unsubscribe = Chat.fetchNewMessages((newMessages: ReceiveMessage[], newLastVisible) => {
-            console.log("fetching new messages");
+    useEffect(() =>
+    {
+        const unsubscribe = Chat.fetchNewMessages((newMessages: ReceiveMessage[], newLastVisible) =>
+        {
+            logger.log("fetching new messages");
             handleNewMessages(newMessages);
             setLastVisible(newLastVisible);
         });
@@ -163,14 +192,18 @@ const ChatView = () => {
         return () => unsubscribe();
     }, []);
 
-    useEffect(() => {
-        if (inView && hasMore) {
+    useEffect(() =>
+    {
+        if (inView && hasMore)
+        {
             fetchOlderMessages();
         }
     }, [inView, hasMore]);
 
-    useEffect(() => {
-        if (isDeleted && deleteMessageId !== "") {
+    useEffect(() =>
+    {
+        if (isDeleted && deleteMessageId !== "")
+        {
             setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== deleteMessageId));
             dispatch(deleteActions.resetDelete());
         }
@@ -237,8 +270,10 @@ const ChatView = () => {
                                 type="text"
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
+                                onKeyDown={(e) =>
+                                {
+                                    if (e.key === "Enter")
+                                    {
                                         e.preventDefault();
                                         handleSendMessage();
                                     }

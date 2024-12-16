@@ -5,32 +5,40 @@ import { useEffect, useState } from "react";
 import { ContentMetaData } from "@/database/repository/Content";
 import { ContentFetchRecent } from "@/actions/content/ContentFetchRecent";
 import { useNavigate } from "@/src/hooks/useNavigate";
+import { logger } from "@/utils/Logger";
 
-const RecentPosts = () => {
+const RecentPosts = () =>
+{
 
     const navigate = useNavigate();
-    
+
     const [loading, setLoading] = useState<boolean>(true);
     const [recentPosts, setRecentPosts] = useState<ContentMetaData[]>([]);
 
-    const fetchRecentPosts = async () => {
-        try {
+    const fetchRecentPosts = async () =>
+    {
+        try
+        {
             setLoading(true);
             const action = new ContentFetchRecent();
             const recentPosts = await action.execute();
             setRecentPosts(recentPosts);
-        } catch (error: any) {
-            console.log(error);
-        } finally {
+        } catch (error: any)
+        {
+            logger.log(error);
+        } finally
+        {
             setLoading(false);
         }
     }
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         fetchRecentPosts();
     }, []);
 
-    if (loading) {
+    if (loading)
+    {
         return (
             <div className="w-full">
                 <SpinLoading />
@@ -48,7 +56,7 @@ const RecentPosts = () => {
                     recentPosts.map((post, index) => (
                         <div
                             key={index}
-                            onClick={()=> navigate(`/content/${post.id}`)}
+                            onClick={() => navigate(`/content/${post.id}`)}
                             className="flex flex-col w-full bg-white hover:bg-gray-50 transition duration-300 cursor-pointer px-4 py-2"
                         >
                             <h3 className="font-semibold text-sm text-gray-800">{post.title}</h3>

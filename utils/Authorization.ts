@@ -16,7 +16,7 @@ export class Authorization {
   constructor(private request: NextRequest) {
     this.redirectUrl = request.nextUrl.pathname.includes("/admin")
       ? "/access-denied"
-      : "/authentication/login";
+      : "/home?login=true";
     this.isAdminRoute = request.nextUrl.pathname.includes("/admin");
   }
 

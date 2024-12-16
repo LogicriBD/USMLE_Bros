@@ -26,7 +26,7 @@ const BlogMetadataView = () =>
             setBlogMetadata(blogData);
         } catch (err: any)
         {
-            console.log(err);
+            logger.log.log(err);
         } finally
         {
             dispatch(loaderActions.turnOff());

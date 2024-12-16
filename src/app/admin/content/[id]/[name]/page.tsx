@@ -108,7 +108,7 @@ const ContentEditorPage = () =>
                         body: formData,
                     });
                     const data = await response.json();
-                    console.log("Image Uploaded:", data.file.url);
+                    logger.log("Image Uploaded:", data.file.url);
                     imgTag.setAttribute('src', data.file.url);
                     if (imgTags.indexOf(imgTag) === 0)
                     {
@@ -116,7 +116,7 @@ const ContentEditorPage = () =>
                     }
                 } catch (error)
                 {
-                    console.error('Error uploading image:', error);
+                    logger.error('Error uploading image:', error);
                 }
             }
         }
@@ -190,7 +190,6 @@ const ContentEditorPage = () =>
                 }
                 const contentAction = new ContentCreate({ content: formattedContent });
                 await contentAction.execute();
-                console.log(metadata)
                 dispatch(submitActions.toggleSubmit());
                 if (editorRef.current)
                 {

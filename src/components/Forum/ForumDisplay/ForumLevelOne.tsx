@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import TopicCardHeader from "../TopicCardHeader";
 import TopicCardBody from "../TopicCardBody";
 import { FetchTopicsById } from "@/actions/forum/FetchTopicsById";
+import { logger } from "@/utils/Logger";
 
 const ForumLevelOne = ({ id }: { id: string }) =>
 {
@@ -28,7 +29,7 @@ const ForumLevelOne = ({ id }: { id: string }) =>
             setSubTopics(topic.subTopics);
         } catch (error)
         {
-            console.log(error);
+            logger.log(error);
         } finally
         {
             dispatch(loaderActions.turnOff());

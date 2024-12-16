@@ -1,4 +1,5 @@
 "use client";
+import { logger } from "@/utils/Logger";
 import { useEffect, useState } from "react";
 
 const ADSENSE_CLIENT_ID = process.env.GOOGLE_ADSENSE_CLIENT;
@@ -25,7 +26,7 @@ const AdBanner = (props: Props) =>
                 ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
             } catch (error)
             {
-                console.error("AdSense push error:", error);
+                logger.error("AdSense push error:", error);
             }
         }
     }, [mounted]);
