@@ -11,4 +11,5 @@ export enum ModalName {
   BanModal = "BanModal",
   CreateDiscussion = "CreateDiscussion",
   CreateThread = "CreateThread",
+  AuthModal = "AuthModal",
 }

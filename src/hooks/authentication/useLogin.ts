@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { LoginValidator } from "@/validation/authentication/login";
-import { UserLoginAction } from "@/actions/user/UserLoginAction";
 import { useEffect, useState } from "react";
 import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { ModalName } from "@/utils/enums/ModalEnum";
@@ -11,6 +10,7 @@ import { appStore } from "../../context/store/redux-store";
 import { logger } from "@/utils/Logger";
 import { useNavigate } from "../useNavigate";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { GoogleSignInAction } from "@/actions/user/GoogleSignInAction";
 
 /**
  *
@@ -61,32 +61,22 @@ export const useLogin = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleGoogleSignIn = async () => {
     setSubmitted(true);
     try {
-      const validator = LoginValidator(formValues);
-      if (validator.valid) {
-        const loginAction = new UserLoginAction(formValues);
-        const loginResponse = await loginAction.execute();
-        if (!loginResponse.success) {
-          setError(loginResponse.message);
-          setSubmitted(false);
-          return;
-        }
-        dispatch(authActions.setSessionStatus(true));
-
-        const userAction = new UserFetchByEmailAction({
-          email: appStore.getState().user.email,
-        });
-        await userAction.execute();
-        dispatch(modalActions.updateModalType(ModalName.SuccessModal));
-      } else {
-        setErrors({
-          email: validator.errors.email,
-          password: validator.errors.password,
-        });
+      const googleSignInAction = new GoogleSignInAction();
+      const response = await googleSignInAction.execute();
+      if (!response.success) {
+        setError(response.message);
+        setSubmitted(false);
+        return;
       }
+      dispatch(authActions.setSessionStatus(true));
+      const userAction = new UserFetchByEmailAction({
+        email: appStore.getState().user.email,
+      });
+      await userAction.execute();
+      dispatch(modalActions.updateModalType(ModalName.SuccessModal));
     } catch (error: any) {
       logger.error(error);
     } finally {
@@ -108,8 +98,8 @@ export const useLogin = () => {
     errors,
     submitted,
     handleChange,
-    handleSubmit,
     goToRegister,
     error,
+    handleGoogleSignIn,
   };
 };

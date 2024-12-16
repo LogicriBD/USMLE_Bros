@@ -14,6 +14,7 @@ import CreateThreadModal from "./Modals/forum/CreateThreadModal";
 import NewsletterSuccessModal from "./Modals/Newsletter/NewsletterSuccessModal";
 import NewsletterErrorModal from "./Modals/Newsletter/NewsletterErrorModal";
 import SuccessContentModal from "./Modals/Content/SuccessContentModal";
+import AuthModal from "./Modals/AuthModal";
 
 const ModalSelector = () =>
 {
@@ -23,6 +24,7 @@ const ModalSelector = () =>
     return (
         <>
             <React.Fragment>
+                {currentSelectedModal === ModalName.AuthModal && <AuthModal />}
                 {currentSelectedModal === ModalName.Categories && <CategoriesModal />}
                 {currentSelectedModal === ModalName.SwitchRole && <SwitchRoleModal />}
                 {currentSelectedModal === ModalName.DeleteUser && <DeleteUser />}

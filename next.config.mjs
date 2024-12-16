@@ -19,7 +19,16 @@ const nextConfig = {
   output: "standalone",
   reactStrictMode: false,
   images: {
-    domains: ["firebasestorage.googleapis.com", "res.cloudinary.com"],
+    remotePatterns: [
+      {
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
+      {
+        hostname: "firebasestorage.googleapis.com",
+        pathname: "/**",
+      },
+    ],
   },
 };
 

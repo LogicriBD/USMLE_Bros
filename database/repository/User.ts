@@ -79,7 +79,7 @@ class UserImpl {
   async findUsersByRole(role: string): Promise<UserData[]> {
     try {
       const q = query(
-        collection(firestore, "users"), 
+        collection(firestore, "users"),
         where("role", "==", role)
       );
       const querySnapshot = await getDocs(q);
@@ -116,20 +116,21 @@ class UserImpl {
     }
   }
 
-  async BanUser(id: string, duration: BanEnum){
-    try{
+  async BanUser(id: string, duration: BanEnum) {
+    try {
       const userRef = doc(firestore, "users", id);
 
-      const banExpiry = duration === BanEnum.OneDay
-      ? new Date(Date.now() + 24 * 60 * 60 * 1000)
-      : new Date("2030-12-31T23:59:59Z");
+      const banExpiry =
+        duration === BanEnum.OneDay
+          ? new Date(Date.now() + 24 * 60 * 60 * 1000)
+          : new Date("2030-12-31T23:59:59Z");
 
       await updateDoc(userRef, {
         isBanned: true,
         banExpiry: banExpiry,
       });
       logger.log("User with id: ", id, " banned for ", duration);
-    }catch(error: any){
+    } catch (error: any) {
       logger.error("Error banning user:", error);
       throw new ApiError(400, error.message);
     }
@@ -148,6 +149,26 @@ class UserImpl {
         return { id: userSnapshot.id, ...userSnapshot.data() } as UserData;
       } else {
         throw new ApiError(400, "User not found");
+      }
+    } catch (error: any) {
+      throw new ApiError(400, error.message);
+    }
+  }
+
+  async createGeneralUserWithExistsCheck(email: string, name: string) {
+    try {
+      const q = query(
+        collection(firestore, "users"),
+        where("email", "==", email)
+      );
+
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const user = { id: userDoc.id, ...userDoc.data() } as UserData;
+        return user;
+      } else {
+        return await this.createGeneralUser(email, name);
       }
     } catch (error: any) {
       throw new ApiError(400, error.message);

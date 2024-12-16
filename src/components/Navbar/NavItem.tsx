@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useAppDispatch } from "@/src/context/store/hooks";
 import { loaderActions } from "@/src/context/store/slices/loader-slice";
+import { modalActions } from "@/src/context/store/slices/modal-slice";
 import { useNavigate } from "@/src/hooks/useNavigate";
 import { ModalName } from "@/utils/enums/ModalEnum";
 import { usePathname } from "next/navigation";
@@ -13,7 +14,7 @@ export const InactiveNavItem = "text-white px-4 py-2 tablet:text-md text-sm font
 export const ActiveModalItem = "text-sky-400 bg-gray-200 cursor-not-allowed font-bold tablet:text-md text-sm rounded-xl px-4 py-2 transition duration-300";
 export const InactiveModalItem = "text-white bg-sky-400 hover:bg-sky-500 hover:scale-105 cursor-pointer font-bold tablet:text-md text-sm rounded-xl px-4 py-2 transition duration-300";
 
-const NavbarItem = ({ url, children, cached, isButton }: { url?: string, children: React.ReactNode, opensModal?: boolean, modalType?: ModalName, cached?: boolean, isButton?: boolean }) =>
+const NavbarItem = ({ url, children, cached, isButton, opensModal, modalType }: { url?: string, children: React.ReactNode, opensModal?: boolean, modalType?: ModalName, cached?: boolean, isButton?: boolean }) =>
 {
     const dispatch = useAppDispatch();
     const pathname = usePathname();
@@ -29,6 +30,19 @@ const NavbarItem = ({ url, children, cached, isButton }: { url?: string, childre
             return;
         }
         dispatch(loaderActions.turnOn());
+        if (opensModal)
+        {
+            if (!modalType)
+            {
+                throw Error("Modal type is required when opening a modal");
+            }
+            dispatch(modalActions.updateModalType(modalType))
+            return;
+        }
+        if (!url)
+        {
+            throw Error("URL is required when navigating");
+        }
         if (cached)
         {
             router.push(url!);

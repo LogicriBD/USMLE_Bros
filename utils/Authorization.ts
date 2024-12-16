@@ -13,7 +13,6 @@ export class Authorization {
   private redirectUrl: string;
   private isAdminRoute: boolean;
   private ProtectedRoutes: string[] = ["/admin", "/chat", "/content"];
-  private NotLoggedInRoutes: string[] = ["/authentication"];
   constructor(private request: NextRequest) {
     this.redirectUrl = request.nextUrl.pathname.includes("/admin")
       ? "/access-denied"
@@ -31,12 +30,8 @@ export class Authorization {
   }
 
   isNotLoggedInRoute(pathname: string) {
-    for (const route of this.NotLoggedInRoutes) {
-      if (pathname === "/") {
-        return true;
-      } else if (pathname.includes(route)) {
-        return true;
-      }
+    if (pathname === "/") {
+      return true;
     }
     return false;
   }

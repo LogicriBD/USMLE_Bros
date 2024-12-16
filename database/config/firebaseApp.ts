@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { browserLocalPersistence, initializeAuth } from "firebase/auth";
+import { Auth, getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -15,12 +15,10 @@ export const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig, {
-  name: "usmle-bros-test",
+  name: process.env.FIREBASE_PROJECT_ID,
 });
 
-export const auth = initializeAuth(app, {
-  persistence: browserLocalPersistence,
-});
+export const auth: Auth = getAuth(app);
 
 export const firestore = getFirestore(app);
 export const storage = getStorage(app);
