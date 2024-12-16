@@ -39,7 +39,7 @@ const ContentDisplay = async ({ id }: { id: string }) =>
     if (ServerAuthContext.isLoggedIn())
     {
         return (
-            <div className="w-full overflow-y-scroll scrollbar-thin bg-white px-4 py-2">
+            <div className="w-full overflow-y-scroll scrollbar-thin bg-white tablet:px-4 px-2 py-4">
                 {contents.map((content, index) => (
                     <div
                         key={index}
