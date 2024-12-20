@@ -21,7 +21,7 @@ export const adminApp = !getApps().length
   ? initializeApp(
       {
         credential: cert(serviceAccount),
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+        // storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
       },
       "usmle-bros-test"
     )
