@@ -78,7 +78,7 @@ const Navbar = () =>
                                 {user.name && (<Active />)}
                             </div>
                             <div className="flex text-lg font-bold text-white pb-2">
-                                {user.name}
+                                {user.name.length > 8 ? user.name.substring(0, 5) + "..." : user.name}
                             </div>
                         </div>
                         <NavbarButtons />
