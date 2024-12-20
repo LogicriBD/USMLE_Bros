@@ -1,13 +1,13 @@
 import { StorageService } from "@/types/StorageService";
 import { logger } from "@/utils/Logger";
-import { CloudinaryClient } from "@/utils/storage/CloudinaryClient";
+import { CloudStorageClient } from "@/utils/storage/CloudStorageClient";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File;
-    const storageService: StorageService = CloudinaryClient;
+    const storageService: StorageService = CloudStorageClient;
 
     if (!file) {
       return NextResponse.json(
