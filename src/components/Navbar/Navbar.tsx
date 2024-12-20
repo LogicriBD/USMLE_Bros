@@ -55,7 +55,7 @@ const Navbar = () =>
                 <div className="hidden w-1/4 tablet:flex tablet:flex-grow gap-6 text-white justify-center items-center">
                     {user.name && (<Active />)}
                     <div className="flex w-fit flex-grow tablet:text-lg text-sm font-bold">
-                        {user.name}
+                        {user.name.length > 8 ? user.name.substring(0, 5) + "..." : user.name}
                     </div>
                     {
                         <NavbarButtons />
@@ -78,7 +78,7 @@ const Navbar = () =>
                                 {user.name && (<Active />)}
                             </div>
                             <div className="flex text-lg font-bold text-white pb-2">
-                                {user.name.length > 8 ? user.name.substring(0, 5) + "..." : user.name}
+                                {user.name}
                             </div>
                         </div>
                         <NavbarButtons />
