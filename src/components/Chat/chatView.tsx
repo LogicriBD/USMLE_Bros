@@ -155,14 +155,14 @@ const ChatView = () =>
         logger.log("fetching older messages");
 
         if (!hasMore) return;
-        await Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible) =>
+        await Chat.fetchOldMessages((olderMessages: ReceiveMessage[], newLastVisible, hasMore:boolean) =>
         {
+            setHasMore(hasMore)
             if (olderMessages.length === 0)
             {
                 setHasMore(false);
             } else
             {
-                setHasMore(true);
                 setMessages((prevMessages) => [
                     ...prevMessages,
                     ...olderMessages.filter((msg) => !prevMessages.some((m) => m.id === msg.id)),

@@ -18,7 +18,7 @@ class ChatRepository {
         }
     }
 
-    async fetchOldMessages(callback: (messages: ReceiveMessage[], lastVisible: QueryDocumentSnapshot<DocumentData> | null) => void,
+    async fetchOldMessages(callback: (messages: ReceiveMessage[], lastVisible: QueryDocumentSnapshot<DocumentData> | null, hasMore: boolean) => void,
         lastVisible: QueryDocumentSnapshot<DocumentData> | null) {
         const messageCollectionRef = collection(firestore, "messages");
         const messageQuery = lastVisible ?
@@ -45,9 +45,14 @@ class ChatRepository {
                     ...docData,
                 };
             });
-            callback(newMessages, newLastVisible);
+
+            const nextQuery = query(messageQuery, startAfter(newLastVisible), limit(1));
+            const nextQuerySnapShot = await getDocs(nextQuery);
+        
+            const hasMore = !nextQuerySnapShot.empty;
+            callback(newMessages, newLastVisible, hasMore);
         }else{
-            callback([], null);
+            callback([], null, false);
         }
     }
 
