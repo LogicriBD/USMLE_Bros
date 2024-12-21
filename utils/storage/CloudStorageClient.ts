@@ -12,7 +12,7 @@ class CloudStorageService implements StorageService {
   constructor() {
     this.storage = new Storage({
       projectId: process.env.GCLOUD_PROJECT_ID,
-      keyFilename: process.env.GCLOUD_APPLICATION_CREDENTIALS,
+      keyFilename: path.join(__dirname, "./secret-key.json"),
     });
     const bucketName = process.env.GCLOUD_STORAGE_BUCKET!;
     this.bucket = this.storage.bucket(bucketName);

@@ -41,6 +41,7 @@ export const metadata: Metadata = {
   verification: {
     google: "GHbAPG5W6DW3JtjrpbiObD0IerU9kjeMc_nr4-TygEs",
   },
+  keywords: ["USMLE", "Bros", "USMLE Bros", "USMLE Bros Home", "USMLE Bros Home Page", "USMLE Bros Home Display", "USMLE Bros Home Page Display", "USMLE Bros Home Display Page", "USMLEBros", "usmlebrs", "USMLE Bros", "USMLE", "USMLE exam tips", "USMLE", "US"]
 };
 
 export const viewport: Viewport = {

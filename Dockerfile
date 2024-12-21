@@ -42,6 +42,8 @@ RUN \
     adduser --system --uid 1001 nextjs
 
 COPY --from=builder --link /app/public ./public
+COPY --from=builder --link /app/secret-key.json /app/.next/standalone/.next/server/app/api/upload/secret-key.json
+COPY --from=builder --link /app/secret-key.json /app/.next/server/app/api/upload/secret-key.json
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
