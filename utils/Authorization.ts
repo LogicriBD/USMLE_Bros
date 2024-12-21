@@ -17,6 +17,8 @@ export class Authorization {
     "/chat",
     "/content",
     "/api/upload",
+    "/api/sendmail",
+    "/api/admin",
   ];
   constructor(private request: NextRequest) {
     this.redirectUrl = request.nextUrl.pathname.includes("/admin")
