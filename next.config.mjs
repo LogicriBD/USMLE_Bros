@@ -28,6 +28,10 @@ const nextConfig = {
         hostname: "firebasestorage.googleapis.com",
         pathname: "/**",
       },
+      {
+        hostname: "storage.googleapis.com",
+        pathname: "/**",
+      },
     ],
   },
 };
